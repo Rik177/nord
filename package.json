@@ -8,10 +8,12 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "analyze": "vite-bundle-analyzer"
+    "analyze": "vite-bundle-analyzer",
+    "validate": "ajv compile -s ./src/schemas/"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
+    "ajv": "^8.12.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
