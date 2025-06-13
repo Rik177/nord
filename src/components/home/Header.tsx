@@ -193,22 +193,7 @@ const Header: React.FC = () => {
 
             {/* Search - desktop */}
             <div className="hidden md:flex flex-1 max-w-xl mx-8">
-              <div className="relative w-full">
-                {/* <button
-                  onClick={openGlobalSearch}
-                  placeholder="Поиск по каталогу..."
-                  className="w-full py-2 px-4 pr-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-gray-900 dark:text-white text-left"
-                >
-                  Поиск по каталогу...
-                </button> */}
-                  <GlobalSearch />
-                <button 
-                  onClick={openGlobalSearch}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                >
-                  <Search className="h-5 w-5 text-gray-400 hover:text-secondary" />
-                </button>
-              </div>
+              <GlobalSearch className="w-full" />
             </div>
 
             {/* Actions - desktop */}
@@ -333,20 +318,8 @@ const Header: React.FC = () => {
 
           <div className="flex-1 overflow-y-auto">
             <div className="p-4">
-              <div className="relative mb-4">
-                <button
-                  onClick={openGlobalSearch}
-                  placeholder="Поиск по каталогу..."
-                  className="w-full py-3 px-4 pr-12 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-800 dark:text-white min-h-[48px] text-base text-left"
-                >
-                  Поиск по каталогу...
-                </button>
-                <button 
-                  onClick={openGlobalSearch}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 min-h-[44px] min-w-[44px] flex items-center justify-center"
-                >
-                  <Search className="h-5 w-5 text-gray-400" />
-                </button>
+              <div className="mb-4">
+                <GlobalSearch className="w-full" />
               </div>
 
               <nav className="space-y-4">
