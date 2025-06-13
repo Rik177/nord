@@ -351,8 +351,8 @@ const CategoryPage: React.FC = () => {
         {/* Products Grid */}
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="mb-6">
-              <p className="text-gray-600 dark:text-gray-400">
+            <div>
+              <p className="text-gray-600 dark:text-gray-400 mb-0">
                 Найдено товаров: {sortedProducts.length}
               </p>
             </div>
@@ -365,7 +365,7 @@ const CategoryPage: React.FC = () => {
               {sortedProducts.map((product) => (
                 <div
                   key={product.id}
-                  className={`bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden group transition-all duration-300 hover:shadow-card-hover flex flex-col justify-between ${
+                  className={`bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden group transition-all duration-300 hover:shadow-card-hover ${
                     viewMode === 'list' ? 'flex' : ''
                   }`}
                 >

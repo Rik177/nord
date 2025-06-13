@@ -267,7 +267,7 @@ const Maintenance: React.FC = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {servicePackages.map((pkg, index) => (
-                      <div key={index} className={`border rounded-lg p-6 relative ${
+                      <div key={index} className={`border rounded-lg p-6 relative flex flex-col justify-between ${
                         pkg.popular 
                           ? 'border-primary bg-primary/5 dark:bg-primary/10' 
                           : 'border-gray-200 dark:border-gray-700'

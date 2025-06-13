@@ -149,7 +149,7 @@ const Design: React.FC = () => {
                     {projectTypes.map((type, index) => (
                       <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
                         <div className="flex items-center mb-4">
-                          <div className="bg-primary/10 rounded-lg p-3 mr-4">
+                          <div className="bg-primary/10 rounded-lg p-3 mr-4 md:hidden xl:block">
                             {type.icon}
                           </div>
                           <div>

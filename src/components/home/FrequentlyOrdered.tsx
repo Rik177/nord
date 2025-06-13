@@ -151,7 +151,7 @@ const FrequentlyOrdered: React.FC = () => {
           {filteredItems.map((item) => (
             <div 
               key={item.id} 
-              className="bg-white dark:bg-gray-900 rounded-xl shadow-card overflow-hidden group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1"
+              className="bg-white dark:bg-gray-900 rounded-xl shadow-card overflow-hidden group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
             >
               {/* Image and Badges */}
               <div className="relative h-48 overflow-hidden">
@@ -218,8 +218,9 @@ const FrequentlyOrdered: React.FC = () => {
                   </div>
                 </div>
 
+              </div>
                 {/* Price and Actions */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-6">
                   <div>
                     <div className="text-xl font-bold text-primary dark:text-white">
                       {item.price}
@@ -240,7 +241,6 @@ const FrequentlyOrdered: React.FC = () => {
                     </button>
                   </div>
                 </div>
-              </div>
             </div>
           ))}
         </div>

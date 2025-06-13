@@ -266,7 +266,7 @@ const Projects: React.FC = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project) => (
-                <div key={project.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden group hover:shadow-card-hover transition-all duration-300">
+                <div key={project.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden group hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between">
                   {/* Before/After Images */}
                   <div className="relative h-64 overflow-hidden">
                     <div className="absolute inset-0 grid grid-cols-2">

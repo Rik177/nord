@@ -103,11 +103,8 @@
   }
 
   /* Улучшение доступности для мобильных */
-  button, [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
-    touch-action: manipulation;
-  }
+
+
 
   /* Улучшение читаемости текста */
   @media (max-width: 768px) {
@@ -123,6 +120,11 @@
     
     small, .text-sm {
       font-size: 0.875rem !important;
+    }
+    button, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+      touch-action: manipulation;
     }
   }
 }

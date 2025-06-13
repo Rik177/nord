@@ -52,7 +52,7 @@ const Licenses: React.FC = () => {
   const filteredDocuments = documents.filter(doc => {
     const matchesType = selectedType === 'all' || doc.type === selectedType;
     const matchesSearch = doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         doc.number.toLowerCase().includes(searchQuery.toLowerCase());
+                          doc.number.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesType && matchesSearch;
   });
 
@@ -129,7 +129,7 @@ const Licenses: React.FC = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredDocuments.map((doc) => (
-                <div key={doc.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden">
+                <div key={doc.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden flex flex-col justify-between">
                   <div className="relative aspect-w-3 aspect-h-4">
                     <img
                       src={doc.image}
