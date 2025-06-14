@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pencil, Wrench, CheckCircle, ArrowRight } from 'lucide-react';
+import ConsultationForm from '../catalog/ConsultationForm';
 
 interface Service {
   icon: React.ReactNode;
@@ -7,6 +8,7 @@ interface Service {
   description: string;
   link: string;
 }
+
 
 const services: Service[] = [
   {
@@ -30,6 +32,8 @@ const services: Service[] = [
 ];
 
 const Services: React.FC = () => {
+  const [showConsultationForm, setShowConsultationForm] = useState(false);
+
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
@@ -79,15 +83,22 @@ const Services: React.FC = () => {
             Получите бесплатную консультацию и расчет стоимости для вашего объекта
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors">
+            <button
+              className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors"
+              onClick={() => setShowConsultationForm(true)}>
               Получить консультацию
-            </button>
-            <button className="bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-8 rounded-md transition-colors">
-              Рассчитать стоимость
             </button>
           </div>
         </div>
       </div>
+      {showConsultationForm && (
+          <ConsultationForm
+            onClose={() => setShowConsultationForm(false)}
+            onSubmit={handleFormSubmit}
+            value={formData}
+            setValue={setFormData}
+          />
+        )}
     </section>
   );
 };

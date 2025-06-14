@@ -15,21 +15,21 @@ const slides: Slide[] = [
     title: 'Создаем идеальный микроклимат для вашего комфорта',
     description: 'Профессиональные решения в области вентиляции и кондиционирования с 18-летним опытом. Более 1000 успешных проектов и довольных клиентов.',
     buttonText: 'Подобрать оборудование',
-    buttonLink: '#catalog'
+    buttonLink: '/catalog'
   },
   {
     image: 'https://images.pexels.com/photos/6444/pencil-typography-black-design.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     title: 'Полный цикл работ "под ключ" с гарантией до 5 лет',
     description: 'От проектирования до сервисного обслуживания. Используем только сертифицированное оборудование ведущих мировых производителей.',
     buttonText: 'Заказать проект',
-    buttonLink: '#services'
+    buttonLink: '/services'
   },
   {
     image: 'https://images.pexels.com/photos/534220/pexels-photo-534220.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     title: 'Экономьте до 40% на энергозатратах',
     description: 'Современные энергоэффективные технологии и умные системы управления. Окупаемость инвестиций уже через 2-3 года эксплуатации.',
     buttonText: 'Узнать больше',
-    buttonLink: '#about'
+    buttonLink: '/about'
   }
 ];
 

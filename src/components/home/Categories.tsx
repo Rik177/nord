@@ -13,37 +13,37 @@ const categories: Category[] = [
     id: 1,
     title: 'Вентиляторы',
     image: 'https://images.pexels.com/photos/8486972/pexels-photo-8486972.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '#'
+    link: '/catalog/ventilation'
   },
   {
     id: 2,
     title: 'Кондиционеры',
     image: 'https://images.pexels.com/photos/4270511/pexels-photo-4270511.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '#'
+    link: '/catalog/air-conditioning'
   },
   {
     id: 3,
     title: 'Вентиляционные установки',
     image: 'https://images.pexels.com/photos/6444/pencil-typography-black-design.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '#'
+    link: '/catalog/ventilation'
   },
   {
     id: 4,
     title: 'Отопительное оборудование',
     image: 'https://images.pexels.com/photos/7109803/pexels-photo-7109803.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '#'
+    link: '/catalog/heating'
   },
   {
     id: 5,
     title: 'Тепловые завесы',
     image: 'https://images.pexels.com/photos/7191981/pexels-photo-7191981.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '#'
+    link: '/catalog/curtains'
   },
   {
     id: 6,
     title: 'Аксессуары и комплектующие',
     image: 'https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '#'
+    link: '/catalog/accessories'
   }
 ];
 
