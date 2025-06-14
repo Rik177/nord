@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star, Info, ArrowRight, TrendingUp } from 'lucide-react';
+import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 
 interface PopularItem {
   id: number;
@@ -94,6 +95,13 @@ const popularItems: PopularItem[] = [
 const FrequentlyOrdered: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('Все');
   const [showDetails, setShowDetails] = useState<number | null>(null);
+  const [showConsultationForm, setShowConsultationForm] = useState(false);
+  const [formData, setFormData] = useState<ConsultationFormData>({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
 
   const categories = ['Все', 'Кондиционеры', 'Вентиляция', 'Отопление', 'Климат'];
 
@@ -112,6 +120,14 @@ const FrequentlyOrdered: React.FC = () => {
       );
     }
     return stars;
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Consultation form submitted:', formData);
+    setShowConsultationForm(false);
+    setFormData({ name: '', phone: '', email: '', message: '' });
+    alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
   };
 
   return (
@@ -255,7 +271,10 @@ const FrequentlyOrdered: React.FC = () => {
               Наши специалисты помогут подобрать оптимальное оборудование под ваши задачи и бюджет
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors">
+              <button 
+                className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors"
+                onClick={() => setShowConsultationForm(true)}
+              >
                 Получить консультацию
               </button>
               <a 
@@ -330,7 +349,13 @@ const FrequentlyOrdered: React.FC = () => {
                         </div>
                       )}
                     </div>
-                    <button className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded-md transition-colors">
+                    <button 
+                      className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded-md transition-colors"
+                      onClick={() => {
+                        setShowDetails(null);
+                        setShowConsultationForm(true);
+                      }}
+                    >
                       Заказать консультацию
                     </button>
                   </div>
@@ -339,6 +364,15 @@ const FrequentlyOrdered: React.FC = () => {
             })()}
           </div>
         </div>
+      )}
+
+      {showConsultationForm && (
+        <ConsultationForm
+          onClose={() => setShowConsultationForm(false)}
+          onSubmit={handleFormSubmit}
+          value={formData}
+          setValue={setFormData}
+        />
       )}
     </section>
   );

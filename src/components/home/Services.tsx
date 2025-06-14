@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Pencil, Wrench, CheckCircle, ArrowRight } from 'lucide-react';
-import ConsultationForm from '../catalog/ConsultationForm';
+import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 
 interface Service {
   icon: React.ReactNode;
@@ -9,30 +9,43 @@ interface Service {
   link: string;
 }
 
-
 const services: Service[] = [
   {
     icon: <Pencil className="h-12 w-12 text-primary" />,
     title: 'Проектирование',
     description: 'Профессиональное проектирование систем вентиляции и кондиционирования для объектов любой сложности.',
-    link: '#'
+    link: '/services/design'
   },
   {
     icon: <Wrench className="h-12 w-12 text-primary" />,
     title: 'Монтаж оборудования',
     description: 'Качественный монтаж систем вентиляции, кондиционирования и отопления с соблюдением всех норм.',
-    link: '#'
+    link: '/services/installation'
   },
   {
     icon: <CheckCircle className="h-12 w-12 text-primary" />,
     title: 'Сервисное обслуживание',
     description: 'Регулярное техническое обслуживание вентиляционного и климатического оборудования.',
-    link: '#'
+    link: '/services/maintenance'
   }
 ];
 
 const Services: React.FC = () => {
   const [showConsultationForm, setShowConsultationForm] = useState(false);
+  const [formData, setFormData] = useState<ConsultationFormData>({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Consultation form submitted:', formData);
+    setShowConsultationForm(false);
+    setFormData({ name: '', phone: '', email: '', message: '' });
+    alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
+  };
 
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
@@ -85,20 +98,25 @@ const Services: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors"
-              onClick={() => setShowConsultationForm(true)}>
+              onClick={() => setShowConsultationForm(true)}
+            >
               Получить консультацию
+            </button>
+            <button className="bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-8 rounded-md transition-colors">
+              Рассчитать стоимость
             </button>
           </div>
         </div>
       </div>
+      
       {showConsultationForm && (
-          <ConsultationForm
-            onClose={() => setShowConsultationForm(false)}
-            onSubmit={handleFormSubmit}
-            value={formData}
-            setValue={setFormData}
-          />
-        )}
+        <ConsultationForm
+          onClose={() => setShowConsultationForm(false)}
+          onSubmit={handleFormSubmit}
+          value={formData}
+          setValue={setFormData}
+        />
+      )}
     </section>
   );
 };

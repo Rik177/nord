@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, MapPin, Calendar, Users, Eye } from 'lucide-react';
+import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 
 interface Project {
   id: number;
@@ -63,6 +64,13 @@ const projects: Project[] = [
 const LatestProjects: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showComparison, setShowComparison] = useState<number | null>(null);
+  const [showConsultationForm, setShowConsultationForm] = useState(false);
+  const [formData, setFormData] = useState<ConsultationFormData>({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
 
   const nextProject = () => {
     setCurrentIndex((prev) => (prev + 1) % projects.length);
@@ -79,6 +87,14 @@ const LatestProjects: React.FC = () => {
       case 'Промышленный': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300';
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300';
     }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Consultation form submitted:', formData);
+    setShowConsultationForm(false);
+    setFormData({ name: '', phone: '', email: '', message: '' });
+    alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
   };
 
   return (
@@ -213,7 +229,10 @@ const LatestProjects: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               Обсудим ваш проект и создадим эффективное решение для комфортного микроклимата
             </p>
-            <button className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors">
+            <button 
+              className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors"
+              onClick={() => setShowConsultationForm(true)}
+            >
               Обсудить проект
             </button>
           </div>
@@ -262,6 +281,15 @@ const LatestProjects: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {showConsultationForm && (
+        <ConsultationForm
+          onClose={() => setShowConsultationForm(false)}
+          onSubmit={handleFormSubmit}
+          value={formData}
+          setValue={setFormData}
+        />
       )}
     </section>
   );

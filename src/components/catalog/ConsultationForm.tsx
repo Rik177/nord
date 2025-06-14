@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { X, Phone, Mail } from 'lucide-react';
-import ProductPage from '../../pages/catalog/ProductPage';
 
 export interface ConsultationFormData {
     name: string;

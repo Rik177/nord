@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Search, Phone, Heart, ChevronDown, Sun, Moon, MapPin, Building2, Box, Wrench, FolderOpen, Award } from 'lucide-react';
 import GlobalSearch from '../shared/GlobalSearch';
+import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 
 interface MenuItem {
   label: string;
@@ -55,7 +56,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: 'Бренды',
-    path: '#',
+    path: '/brands',
     icon: <Award className="h-5 w-5" />
   }
 ];
@@ -66,6 +67,13 @@ const Header: React.FC = () => {
   const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
   const [currentCity, setCurrentCity] = useState('Москва');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showConsultationForm, setShowConsultationForm] = useState(false);
+  const [formData, setFormData] = useState<ConsultationFormData>({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -143,6 +151,14 @@ const Header: React.FC = () => {
     setIsGlobalSearchOpen(false);
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Consultation form submitted:', formData);
+    setShowConsultationForm(false);
+    setFormData({ name: '', phone: '', email: '', message: '' });
+    alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
+  };
+
   return (
     <>
     <header className={`fixed w-full z-50 transition-all duration-300 ${
@@ -171,10 +187,10 @@ const Header: React.FC = () => {
             </a>
           </div>
           <nav className="hidden md:flex space-x-4 text-sm">
-            <a href="#about" className="hover:text-secondary">О компании</a>
-            <a href="#delivery" className="hover:text-secondary">Доставка</a>
-            <a href="#payment" className="hover:text-secondary">Оплата</a>
-            <a href="#contacts" className="hover:text-secondary">Контакты</a>
+            <a href="/about" className="hover:text-secondary">О компании</a>
+            <a href="/delivery" className="hover:text-secondary">Доставка</a>
+            <a href="/warranty-terms" className="hover:text-secondary">Оплата</a>
+            <a href="/contacts" className="hover:text-secondary">Контакты</a>
           </nav>
         </div>
       </div>
@@ -226,7 +242,10 @@ const Header: React.FC = () => {
                 <Phone className="h-6 w-6" />
                 <span className="text-xs mt-1">Звонок</span>
               </a>
-              <button className="bg-accent hover:bg-opacity-90 text-white font-semibold px-4 py-2 rounded-md transition-colors">
+              <button 
+                className="bg-accent hover:bg-opacity-90 text-white font-semibold px-4 py-2 rounded-md transition-colors"
+                onClick={() => setShowConsultationForm(true)}
+              >
                 Заказать консультацию
               </button>
             </div>
@@ -387,7 +406,13 @@ const Header: React.FC = () => {
                 <button className="btn btn-accent w-full mb-4 min-h-[48px] text-base">
                   Заказать звонок
                 </button>
-                <button className="btn btn-primary w-full mb-4 min-h-[48px] text-base">
+                <button 
+                  className="btn btn-primary w-full mb-4 min-h-[48px] text-base"
+                  onClick={() => {
+                    setShowConsultationForm(true);
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
                   Заказать консультацию
                 </button>
                 <div className="flex justify-between">
@@ -414,6 +439,15 @@ const Header: React.FC = () => {
       isOpen={isGlobalSearchOpen} 
       onClose={closeGlobalSearch} 
     />
+    
+    {showConsultationForm && (
+      <ConsultationForm
+        onClose={() => setShowConsultationForm(false)}
+        onSubmit={handleFormSubmit}
+        value={formData}
+        setValue={setFormData}
+      />
+    )}
     </>
   );
 };
