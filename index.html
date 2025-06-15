@@ -9,15 +9,110 @@
     <meta property="og:title" content="НОРДИНЖИНИРИНГ - Вентиляционное и климатическое оборудование" />
     <meta property="og:description" content="Профессиональные решения в области вентиляции и климатического оборудования. Проектирование, монтаж и обслуживание систем любой сложности." />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://nordengineering.ru/images/og-default.jpg" />
     <meta name="theme-color" content="#1A3C6E" />
     <title>НОРДИНЖИНИРИНГ - Вентиляционное и климатическое оборудование</title>
+    
+    <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.pexels.com">
+    
+    <!-- DNS prefetch for additional performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://images.pexels.com">
+    
+    <!-- Critical CSS for fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Canonical URL -->
     <link rel="canonical" href="https://nordengineering.ru/" />
+    
+    <!-- Favicon and app icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#1A3C6E">
+    
+    <!-- Performance hints -->
+    <link rel="preload" href="/fonts/montserrat-v25-latin_cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/open-sans-v34-latin_cyrillic-regular.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Critical inline CSS for above-the-fold content -->
+    <style>
+      /* Critical CSS for initial render */
+      body {
+        font-family: 'Open Sans', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        color: #1f2937;
+      }
+      
+      .hero-loading {
+        height: 600px;
+        background: linear-gradient(135deg, #1A3C6E 0%, #4D9DE0 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+      
+      @media (max-width: 768px) {
+        .hero-loading {
+          height: 500px;
+        }
+      }
+      
+      /* Prevent layout shift */
+      .header-placeholder {
+        height: 213px;
+        background-color: #1A3C6E;
+      }
+    </style>
+    
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "НОРДИНЖИНИРИНГ",
+      "url": "https://nordengineering.ru",
+      "logo": "https://nordengineering.ru/images/logo.png",
+      "description": "Профессиональные решения в области вентиляции и климатического оборудования",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ул. Примерная, д. 123",
+        "addressLocality": "Москва",
+        "postalCode": "123456",
+        "addressCountry": "RU"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+7-123-456-78-90",
+        "contactType": "customer service",
+        "availableLanguage": "Russian"
+      }
+    }
+    </script>
   </head>
   <body>
+    <!-- Loading placeholder to prevent layout shift -->
+    <div id="loading-placeholder" class="header-placeholder"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Remove loading placeholder after React loads -->
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          const placeholder = document.getElementById('loading-placeholder');
+          if (placeholder) {
+            placeholder.style.display = 'none';
+          }
+        }, 100);
+      });
+    </script>
   </body>
 </html>

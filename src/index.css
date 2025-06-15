@@ -43,19 +43,18 @@
 @layer base {
   html {
     font-family: 'Open Sans', sans-serif;
-    font-size: 16px; /* Базовый размер шрифта */
+    font-size: 16px;
     line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
-    /* Улучшение читаемости на мобильных */
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
   }
   
   body {
     @apply bg-white text-gray-900;
-    font-size: 1rem; /* 16px минимум */
+    font-size: 1rem;
     line-height: 1.5;
   }
   
@@ -73,13 +72,12 @@
   p {
     margin-bottom: 1rem;
     @apply text-gray-700;
-    font-size: 1rem; /* Минимум 16px */
+    font-size: 1rem;
     line-height: 1.5;
   }
 
   a {
     @apply text-secondary hover:text-primary dark:hover:text-white transition-colors duration-200;
-    /* Минимальная область касания 44px */
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -92,8 +90,8 @@
 
   input, textarea, select {
     @apply bg-white text-gray-900 border-gray-300;
-    font-size: 1rem; /* Предотвращает зум на iOS */
-    min-height: 44px; /* Минимальная высота для касания */
+    font-size: 1rem;
+    min-height: 44px;
   }
 
   [data-theme="dark"] input,
@@ -102,11 +100,41 @@
     @apply bg-gray-800 text-white border-gray-700;
   }
 
-  /* Улучшение доступности для мобильных */
+  /* Performance optimizations */
+  * {
+    box-sizing: border-box;
+  }
 
+  /* Improve font rendering */
+  body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1;
+  }
 
+  /* Optimize images for Core Web Vitals */
+  img {
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
+  }
 
-  /* Улучшение читаемости текста */
+  /* Reduce layout shift */
+  .aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+
+  .aspect-w-16 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  /* Improve mobile performance */
   @media (max-width: 768px) {
     body {
       font-size: 1rem;
@@ -121,6 +149,7 @@
     small, .text-sm {
       font-size: 0.875rem !important;
     }
+    
     button, [role="button"] {
       min-height: 44px;
       min-width: 44px;
@@ -132,8 +161,8 @@
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-semibold transition-all duration-200;
-    min-height: 44px; /* Минимальная высота для касания */
-    font-size: 1rem; /* Минимум 16px */
+    min-height: 44px;
+    font-size: 1rem;
     line-height: 1.2;
     touch-action: manipulation;
   }
@@ -194,10 +223,10 @@
     font-size: 1rem;
   }
 
-  /* Мобильные улучшения */
+  /* Performance optimizations for mobile */
   @media (max-width: 768px) {
     .btn {
-      min-height: 48px; /* Увеличиваем на мобильных */
+      min-height: 48px;
       padding: 12px 24px;
       font-size: 1rem;
     }
@@ -208,19 +237,52 @@
       font-size: 1rem;
     }
     
-    /* Увеличиваем области касания для ссылок */
     a:not(.btn) {
       min-height: 44px;
       padding: 8px 0;
     }
     
-    /* Улучшаем читаемость карточек */
     .card {
       padding: 20px;
     }
   }
+
+  /* Optimize animations for performance */
+  .category-card {
+    @apply transition-all duration-300;
+    will-change: transform;
+  }
+
+  .category-card:hover {
+    transform: scale(1.03);
+    @apply shadow-card-hover;
+  }
+
+  .service-card {
+    @apply transition-all duration-300;
+    will-change: transform;
+  }
+
+  .service-card:hover {
+    transform: translateY(-5px);
+    @apply shadow-card-hover;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .category-card,
+    .service-card {
+      transition: none;
+    }
+    
+    .category-card:hover,
+    .service-card:hover {
+      transform: none;
+    }
+  }
 }
 
+/* Optimize Swiper pagination */
 .swiper-pagination-bullet {
   width: 6px !important;
   height: 6px !important;
@@ -246,11 +308,13 @@
   bottom: 20px !important;
 }
 
+/* Hero slide optimizations */
 .hero-slide {
   height: 600px;
   background-size: cover;
   background-position: center;
   position: relative;
+  contain: layout style paint;
 }
 
 .hero-slide::before {
@@ -269,27 +333,11 @@
   }
 }
 
-.category-card {
-  @apply transition-all duration-300;
-}
-
-.category-card:hover {
-  transform: scale(1.03);
-  @apply shadow-card-hover;
-}
-
-.service-card {
-  @apply transition-all duration-300;
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-  @apply shadow-card-hover;
-}
-
+/* Partner logo animation optimization */
 .partner-logo-container {
   animation: scroll 30s linear infinite;
   display: flex;
+  will-change: transform;
 }
 
 @keyframes scroll {
@@ -308,6 +356,10 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  .partner-logo-container {
+    animation: none;
   }
 }
 
@@ -501,4 +553,46 @@
   50% {
     opacity: 0.5;
   }
+}
+
+/* Critical performance optimizations */
+.critical-resource {
+  font-display: swap;
+}
+
+/* Optimize layout shifts */
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-container::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+}
+
+.image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Optimize repaints */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Optimize text rendering */
+.optimized-text {
+  text-rendering: optimizeSpeed;
+}
+
+/* Reduce paint complexity */
+.simple-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

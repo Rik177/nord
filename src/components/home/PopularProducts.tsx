@@ -81,7 +81,6 @@ const PopularProducts: React.FC = () => {
   };
 
   const getPagesToShow = () => {
-    // Get screen width to determine which responsive value to use
     if (typeof window !== 'undefined') {
       if (window.innerWidth >= 1024) {
         return productsPerPage.desktop;
@@ -91,7 +90,7 @@ const PopularProducts: React.FC = () => {
         return productsPerPage.mobile;
       }
     }
-    return productsPerPage.desktop; // Default
+    return productsPerPage.desktop;
   };
 
   const goToNext = () => {
@@ -110,7 +109,6 @@ const PopularProducts: React.FC = () => {
     });
   };
 
-  // Calculate visible products based on screen size and start index
   const visibleProducts = () => {
     const itemsToShow = getPagesToShow();
     const visibleItems = [];
@@ -126,7 +124,6 @@ const PopularProducts: React.FC = () => {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     const errors: Record<string, string> = {};
     if (!formData.name.trim()) errors.name = 'Пожалуйста, введите ваше имя';
     if (!formData.phone.trim()) errors.phone = 'Пожалуйста, введите ваш телефон';
@@ -137,10 +134,8 @@ const PopularProducts: React.FC = () => {
       return;
     }
     
-    // Here you would typically send the form data to your backend
     console.log('Form submitted:', { product: selectedProduct, ...formData });
     
-    // Reset form and close modal
     setFormData({ name: '', phone: '', email: '', message: '' });
     setFormErrors({});
     setSelectedProduct(null);
@@ -149,7 +144,6 @@ const PopularProducts: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error when user types
     if (formErrors[name]) {
       setFormErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -166,12 +160,14 @@ const PopularProducts: React.FC = () => {
             <button 
               onClick={goToPrev}
               className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100"
+              aria-label="Предыдущие товары"
             >
               <ArrowLeft className="h-5 w-5 text-primary" />
             </button>
             <button 
               onClick={goToNext}
               className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100"
+              aria-label="Следующие товары"
             >
               <ArrowRight className="h-5 w-5 text-primary" />
             </button>
@@ -181,7 +177,6 @@ const PopularProducts: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {visibleProducts().map((product) => (
             <div key={product.id} className="bg-white rounded-lg shadow-card overflow-hidden group flex flex-col">
-              {/* Product badges */}
               <div className="relative">
                 {product.isNew && (
                   <span className="absolute top-2 left-2 bg-secondary text-white text-xs font-semibold px-2 py-1 rounded z-10">
@@ -195,24 +190,31 @@ const PopularProducts: React.FC = () => {
                 )}
               </div>
 
-              {/* Product image */}
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={product.image} 
-                  alt={product.name} 
+                  alt={`${product.name} - ${product.description}`}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                  width="300"
+                  height="192"
                 />
                 <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
+                  <button 
+                    className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+                    aria-label={`Добавить ${product.name} в избранное`}
+                  >
                     <Heart className="h-5 w-5 text-gray-600" />
                   </button>
-                  <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
+                  <button 
+                    className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+                    aria-label={`Сравнить ${product.name}`}
+                  >
                     <BarChart2 className="h-5 w-5 text-gray-600" />
                   </button>
                 </div>
               </div>
 
-              {/* Product info */}
               <div className="p-4">
                 <h3 className="font-heading font-semibold text-primary mb-2 line-clamp-2">
                   {product.name}
@@ -221,21 +223,25 @@ const PopularProducts: React.FC = () => {
                   {product.description}
                 </p>
               </div>
+              
               <div className="p-4 pt-0 mt-auto">
-                  <div className="flex items-end">
-                    <span className="text-lg font-bold text-primary">
-                      {product.price.toLocaleString()} ₽
+                <div className="flex items-end">
+                  <span className="text-lg font-bold text-primary">
+                    {product.price.toLocaleString()} ₽
+                  </span>
+                  {product.oldPrice && (
+                    <span className="text-sm text-gray-500 line-through ml-2">
+                      {product.oldPrice.toLocaleString()} ₽
                     </span>
-                    {product.oldPrice && (
-                      <span className="text-sm text-gray-500 line-through ml-2">
-                        {product.oldPrice.toLocaleString()} ₽
-                      </span>
-                    )}
-                  </div>
-                <button className="mt-4 w-full bg-primary hover:bg-opacity-90 text-white font-semibold py-2 px-4 rounded-md transition-colors"
-                onClick={() => setSelectedProduct(product)}>
-                    Узнать цену
-                  </button>
+                  )}
+                </div>
+                <button 
+                  className="mt-4 w-full bg-primary hover:bg-opacity-90 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+                  onClick={() => setSelectedProduct(product)}
+                  aria-label={`Узнать цену на ${product.name}`}
+                >
+                  Узнать цену
+                </button>
               </div>
             </div>
           ))}
@@ -243,8 +249,9 @@ const PopularProducts: React.FC = () => {
         
         <div className="mt-8 text-center">
           <a 
-            href="#" 
+            href="/catalog" 
             className="inline-flex items-center font-semibold text-primary hover:text-secondary"
+            aria-label="Перейти к полному каталогу товаров"
           >
             <span>Все товары</span>
             <ArrowRight className="h-5 w-5 ml-2" />
@@ -269,6 +276,7 @@ const PopularProducts: React.FC = () => {
                 <button 
                   onClick={() => setSelectedProduct(null)}
                   className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  aria-label="Закрыть форму"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -288,9 +296,10 @@ const PopularProducts: React.FC = () => {
                     className={`w-full p-3 rounded-md bg-gray-50 dark:bg-gray-800 border ${
                       formErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     } focus:outline-none focus:ring-2 focus:ring-primary`}
+                    aria-describedby={formErrors.name ? "name-error" : undefined}
                   />
                   {formErrors.name && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
+                    <p id="name-error" className="text-red-500 text-sm mt-1">{formErrors.name}</p>
                   )}
                 </div>
                 
@@ -307,9 +316,10 @@ const PopularProducts: React.FC = () => {
                     className={`w-full p-3 rounded-md bg-gray-50 dark:bg-gray-800 border ${
                       formErrors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     } focus:outline-none focus:ring-2 focus:ring-primary`}
+                    aria-describedby={formErrors.phone ? "phone-error" : undefined}
                   />
                   {formErrors.phone && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>
+                    <p id="phone-error" className="text-red-500 text-sm mt-1">{formErrors.phone}</p>
                   )}
                 </div>
                 
@@ -326,9 +336,10 @@ const PopularProducts: React.FC = () => {
                     className={`w-full p-3 rounded-md bg-gray-50 dark:bg-gray-800 border ${
                       formErrors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     } focus:outline-none focus:ring-2 focus:ring-primary`}
+                    aria-describedby={formErrors.email ? "email-error" : undefined}
                   />
                   {formErrors.email && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                    <p id="email-error" className="text-red-500 text-sm mt-1">{formErrors.email}</p>
                   )}
                 </div>
                 
@@ -356,7 +367,7 @@ const PopularProducts: React.FC = () => {
                   />
                   <label htmlFor="agreement" className="text-sm text-gray-600 dark:text-gray-400">
                     Я согласен на обработку персональных данных в соответствии с{' '}
-                    <a href="#" className="text-primary hover:text-secondary">
+                    <a href="/privacy-policy" className="text-primary hover:text-secondary">
                       политикой конфиденциальности
                     </a>
                   </label>
