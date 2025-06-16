@@ -80,7 +80,7 @@ const Catalog: React.FC = () => {
     "@type": "CollectionPage",
     name: "Каталог климатического оборудования",
     description:
-      "Полный каталог вентиляционного и климатичес��ого оборудования от ведущих производителей",
+      "Полный каталог вентиляционного и климатического оборудования от ведущих производителей",
     url: "https://nordengineering.ru/catalog",
     mainEntity: {
       "@type": "ItemList",
@@ -103,13 +103,7 @@ const Catalog: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      <SEOHelmet
-        title="Каталог климатического оборудования"
-        description="Полный каталог вентиляционного и климатического оборудования: кондиционеры, вентиляторы, тепловые завесы, системы вентиляции от ведущих производителей."
-        keywords="каталог, климатическое оборудование, кондиционеры, вентиляция, тепловые завесы, вентиляторы"
-        canonical="https://nordengineering.ru/catalog"
-        structuredData={structuredData}
-      />
+      <SEOHelmet {...seoPages.catalog} structuredData={structuredData} />
       <Header />
       <main className="pt-[213px] pb-12">
         <Breadcrumbs />
