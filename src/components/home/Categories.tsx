@@ -1,5 +1,6 @@
-import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import React from "react";
+import { ArrowRight } from "lucide-react";
+import OptimizedImage, { generateCategoryAlt } from "../shared/OptimizedImage";
 
 interface Category {
   id: number;
@@ -11,40 +12,46 @@ interface Category {
 const categories: Category[] = [
   {
     id: 1,
-    title: 'Вентиляторы',
-    image: 'https://images.pexels.com/photos/8486972/pexels-photo-8486972.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '/catalog/ventilation'
+    title: "Вентиляторы",
+    image:
+      "https://images.pexels.com/photos/8486972/pexels-photo-8486972.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    link: "/catalog/ventilation",
   },
   {
     id: 2,
-    title: 'Кондиционеры',
-    image: 'https://images.pexels.com/photos/4270511/pexels-photo-4270511.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '/catalog/air-conditioning'
+    title: "Кондиционеры",
+    image:
+      "https://images.pexels.com/photos/4270511/pexels-photo-4270511.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    link: "/catalog/air-conditioning",
   },
   {
     id: 3,
-    title: 'Вентиляционные установки',
-    image: 'https://images.pexels.com/photos/6444/pencil-typography-black-design.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '/catalog/ventilation'
+    title: "Вентиляционные установки",
+    image:
+      "https://images.pexels.com/photos/6444/pencil-typography-black-design.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    link: "/catalog/ventilation",
   },
   {
     id: 4,
-    title: 'Отопительное оборудование',
-    image: 'https://images.pexels.com/photos/7109803/pexels-photo-7109803.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '/catalog/heating'
+    title: "Отопительное оборудование",
+    image:
+      "https://images.pexels.com/photos/7109803/pexels-photo-7109803.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    link: "/catalog/heating",
   },
   {
     id: 5,
-    title: 'Тепловые завесы',
-    image: 'https://images.pexels.com/photos/7191981/pexels-photo-7191981.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '/catalog/curtains'
+    title: "Тепловые завесы",
+    image:
+      "https://images.pexels.com/photos/7191981/pexels-photo-7191981.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    link: "/catalog/curtains",
   },
   {
     id: 6,
-    title: 'Аксессуары и комплектующие',
-    image: 'https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    link: '/catalog/accessories'
-  }
+    title: "Аксессуары и комплектующие",
+    image:
+      "https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    link: "/catalog/accessories",
+  },
 ];
 
 const Categories: React.FC = () => {
@@ -55,17 +62,18 @@ const Categories: React.FC = () => {
           Популярные категории
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <a 
-              key={category.id} 
+          {categories.map((category, index) => (
+            <a
+              key={category.id}
               href={category.link}
               className="category-card relative rounded-lg overflow-hidden shadow-card group transition-all duration-300"
             >
               <div className="aspect-w-16 aspect-h-9 h-64">
-                <img 
-                  src={category.image} 
-                  alt={category.title} 
+                <OptimizedImage
+                  src={category.image}
+                  alt={generateCategoryAlt(category.title)}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  priority={index < 2}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-70"></div>
               </div>
