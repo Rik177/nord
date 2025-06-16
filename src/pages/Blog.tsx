@@ -11,18 +11,18 @@ const Blog: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState('Все посты');
   const [filteredPosts, setFilteredPosts] = React.useState(blogPosts);
-  
+
   const categories = ['Все посты', ...getAllCategories()];
   const allTags = getAllTags();
-  
+
   React.useEffect(() => {
     let filtered = blogPosts;
-    
+
     // Фильтрация по категории
     if (selectedCategory !== 'Все посты') {
       filtered = filtered.filter(post => post.category === selectedCategory);
     }
-    
+
     // Фильтрация по поисковому запросу
     if (searchTerm) {
       filtered = filtered.filter(post =>
@@ -31,10 +31,10 @@ const Blog: React.FC = () => {
         post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
-    
+
     setFilteredPosts(filtered);
   }, [searchTerm, selectedCategory]);
-  
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ru-RU', {
@@ -47,6 +47,27 @@ const Blog: React.FC = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Blog",
+    "name": "Блог НОРДИНЖИНИРИНГ",
+    "description": "Полезные статьи о климатических системах и вентиляции",
+    "url": "https://nordengineering.ru/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "НОРДИНЖИНИРИНГ",
+      "url": "https://nordengineering.ru",
+      "logo": "https://nordengineering.ru/logo.png"
+    },
+    "blogPost": filteredPosts.slice(0, 5).map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "url": `https://nordengineering.ru/blog/${post.id}`,
+      "datePublished": post.date,
+      "author": {
+        "@type": "Person",
+        "name": post.author
+      },
+      "image": post.imageUrl
+    }))
     "name": "Блог НОРДИНЖИНИРИНГ",
     "description": "Актуальные новости, полезные статьи и экспертные материалы о системах вентиляции и кондиционирования",
     "url": "https://nordengineering.ru/blog",
@@ -129,7 +150,7 @@ const Blog: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400 mb-8">
                   По вашему запросу статьи не найдены. Попробуйте изменить критерии поиска или выберите другую категорию.
                 </p>
-                <button 
+                <button
                   onClick={() => {
                     setSearchTerm('');
                     setSelectedCategory('Все посты');
@@ -144,7 +165,7 @@ const Blog: React.FC = () => {
                 {filteredPosts.map((post) => (
                   <article key={post.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden hover:shadow-card-hover transition-shadow duration-300">
                     <div className="aspect-w-16 aspect-h-9">
-                      <img 
+                      <img
                         src={post.imageUrl}
                         alt={post.title}
                         className="w-full h-48 object-cover"
@@ -161,24 +182,24 @@ const Blog: React.FC = () => {
                         <Clock className="h-4 w-4 mr-2" />
                         <span>{post.readTime} мин</span>
                       </div>
-                      
+
                       <div className="mb-3">
                         <span className="inline-block px-3 py-1 text-xs font-semibold bg-secondary/10 text-secondary rounded-full">
                           {post.category}
                         </span>
                       </div>
-                      
+
                       <h3 className="font-heading font-bold text-h3-mobile md:text-h3-desktop text-primary dark:text-white mb-3 line-clamp-2">
                         {post.title}
                       </h3>
-                      
+
                       <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
                         {post.excerpt}
                       </p>
-                      
+
                       <div className="flex flex-wrap gap-2 mb-4">
                         {post.tags.slice(0, 3).map((tag) => (
-                          <span 
+                          <span
                             key={tag}
                             className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded"
                           >
@@ -187,8 +208,8 @@ const Blog: React.FC = () => {
                           </span>
                         ))}
                       </div>
-                      
-                      <Link 
+
+                      <Link
                         to={`/blog/${post.id}`}
                         className="inline-flex items-center text-secondary hover:text-primary dark:hover:text-white transition-colors"
                       >
