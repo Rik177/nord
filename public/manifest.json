@@ -23,7 +23,7 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Главная страница НОРДИНЖИНИРИНГ"
+      "label": "��лавная страница НОРДИНЖИНИРИНГ"
     },
     {
       "src": "/screenshot-mobile.png",
@@ -38,15 +38,13 @@
       "name": "Каталог",
       "short_name": "Каталог",
       "description": "Просмотр каталога оборудования",
-      "url": "/catalog",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "url": "/catalog"
     },
     {
       "name": "Контакты",
       "short_name": "Контакты",
       "description": "Связаться с нами",
-      "url": "/contacts",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "url": "/contacts"
     }
   ]
 }
