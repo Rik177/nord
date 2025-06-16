@@ -6,6 +6,7 @@ import Footer from '../components/home/Footer';
 import Breadcrumbs from '../components/shared/Breadcrumbs';
 import { Search, Calendar, User, ArrowRight, Clock, Tag } from 'lucide-react';
 import { blogPosts, getAllCategories, getAllTags } from '../data/blogPosts';
+import { seoPages } from '../utils/seo';
 
 const Blog: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -80,10 +81,7 @@ const Blog: React.FC = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet
-        title="Блог о климатическом оборудовании"
-        description="Актуальные новости, полезные статьи и экспертные материалы о системах вентиляции и кондиционирования от специалистов НОРДИНЖИНИРИНГ."
-        keywords="блог, климатическое оборудование, вентиляция, кондиционирование, статьи, новости"
-        canonical="https://nordengineering.ru/blog"
+        {...seoPages.blog}
         structuredData={structuredData}
       />
       <Header />
@@ -148,7 +146,7 @@ const Blog: React.FC = () => {
                   Статьи не найдены
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-8">
-                  По вашему запросу статьи не найдены. Попробуйте изменить критерии поиска или выберите другую категорию.
+                  По вашему запросу статьи не найде��ы. Попробуйте изменить критерии поиска или выберите другую категорию.
                 </p>
                 <button
                   onClick={() => {
