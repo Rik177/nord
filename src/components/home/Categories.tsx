@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import OptimizedImage, { generateCategoryAlt } from "../shared/OptimizedImage";
+
 interface Category {
   id: number;
   title: string;
@@ -62,7 +62,7 @@ const Categories: React.FC = () => {
           Популярные категории
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <a
               key={category.id}
               href={category.link}
