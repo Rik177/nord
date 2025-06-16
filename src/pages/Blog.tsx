@@ -1,35 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import SEOHelmet from '../components/shared/SEOHelmet';
-import Header from '../components/home/Header';
-import Footer from '../components/home/Footer';
-import Breadcrumbs from '../components/shared/Breadcrumbs';
-import { Search, Calendar, User, ArrowRight, Clock, Tag } from 'lucide-react';
-import { blogPosts, getAllCategories, getAllTags } from '../data/blogPosts';
-import { seoPages } from '../utils/seo';
+import React from "react";
+import { Link } from "react-router-dom";
+import SEOHelmet from "../components/shared/SEOHelmet";
+import Header from "../components/home/Header";
+import Footer from "../components/home/Footer";
+import Breadcrumbs from "../components/shared/Breadcrumbs";
+import { Search, Calendar, User, ArrowRight, Clock, Tag } from "lucide-react";
+import { blogPosts, getAllCategories, getAllTags } from "../data/blogPosts";
+import { seoPages } from "../utils/seo";
 
 const Blog: React.FC = () => {
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [selectedCategory, setSelectedCategory] = React.useState('Все посты');
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [selectedCategory, setSelectedCategory] = React.useState("Все посты");
   const [filteredPosts, setFilteredPosts] = React.useState(blogPosts);
 
-  const categories = ['Все посты', ...getAllCategories()];
+  const categories = ["Все посты", ...getAllCategories()];
   const allTags = getAllTags();
 
   React.useEffect(() => {
     let filtered = blogPosts;
 
     // Фильтрация по категории
-    if (selectedCategory !== 'Все посты') {
-      filtered = filtered.filter(post => post.category === selectedCategory);
+    if (selectedCategory !== "Все посты") {
+      filtered = filtered.filter((post) => post.category === selectedCategory);
     }
 
     // Фильтрация по поисковому запросу
     if (searchTerm) {
-      filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.tags.some((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase()),
+          ),
       );
     }
 
@@ -38,52 +41,42 @@ const Blog: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('ru-RU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return date.toLocaleDateString("ru-RU", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "Блог НОРДИНЖИНИРИНГ",
-    "description": "Полезные статьи о климатических системах и вентиляции",
-    "url": "https://nordengineering.ru/blog",
-    "publisher": {
+    name: "Блог НОРДИНЖИНИРИНГ",
+    description: "Полезные статьи о климатических системах и вентиляции",
+    url: "https://nordengineering.ru/blog",
+    publisher: {
       "@type": "Organization",
-      "name": "НОРДИНЖИНИРИНГ",
-      "url": "https://nordengineering.ru",
-      "logo": "https://nordengineering.ru/logo.png"
+      name: "НОРДИНЖИНИРИНГ",
+      url: "https://nordengineering.ru",
+      logo: "https://nordengineering.ru/logo.png",
     },
-    "blogPost": filteredPosts.slice(0, 5).map(post => ({
+    blogPost: filteredPosts.slice(0, 5).map((post) => ({
       "@type": "BlogPosting",
-      "headline": post.title,
-      "description": post.excerpt,
-      "url": `https://nordengineering.ru/blog/${post.id}`,
-      "datePublished": post.date,
-      "author": {
+      headline: post.title,
+      description: post.excerpt,
+      url: `https://nordengineering.ru/blog/${post.id}`,
+      datePublished: post.date,
+      author: {
         "@type": "Person",
-        "name": post.author
+        name: post.author,
       },
-      "image": post.imageUrl
-    }))
-    "name": "Блог НОРДИНЖИНИРИНГ",
-    "description": "Актуальные новости, полезные статьи и экспертные материалы о системах вентиляции и кондиционирования",
-    "url": "https://nordengineering.ru/blog",
-    "publisher": {
-      "@type": "Organization",
-      "name": "НОРДИНЖИНИРИНГ"
-    }
+      image: post.imageUrl,
+    })),
   };
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      <SEOHelmet
-        {...seoPages.blog}
-        structuredData={structuredData}
-      />
+      <SEOHelmet {...seoPages.blog} structuredData={structuredData} />
       <Header />
       <main className="pt-[213.39px] pb-12">
         <Breadcrumbs />
@@ -94,7 +87,8 @@ const Blog: React.FC = () => {
               Блог компании
             </h1>
             <p className="text-white/90 text-center max-w-2xl mx-auto">
-              Актуальные новости, полезные статьи и экспертные материалы о системах вентиляции и кондиционирования
+              Актуальные новости, полезные статьи и экспертные материалы о
+              системах вентиляции и кондиционирования
             </p>
           </div>
         </section>
@@ -122,8 +116,8 @@ const Blog: React.FC = () => {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-md transition-colors ${
                       selectedCategory === category
-                        ? 'bg-primary text-white'
-                        : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                        ? "bg-primary text-white"
+                        : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                   >
                     {category}
@@ -146,12 +140,13 @@ const Blog: React.FC = () => {
                   Статьи не найдены
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-8">
-                  По вашему запросу статьи не найде��ы. Попробуйте изменить критерии поиска или выберите другую категорию.
+                  По вашему запросу статьи не найдены. Попробуйте изменить
+                  критерии поиска или выберите другую категорию.
                 </p>
                 <button
                   onClick={() => {
-                    setSearchTerm('');
-                    setSelectedCategory('Все посты');
+                    setSearchTerm("");
+                    setSelectedCategory("Все посты");
                   }}
                   className="btn btn-primary"
                 >
@@ -161,7 +156,10 @@ const Blog: React.FC = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredPosts.map((post) => (
-                  <article key={post.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden hover:shadow-card-hover transition-shadow duration-300">
+                  <article
+                    key={post.id}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden hover:shadow-card-hover transition-shadow duration-300"
+                  >
                     <div className="aspect-w-16 aspect-h-9">
                       <img
                         src={post.imageUrl}
@@ -230,7 +228,8 @@ const Blog: React.FC = () => {
                 Подпишитесь на новости
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-8">
-                Будьте в курсе новых статей, технических новинок и полезных советов по климатическому оборудованию
+                Будьте в курсе новых статей, технических новинок и полезных
+                советов по климатическому оборудованию
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
                 <input
