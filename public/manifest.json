@@ -9,13 +9,7 @@
   "background_color": "#ffffff",
   "lang": "ru",
   "scope": "/",
-  "icons": [
-    {
-      "src": "/favicon.ico",
-      "sizes": "16x16 32x32",
-      "type": "image/x-icon"
-    }
-  ],
+  "icons": [],
   "categories": ["business", "productivity"],
   "screenshots": [
     {
@@ -23,7 +17,7 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "��лавная страница НОРДИНЖИНИРИНГ"
+      "label": "Главная страница НОРДИНЖИНИРИНГ"
     },
     {
       "src": "/screenshot-mobile.png",
