@@ -29,7 +29,7 @@ const categories: Category[] = [
   {
     id: 'air-conditioning',
     name: 'Кондиционеры',
-    description: 'Настенные, кассетные, канальные кондиционеры, мульти-сплит систе��ы',
+    description: 'Настенные, кассетные, канальные кондиционеры, мульти-сплит системы',
     image: 'https://images.pexels.com/photos/4270511/pexels-photo-4270511.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     productCount: 89,
     path: '/catalog/air-conditioning'
@@ -173,14 +173,12 @@ const Catalog: React.FC = () => {
                       <OptimizedImage
                         src={category.image}
                         alt={generateCategoryAlt(category.name)}
-                        className={`w-full object-cover rounded ${viewMode === 'list' ? 'h-32' : 'h-48'}`}
-                      />
+                        className={`object-cover transition-transform duration-300 group-hover:scale-105 ${
+                          viewMode === 'list' ? 'w-full h-full' : 'w-full h-48'
                         }`}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                      <div className="absolute bottom-4 right-4">
                         <span className="bg-white/90 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-                          {category.productCount} товаров
+                          {category.productCount} то��аров
                         </span>
                       </div>
                     </div>
