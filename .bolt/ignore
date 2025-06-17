@@ -1,21 +1,21 @@
-# src/pages/FAQ.tsx
-# src/schemas/*
-# src/utils/*
-# src/App.tsx
-# src/pages/about/*
-# src/pages/services/*
-# src/pages/Contacts.tsx
-# src/pages/CookiePolicy.tsx
-# src/pages/Delivery.tsx
-# src/pages/PrivacyPolicy.tsx
-# src/pages/Projects.tsx
-# src/pages/Sales.tsx
-# src/pages/Services.tsx
-# src/pages/TermsOfService.tsx
-# src/pages/WarrantyTerms.tsx
-# src/pages/Reviews.tsx
-# src/components/services/ServicesSidebar.tsx
-# src/pages/catalog/*
+src/pages/FAQ.tsx
+src/schemas/*
+src/utils/*
+src/App.tsx
+src/pages/about/*
+src/pages/services/*
+src/pages/Contacts.tsx
+src/pages/CookiePolicy.tsx
+src/pages/Delivery.tsx
+src/pages/PrivacyPolicy.tsx
+src/pages/Projects.tsx
+src/pages/Sales.tsx
+src/pages/Services.tsx
+src/pages/TermsOfService.tsx
+src/pages/WarrantyTerms.tsx
+src/pages/Reviews.tsx
+src/components/services/ServicesSidebar.tsx
+src/pages/catalog/*
 # src/pages/Home.tsx
 # src/main.tsx
 # src/components/home/AboutCompany.tsx
