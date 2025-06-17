@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Star } from 'lucide-react';
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, A11y } from 'swiper/modules';
+import { Star } from 'lucide-react';
 
 interface Testimonial {
   id: number;
@@ -45,56 +47,6 @@ const testimonials: Testimonial[] = [
 ];
 
 export const TestimonialsSection: React.FC = () => {
-  const [startIndex, setStartIndex] = useState(0);
-  const testimonialsPerPage = {
-    desktop: 2,
-    tablet: 1,
-    mobile: 1
-  };
-
-  const getPagesToShow = () => {
-    // Get screen width to determine which responsive value to use
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth >= 1024) {
-        return testimonialsPerPage.desktop;
-      } else if (window.innerWidth >= 768) {
-        return testimonialsPerPage.tablet;
-      } else {
-        return testimonialsPerPage.mobile;
-      }
-    }
-    return testimonialsPerPage.desktop; // Default
-  };
-
-  const goToNext = () => {
-    const itemsToShow = getPagesToShow();
-    setStartIndex((prevIndex) => {
-      const newIndex = prevIndex + itemsToShow;
-      return newIndex >= testimonials.length ? 0 : newIndex;
-    });
-  };
-
-  const goToPrev = () => {
-    const itemsToShow = getPagesToShow();
-    setStartIndex((prevIndex) => {
-      const newIndex = prevIndex - itemsToShow;
-      return newIndex < 0 ? Math.max(0, testimonials.length - itemsToShow) : newIndex;
-    });
-  };
-
-  // Calculate visible testimonials based on screen size and start index
-  const visibleTestimonials = () => {
-    const itemsToShow = getPagesToShow();
-    const visibleItems = [];
-    
-    for (let i = 0; i < itemsToShow; i++) {
-      const index = (startIndex + i) % testimonials.length;
-      visibleItems.push(testimonials[index]);
-    }
-    
-    return visibleItems;
-  };
-
   const renderStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -111,56 +63,63 @@ export const TestimonialsSection: React.FC = () => {
   return (
     <section className="py-16 bg-lightBg dark:bg-gray-800">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-10">
-          <h2 className="font-heading font-bold text-h2-mobile md:text-h2-desktop text-primary dark:text-white">
-            Отзывы наших клиентов
-          </h2>
-          <div className="flex space-x-2">
-            <button 
-              onClick={goToPrev}
-              className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100"
-            >
-              <ArrowLeft className="h-5 w-5 text-primary" />
-            </button>
-            <button 
-              onClick={goToNext}
-              className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100"
-            >
-              <ArrowRight className="h-5 w-5 text-primary" />
-            </button>
-          </div>
-        </div>
+        <h2 className="font-heading font-bold text-h2-mobile md:text-h2-desktop text-primary dark:text-white text-center mb-10">
+          Отзывы наших клиентов
+        </h2>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {visibleTestimonials().map((testimonial) => (
-            <div 
-              key={testimonial.id} 
-              className="bg-white rounded-lg shadow-card p-6 transition-all duration-300 hover:shadow-card-hover"
-            >
-              <div className="flex items-center mb-4">
-                <img 
-                  src={testimonial.image} 
-                  alt={testimonial.name} 
-                  className="h-14 w-14 rounded-full object-cover mr-4"
-                />
-                <div>
-                  <h3 className="font-heading font-semibold text-primary">
-                    {testimonial.name}
-                  </h3>
-                  {testimonial.company && (
-                    <p className="text-gray-600 text-sm">{testimonial.company}</p>
-                  )}
-                  <div className="flex mt-1">
-                    {renderStars(testimonial.rating)}
+        <Swiper
+          modules={[Navigation, Pagination, A11y]}
+          spaceBetween={24}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          breakpoints={{
+            640: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 2,
+            },
+          }}
+          a11y={{
+            prevSlideMessage: 'Предыдущий отзыв',
+            nextSlideMessage: 'Следующий отзыв',
+            firstSlideMessage: 'Это первый отзыв',
+            lastSlideMessage: 'Это последний отзыв',
+            paginationBulletMessage: 'Перейти к отзыву {{index}}'
+          }}
+        >
+          {testimonials.map((testimonial) => (
+            <SwiperSlide key={testimonial.id}>
+              <div className="bg-white rounded-lg shadow-card p-6 transition-all duration-300 hover:shadow-card-hover h-full">
+                <div className="flex items-center mb-4">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.name} 
+                    className="h-14 w-14 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <h3 className="font-heading font-semibold text-primary">
+                      {testimonial.name}
+                    </h3>
+                    {testimonial.company && (
+                      <p className="text-gray-600 text-sm">{testimonial.company}</p>
+                    )}
+                    <div className="flex mt-1">
+                      {renderStars(testimonial.rating)}
+                    </div>
                   </div>
                 </div>
+                <p className="text-gray-700 italic">
+                  "{testimonial.text}"
+                </p>
               </div>
-              <p className="text-gray-700 italic">
-                "{testimonial.text}"
-              </p>
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
         
         <div className="mt-8 text-center">
           <a 

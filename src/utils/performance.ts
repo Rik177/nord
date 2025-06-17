@@ -18,6 +18,9 @@ export const initPerformanceOptimizations = () => {
   if (typeof window !== 'undefined') {
     monitorWebVitals();
   }
+
+  // Оптимизация для складных экранов
+  optimizeForFoldableScreens();
 };
 
 // Preload критических ресурсов
@@ -177,6 +180,56 @@ export const optimizeForMobile = () => {
       ticking = true;
     }
   });
+};
+
+// Оптимизация для складных экранов
+export const optimizeForFoldableScreens = () => {
+  if (typeof window === 'undefined') return;
+
+  // Проверка поддержки CSS Spanning API
+  if ('windowSegments' in window) {
+    // Устройство имеет несколько экранов или складной экран
+    const segments = (window as any).windowSegments;
+    if (segments && segments.length > 1) {
+      // Устанавливаем CSS-переменные для адаптации макета
+      document.documentElement.style.setProperty('--fold-width', `${segments[1].x - segments[0].width}px`);
+      document.documentElement.style.setProperty('--fold-height', `${segments[1].y - segments[0].height}px`);
+      document.documentElement.style.setProperty('--has-fold', 'true');
+    }
+  }
+
+  // Обработка изменений ориентации экрана
+  window.addEventListener('resize', () => {
+    // Проверяем соотношение сторон для определения состояния складного устройства
+    const aspectRatio = window.innerWidth / window.innerHeight;
+    
+    if (aspectRatio < 0.5) {
+      // Вероятно, устройство сложено вертикально
+      document.documentElement.style.setProperty('--fold-state', 'vertical');
+    } else if (aspectRatio > 2) {
+      // Вероятно, устройство сложено горизонтально
+      document.documentElement.style.setProperty('--fold-state', 'horizontal');
+    } else {
+      // Обычное соотношение сторон
+      document.documentElement.style.setProperty('--fold-state', 'normal');
+    }
+  });
+
+  // Проверка поддержки Screen Spanning API
+  if ('getWindowSegments' in window.screen) {
+    const updateSpanning = () => {
+      const segments = (window.screen as any).getWindowSegments();
+      if (segments.length > 1) {
+        // Устройство имеет несколько экранов или складной экран
+        const spanningEnv = (window.screen as any).spanning;
+        document.documentElement.style.setProperty('--spanning-env', spanningEnv);
+      }
+    };
+    
+    // Обновляем при изменении состояния экрана
+    window.addEventListener('change', updateSpanning);
+    updateSpanning();
+  }
 };
 
 // Предзагрузка критических маршрутов

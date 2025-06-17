@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, MapPin, Calendar, Users, Eye } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, A11y } from 'swiper/modules';
+import { MapPin, Calendar, Users, Eye } from 'lucide-react';
 import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 
 interface Project {
@@ -62,8 +64,7 @@ const projects: Project[] = [
 ];
 
 const LatestProjects: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showComparison, setShowComparison] = useState<number | null>(null);
+  const [imageComparison, setImageComparison] = useState<{ project: Project; showAfter: boolean } | null>(null);
   const [showConsultationForm, setShowConsultationForm] = useState(false);
   const [formData, setFormData] = useState<ConsultationFormData>({
     name: '',
@@ -71,14 +72,6 @@ const LatestProjects: React.FC = () => {
     email: '',
     message: ''
   });
-
-  const nextProject = () => {
-    setCurrentIndex((prev) => (prev + 1) % projects.length);
-  };
-
-  const prevProject = () => {
-    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
-  };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -109,116 +102,105 @@ const LatestProjects: React.FC = () => {
           </p>
         </div>
 
-        <div className="relative">
-          {/* Navigation */}
-          <div className="flex justify-between items-center mb-8">
-            <button 
-              onClick={prevProject}
-              className="p-3 rounded-full bg-lightBg dark:bg-gray-800 hover:bg-primary hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-6 w-6" />
-            </button>
-            
-            <div className="flex space-x-2">
-              {projects.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentIndex ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
-                  }`}
-                />
-              ))}
-            </div>
-            
-            <button 
-              onClick={nextProject}
-              className="p-3 rounded-full bg-lightBg dark:bg-gray-800 hover:bg-primary hover:text-white transition-colors"
-            >
-              <ArrowRight className="h-6 w-6" />
-            </button>
-          </div>
-
-          {/* Project Display */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Project Info */}
-            <div className="order-2 lg:order-1">
-              <div className="mb-4">
-                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(projects[currentIndex].category)}`}>
-                  {projects[currentIndex].category}
-                </span>
-              </div>
-              
-              <h3 className="font-heading font-bold text-h2-mobile md:text-h2-desktop text-primary dark:text-white mb-4">
-                {projects[currentIndex].title}
-              </h3>
-              
-              <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">
-                {projects[currentIndex].description}
-              </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="flex items-center text-gray-600 dark:text-gray-400">
-                  <MapPin className="h-5 w-5 mr-2 text-secondary" />
-                  <span>{projects[currentIndex].location}</span>
-                </div>
-                <div className="flex items-center text-gray-600 dark:text-gray-400">
-                  <Calendar className="h-5 w-5 mr-2 text-secondary" />
-                  <span>{projects[currentIndex].completionDate}</span>
-                </div>
-                <div className="flex items-center text-gray-600 dark:text-gray-400">
-                  <Users className="h-5 w-5 mr-2 text-secondary" />
-                  <span>{projects[currentIndex].area}</span>
-                </div>
-              </div>
-              
-              <div className="flex space-x-4">
-                <button 
-                  onClick={() => setShowComparison(projects[currentIndex].id)}
-                  className="flex items-center bg-primary hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded-md transition-colors"
-                >
-                  <Eye className="h-5 w-5 mr-2" />
-                  Посмотреть детали
-                </button>
-                <a 
-                  href="/projects" 
-                  className="flex items-center border border-primary text-primary hover:bg-primary hover:text-white font-semibold py-3 px-6 rounded-md transition-colors"
-                >
-                  Все проекты
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </a>
-              </div>
-            </div>
-
-            {/* Before/After Images */}
-            <div className="order-1 lg:order-2">
-              <div className="relative">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="relative group">
-                    <img
-                      src={projects[currentIndex].beforeImage}
-                      alt={`${projects[currentIndex].title} - до`}
-                      className="w-full h-64 object-cover rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute bottom-3 left-3 bg-black/70 text-white px-3 py-1 rounded text-sm font-semibold">
-                      ДО
+        <Swiper
+          modules={[Navigation, Pagination, A11y]}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          className="mb-12"
+          a11y={{
+            prevSlideMessage: 'Предыдущий проект',
+            nextSlideMessage: 'Следующий проект',
+            firstSlideMessage: 'Это первый проект',
+            lastSlideMessage: 'Это последний проект',
+            paginationBulletMessage: 'Перейти к проекту {{index}}'
+          }}
+        >
+          {projects.map((project) => (
+            <SwiperSlide key={project.id}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                {/* Project Info */}
+                <div>
+                  <div className="mb-4">
+                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(project.category)}`}>
+                      {project.category}
+                    </span>
+                  </div>
+                  
+                  <h3 className="font-heading font-bold text-h2-mobile md:text-h2-desktop text-primary dark:text-white mb-4">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">
+                    {project.description}
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="flex items-center text-gray-600 dark:text-gray-400">
+                      <MapPin className="h-5 w-5 mr-2 text-secondary" />
+                      <span>{project.location}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600 dark:text-gray-400">
+                      <Calendar className="h-5 w-5 mr-2 text-secondary" />
+                      <span>{project.completionDate}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600 dark:text-gray-400">
+                      <Users className="h-5 w-5 mr-2 text-secondary" />
+                      <span>{project.area}</span>
                     </div>
                   </div>
-                  <div className="relative group">
-                    <img
-                      src={projects[currentIndex].afterImage}
-                      alt={`${projects[currentIndex].title} - после`}
-                      className="w-full h-64 object-cover rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute bottom-3 right-3 bg-accent text-white px-3 py-1 rounded text-sm font-semibold">
-                      ПОСЛЕ
+                  
+                  <div className="flex space-x-4">
+                    <button 
+                      onClick={() => setImageComparison({ project, showAfter: false })}
+                      className="flex items-center bg-primary hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded-md transition-colors"
+                    >
+                      <Eye className="h-5 w-5 mr-2" />
+                      Посмотреть детали
+                    </button>
+                    <a 
+                      href="/projects" 
+                      className="flex items-center border border-primary text-primary hover:bg-primary hover:text-white font-semibold py-3 px-6 rounded-md transition-colors"
+                    >
+                      Все проекты
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Before/After Images */}
+                <div>
+                  <div className="relative">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="relative group">
+                        <img
+                          src={project.beforeImage}
+                          alt={`${project.title} - до`}
+                          className="w-full h-64 object-cover rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute bottom-3 left-3 bg-black/70 text-white px-3 py-1 rounded text-sm font-semibold">
+                          ДО
+                        </div>
+                      </div>
+                      <div className="relative group">
+                        <img
+                          src={project.afterImage}
+                          alt={`${project.title} - после`}
+                          className="w-full h-64 object-cover rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute bottom-3 right-3 bg-accent text-white px-3 py-1 rounded text-sm font-semibold">
+                          ПОСЛЕ
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
         {/* CTA */}
         <div className="text-center mt-12">
@@ -240,16 +222,17 @@ const LatestProjects: React.FC = () => {
       </div>
 
       {/* Comparison Modal */}
-      {showComparison && (
+      {imageComparison && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
           <div className="max-w-6xl w-full">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-white font-heading font-bold text-xl">
-                {projects.find(p => p.id === showComparison)?.title}
+                {imageComparison.project.title}
               </h3>
               <button
-                onClick={() => setShowComparison(null)}
+                onClick={() => setImageComparison(null)}
                 className="text-white hover:text-gray-300"
+                aria-label="Закрыть"
               >
                 <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -260,8 +243,8 @@ const LatestProjects: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
                 <img
-                  src={projects.find(p => p.id === showComparison)?.beforeImage}
-                  alt="До"
+                  src={imageComparison.project.beforeImage}
+                  alt={`${imageComparison.project.title} - до`}
                   className="w-full h-auto rounded-lg"
                 />
                 <div className="absolute bottom-4 left-4 bg-black/70 text-white px-4 py-2 rounded text-lg font-semibold">
@@ -270,8 +253,8 @@ const LatestProjects: React.FC = () => {
               </div>
               <div className="relative">
                 <img
-                  src={projects.find(p => p.id === showComparison)?.afterImage}
-                  alt="После"
+                  src={imageComparison.project.afterImage}
+                  alt={`${imageComparison.project.title} - после`}
                   className="w-full h-auto rounded-lg"
                 />
                 <div className="absolute bottom-4 right-4 bg-accent text-white px-4 py-2 rounded text-lg font-semibold">

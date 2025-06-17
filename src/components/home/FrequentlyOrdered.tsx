@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Star, Info, ArrowRight, TrendingUp } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, A11y } from 'swiper/modules';
+import { Star, Info, X, TrendingUp } from 'lucide-react';
 import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 
 interface PopularItem {
@@ -162,81 +164,106 @@ const FrequentlyOrdered: React.FC = () => {
           ))}
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Products Swiper */}
+        <Swiper
+          modules={[Navigation, Pagination, A11y]}
+          spaceBetween={32}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true, dynamicBullets: true }}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 24,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 32,
+            },
+          }}
+          a11y={{
+            prevSlideMessage: 'Предыдущий товар',
+            nextSlideMessage: 'Следующий товар',
+            firstSlideMessage: 'Это первый товар',
+            lastSlideMessage: 'Это последний товар',
+            paginationBulletMessage: 'Перейти к товару {{index}}'
+          }}
+        >
           {filteredItems.map((item) => (
-            <div 
-              key={item.id} 
-              className="bg-white dark:bg-gray-900 rounded-xl shadow-card overflow-hidden group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
-            >
-              {/* Image and Badges */}
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={item.image} 
-                  alt={item.name} 
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute top-3 left-3 flex flex-col gap-2">
-                  {item.isHot && (
-                    <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                      ХИТ
-                    </span>
-                  )}
-                  {item.discount && (
-                    <span className="bg-accent text-white px-2 py-1 rounded-full text-xs font-bold">
-                      -{item.discount}
-                    </span>
-                  )}
-                </div>
-                <div className="absolute top-3 right-3 bg-white/90 dark:bg-gray-800/90 px-2 py-1 rounded-full">
-                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-                    {item.orderCount} заказов
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-secondary font-semibold">{item.category}</span>
-                  <div className="flex items-center">
-                    {renderStars(item.rating)}
-                    <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">
-                      {item.rating}
-                    </span>
-                  </div>
-                </div>
-
-                <h3 className="font-heading font-semibold text-primary dark:text-white mb-2 line-clamp-2 group-hover:text-secondary transition-colors">
-                  {item.name}
-                </h3>
-
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-                  {item.description}
-                </p>
-
-                {/* Features */}
-                <div className="mb-4">
-                  <div className="flex flex-wrap gap-1">
-                    {item.features.slice(0, 2).map((feature, index) => (
-                      <span 
-                        key={index}
-                        className="text-xs bg-lightBg dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-1 rounded"
-                      >
-                        {feature}
+            <SwiperSlide key={item.id}>
+              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-card overflow-hidden group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between h-full">
+                {/* Image and Badges */}
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute top-3 left-3 flex flex-col gap-2">
+                    {item.isHot && (
+                      <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                        ХИТ
                       </span>
-                    ))}
-                    {item.features.length > 2 && (
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        +{item.features.length - 2} еще
+                    )}
+                    {item.discount && (
+                      <span className="bg-accent text-white px-2 py-1 rounded-full text-xs font-bold">
+                        -{item.discount}
                       </span>
                     )}
                   </div>
+                  <div className="absolute top-3 right-3 bg-white/90 dark:bg-gray-800/90 px-2 py-1 rounded-full">
+                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      {item.orderCount} заказов
+                    </span>
+                  </div>
                 </div>
 
-              </div>
+                {/* Content */}
+                <div className="p-6 flex-grow">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-secondary font-semibold">{item.category}</span>
+                    <div className="flex items-center">
+                      {renderStars(item.rating)}
+                      <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">
+                        {item.rating}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="font-heading font-semibold text-primary dark:text-white mb-2 line-clamp-2 group-hover:text-secondary transition-colors">
+                    {item.name}
+                  </h3>
+
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                    {item.description}
+                  </p>
+
+                  {/* Features */}
+                  <div className="mb-4">
+                    <div className="flex flex-wrap gap-1">
+                      {item.features.slice(0, 2).map((feature, index) => (
+                        <span 
+                          key={index}
+                          className="text-xs bg-lightBg dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-1 rounded"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                      {item.features.length > 2 && (
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          +{item.features.length - 2} еще
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                
                 {/* Price and Actions */}
-                <div className="flex items-center justify-between p-6">
+                <div className="flex items-center justify-between p-6 pt-0">
                   <div>
                     <div className="text-xl font-bold text-primary dark:text-white">
                       {item.price}
@@ -252,14 +279,16 @@ const FrequentlyOrdered: React.FC = () => {
                       onClick={() => setShowDetails(item.id)}
                       className="p-2 bg-lightBg dark:bg-gray-800 hover:bg-primary hover:text-white rounded-lg transition-colors"
                       title="Подробнее"
+                      aria-label="Подробнее о товаре"
                     >
                       <Info className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
-            </div>
+              </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
 
         {/* CTA Section */}
         <div className="text-center mt-12">
@@ -282,7 +311,9 @@ const FrequentlyOrdered: React.FC = () => {
                 className="bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-8 rounded-md transition-colors flex items-center justify-center"
               >
                 Весь каталог
-                <ArrowRight className="h-5 w-5 ml-2" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
               </a>
             </div>
           </div>
@@ -309,10 +340,9 @@ const FrequentlyOrdered: React.FC = () => {
                     <button
                       onClick={() => setShowDetails(null)}
                       className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      aria-label="Закрыть"
                     >
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
+                      <X className="h-6 w-6" />
                     </button>
                   </div>
                   

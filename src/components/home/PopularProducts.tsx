@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Heart, BarChart2, X } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, A11y } from 'swiper/modules';
+import { Heart, BarChart2, X } from 'lucide-react';
 
 interface Product {
   id: number;
@@ -64,7 +66,6 @@ const products: Product[] = [
 ];
 
 const PopularProducts: React.FC = () => {
-  const [startIndex, setStartIndex] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -73,55 +74,6 @@ const PopularProducts: React.FC = () => {
     message: ''
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-
-  const productsPerPage = {
-    desktop: 4,
-    tablet: 3,
-    mobile: 1
-  };
-
-  const getPagesToShow = () => {
-    // Get screen width to determine which responsive value to use
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth >= 1024) {
-        return productsPerPage.desktop;
-      } else if (window.innerWidth >= 768) {
-        return productsPerPage.tablet;
-      } else {
-        return productsPerPage.mobile;
-      }
-    }
-    return productsPerPage.desktop; // Default
-  };
-
-  const goToNext = () => {
-    const itemsToShow = getPagesToShow();
-    setStartIndex((prevIndex) => {
-      const newIndex = prevIndex + itemsToShow;
-      return newIndex >= products.length ? 0 : newIndex;
-    });
-  };
-
-  const goToPrev = () => {
-    const itemsToShow = getPagesToShow();
-    setStartIndex((prevIndex) => {
-      const newIndex = prevIndex - itemsToShow;
-      return newIndex < 0 ? Math.max(0, products.length - itemsToShow) : newIndex;
-    });
-  };
-
-  // Calculate visible products based on screen size and start index
-  const visibleProducts = () => {
-    const itemsToShow = getPagesToShow();
-    const visibleItems = [];
-    
-    for (let i = 0; i < itemsToShow; i++) {
-      const index = (startIndex + i) % products.length;
-      visibleItems.push(products[index]);
-    }
-    
-    return visibleItems;
-  };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,66 +114,86 @@ const PopularProducts: React.FC = () => {
           <h2 className="font-heading font-bold text-h2-mobile md:text-h2-desktop text-primary dark:text-white">
             Популярные товары
           </h2>
-          <div className="flex space-x-2">
-            <button 
-              onClick={goToPrev}
-              className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100"
-            >
-              <ArrowLeft className="h-5 w-5 text-primary" />
-            </button>
-            <button 
-              onClick={goToNext}
-              className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100"
-            >
-              <ArrowRight className="h-5 w-5 text-primary" />
-            </button>
-          </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {visibleProducts().map((product) => (
-            <div key={product.id} className="bg-white rounded-lg shadow-card overflow-hidden group flex flex-col">
-              {/* Product badges */}
-              <div className="relative">
-                {product.isNew && (
-                  <span className="absolute top-2 left-2 bg-secondary text-white text-xs font-semibold px-2 py-1 rounded z-10">
-                    Новинка
-                  </span>
-                )}
-                {product.isSale && (
-                  <span className="absolute top-2 left-2 bg-accent text-white text-xs font-semibold px-2 py-1 rounded z-10">
-                    Скидка
-                  </span>
-                )}
-              </div>
-
-              {/* Product image */}
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
-                    <Heart className="h-5 w-5 text-gray-600" />
-                  </button>
-                  <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
-                    <BarChart2 className="h-5 w-5 text-gray-600" />
-                  </button>
+        <Swiper
+          modules={[Navigation, Pagination, A11y]}
+          spaceBetween={24}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true, dynamicBullets: true }}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 24,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 24,
+            },
+          }}
+          a11y={{
+            prevSlideMessage: 'Предыдущий товар',
+            nextSlideMessage: 'Следующий товар',
+            firstSlideMessage: 'Это первый товар',
+            lastSlideMessage: 'Это последний товар',
+            paginationBulletMessage: 'Перейти к товару {{index}}'
+          }}
+        >
+          {products.map((product) => (
+            <SwiperSlide key={product.id}>
+              <div className="bg-white rounded-lg shadow-card overflow-hidden group flex flex-col h-full">
+                {/* Product badges */}
+                <div className="relative">
+                  {product.isNew && (
+                    <span className="absolute top-2 left-2 bg-secondary text-white text-xs font-semibold px-2 py-1 rounded z-10">
+                      Новинка
+                    </span>
+                  )}
+                  {product.isSale && (
+                    <span className="absolute top-2 left-2 bg-accent text-white text-xs font-semibold px-2 py-1 rounded z-10">
+                      Скидка
+                    </span>
+                  )}
                 </div>
-              </div>
 
-              {/* Product info */}
-              <div className="p-4">
-                <h3 className="font-heading font-semibold text-primary mb-2 line-clamp-2">
-                  {product.name}
-                </h3>
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                  {product.description}
-                </p>
-              </div>
-              <div className="p-4 pt-0 mt-auto">
+                {/* Product image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button 
+                      className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+                      aria-label="Добавить в избранное"
+                    >
+                      <Heart className="h-5 w-5 text-gray-600" />
+                    </button>
+                    <button 
+                      className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+                      aria-label="Сравнить товар"
+                    >
+                      <BarChart2 className="h-5 w-5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Product info */}
+                <div className="p-4 flex-grow">
+                  <h3 className="font-heading font-semibold text-primary mb-2 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    {product.description}
+                  </p>
+                </div>
+                <div className="p-4 pt-0">
                   <div className="flex items-end">
                     <span className="text-lg font-bold text-primary">
                       {product.price.toLocaleString()} ₽
@@ -232,22 +204,27 @@ const PopularProducts: React.FC = () => {
                       </span>
                     )}
                   </div>
-                <button className="mt-4 w-full bg-primary hover:bg-opacity-90 text-white font-semibold py-2 px-4 rounded-md transition-colors"
-                onClick={() => setSelectedProduct(product)}>
+                  <button 
+                    className="mt-4 w-full bg-primary hover:bg-opacity-90 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+                    onClick={() => setSelectedProduct(product)}
+                  >
                     Узнать цену
                   </button>
+                </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
         
         <div className="mt-8 text-center">
           <a 
-            href="#" 
+            href="/catalog" 
             className="inline-flex items-center font-semibold text-primary hover:text-secondary"
           >
             <span>Все товары</span>
-            <ArrowRight className="h-5 w-5 ml-2" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
           </a>
         </div>
       </div>
@@ -269,6 +246,7 @@ const PopularProducts: React.FC = () => {
                 <button 
                   onClick={() => setSelectedProduct(null)}
                   className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  aria-label="Закрыть"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -288,9 +266,11 @@ const PopularProducts: React.FC = () => {
                     className={`w-full p-3 rounded-md bg-gray-50 dark:bg-gray-800 border ${
                       formErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     } focus:outline-none focus:ring-2 focus:ring-primary`}
+                    aria-invalid={formErrors.name ? "true" : "false"}
+                    aria-describedby={formErrors.name ? "name-error" : undefined}
                   />
                   {formErrors.name && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
+                    <p className="text-red-500 text-sm mt-1" id="name-error">{formErrors.name}</p>
                   )}
                 </div>
                 
@@ -307,9 +287,11 @@ const PopularProducts: React.FC = () => {
                     className={`w-full p-3 rounded-md bg-gray-50 dark:bg-gray-800 border ${
                       formErrors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     } focus:outline-none focus:ring-2 focus:ring-primary`}
+                    aria-invalid={formErrors.phone ? "true" : "false"}
+                    aria-describedby={formErrors.phone ? "phone-error" : undefined}
                   />
                   {formErrors.phone && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>
+                    <p className="text-red-500 text-sm mt-1" id="phone-error">{formErrors.phone}</p>
                   )}
                 </div>
                 
@@ -326,9 +308,11 @@ const PopularProducts: React.FC = () => {
                     className={`w-full p-3 rounded-md bg-gray-50 dark:bg-gray-800 border ${
                       formErrors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     } focus:outline-none focus:ring-2 focus:ring-primary`}
+                    aria-invalid={formErrors.email ? "true" : "false"}
+                    aria-describedby={formErrors.email ? "email-error" : undefined}
                   />
                   {formErrors.email && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                    <p className="text-red-500 text-sm mt-1" id="email-error">{formErrors.email}</p>
                   )}
                 </div>
                 

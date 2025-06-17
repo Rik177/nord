@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Swiper styles */
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/effect-fade';
+
 :root {
   --primary-color: #1A3C6E;
   --secondary-color: #4D9DE0;
@@ -388,6 +394,7 @@
   }
 }
 
+/* Swiper custom styles */
 .swiper-pagination-bullet {
   width: 6px !important;
   height: 6px !important;
@@ -418,6 +425,26 @@
   bottom: 20px !important;
 }
 
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff !important;
+  background: rgba(26, 60, 110, 0.5);
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: rgba(26, 60, 110, 0.8);
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px !important;
+}
+
 .hero-slide {
   height: 600px;
   background-size: cover;
@@ -433,6 +460,36 @@
   right: 0;
   bottom: 0;
   background: linear-gradient(to right, rgba(26, 60, 110, 0.9) 0%, rgba(26, 60, 110, 0.6) 100%);
+}
+
+/* Foldable screen adaptations */
+@media (max-width: 280px) {
+  /* For extremely narrow screens like Galaxy Fold */
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  h1, .heading-1 {
+    font-size: 1.75rem;
+  }
+  
+  h2, .heading-2 {
+    font-size: 1.5rem;
+  }
+  
+  .btn {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* For dual-screen or folded states */
+@media (min-width: 540px) and (max-width: 720px) {
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {

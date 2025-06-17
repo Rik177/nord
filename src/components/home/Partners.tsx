@@ -1,4 +1,6 @@
 import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, A11y } from 'swiper/modules';
 
 const partnerLogos = [
   'https://upload.wikimedia.org/wikipedia/commons/c/ce/Daikin-logo-png-transparent.png',
@@ -19,28 +21,44 @@ const Partners: React.FC = () => {
           Наши партнеры
         </h2>
         <div className="overflow-hidden">
-          <div className="partner-logo-container">
-            {/* First set of logos */}
+          <Swiper
+            modules={[Autoplay, A11y]}
+            spaceBetween={24}
+            slidesPerView={2}
+            loop={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 3,
+              },
+              768: {
+                slidesPerView: 4,
+              },
+              1024: {
+                slidesPerView: 6,
+              },
+            }}
+            a11y={{
+              enabled: true,
+              prevSlideMessage: 'Предыдущий партнер',
+              nextSlideMessage: 'Следующий партнер'
+            }}
+          >
             {partnerLogos.map((logo, index) => (
-              <div key={`logo-1-${index}`} className="flex items-center justify-center min-w-[160px] mx-6">
-                <img 
-                  src={logo} 
-                  alt={`Partner logo ${index + 1}`} 
-                  className="max-h-12 w-auto opacity-70 hover:opacity-100 transition-opacity"
-                />
-              </div>
+              <SwiperSlide key={`logo-${index}`}>
+                <div className="flex items-center justify-center min-w-[160px] mx-6">
+                  <img 
+                    src={logo} 
+                    alt={`Логотип партнера ${index + 1}`} 
+                    className="max-h-12 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                  />
+                </div>
+              </SwiperSlide>
             ))}
-            {/* Duplicate set for seamless looping */}
-            {partnerLogos.map((logo, index) => (
-              <div key={`logo-2-${index}`} className="flex items-center justify-center min-w-[160px] mx-6">
-                <img 
-                  src={logo} 
-                  alt={`Partner logo ${index + 1}`} 
-                  className="max-h-12 w-auto opacity-70 hover:opacity-100 transition-opacity"
-                />
-              </div>
-            ))}
-          </div>
+          </Swiper>
         </div>
       </div>
     </section>
