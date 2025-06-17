@@ -3,6 +3,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
 import { Heart, BarChart2, X } from 'lucide-react';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 interface Product {
   id: number;
   name: string;
@@ -120,8 +125,15 @@ const PopularProducts: React.FC = () => {
           modules={[Navigation, Pagination, A11y]}
           spaceBetween={24}
           slidesPerView={1}
-          navigation
-          pagination={{ clickable: true, dynamicBullets: true }}
+          navigation={{
+            nextEl: '.products-swiper-button-next',
+            prevEl: '.products-swiper-button-prev',
+          }}
+          pagination={{ 
+            clickable: true, 
+            dynamicBullets: true,
+            el: '.products-swiper-pagination',
+          }}
           breakpoints={{
             640: {
               slidesPerView: 2,
@@ -136,6 +148,10 @@ const PopularProducts: React.FC = () => {
               spaceBetween: 24,
             },
           }}
+          className="products-swiper"
+          grabCursor={true}
+          touchRatio={1}
+          touchAngle={45}
           a11y={{
             prevSlideMessage: 'Предыдущий товар',
             nextSlideMessage: 'Следующий товар',
@@ -214,6 +230,21 @@ const PopularProducts: React.FC = () => {
               </div>
             </SwiperSlide>
           ))}
+          
+          {/* Custom Navigation */}
+          <div className="products-swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <div className="products-swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+          
+          {/* Custom Pagination */}
+          <div className="products-swiper-pagination mt-8 text-center"></div>
         </Swiper>
         
         <div className="mt-8 text-center">

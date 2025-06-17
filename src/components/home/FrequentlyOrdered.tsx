@@ -4,6 +4,11 @@ import { Navigation, Pagination, A11y } from 'swiper/modules';
 import { Star, Info, X, TrendingUp } from 'lucide-react';
 import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 interface PopularItem {
   id: number;
   name: string;
@@ -169,8 +174,15 @@ const FrequentlyOrdered: React.FC = () => {
           modules={[Navigation, Pagination, A11y]}
           spaceBetween={32}
           slidesPerView={1}
-          navigation
-          pagination={{ clickable: true, dynamicBullets: true }}
+          navigation={{
+            nextEl: '.frequently-swiper-button-next',
+            prevEl: '.frequently-swiper-button-prev',
+          }}
+          pagination={{ 
+            clickable: true, 
+            dynamicBullets: true,
+            el: '.frequently-swiper-pagination',
+          }}
           breakpoints={{
             640: {
               slidesPerView: 2,
@@ -185,6 +197,10 @@ const FrequentlyOrdered: React.FC = () => {
               spaceBetween: 32,
             },
           }}
+          className="frequently-swiper mb-12"
+          grabCursor={true}
+          touchRatio={1}
+          touchAngle={45}
           a11y={{
             prevSlideMessage: 'Предыдущий товар',
             nextSlideMessage: 'Следующий товар',
@@ -288,6 +304,21 @@ const FrequentlyOrdered: React.FC = () => {
               </div>
             </SwiperSlide>
           ))}
+          
+          {/* Custom Navigation */}
+          <div className="frequently-swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <div className="frequently-swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+          
+          {/* Custom Pagination */}
+          <div className="frequently-swiper-pagination mt-8 text-center"></div>
         </Swiper>
 
         {/* CTA Section */}
