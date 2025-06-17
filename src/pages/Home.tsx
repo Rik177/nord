@@ -16,6 +16,10 @@ import RecommendationLetters from "../components/home/RecommendationLetters";
 import { TestimonialsSection } from "../components/home/Testimonials";
 import Partners from "../components/home/Partners";
 import ContactForm from "../components/home/ContactForm";
+import AccessibilityControls from "../components/shared/AccessibilityControls";
+import ChatWidget from "../components/shared/ChatWidget";
+import QuickCallButton from "../components/shared/QuickCallButton";
+import ComparisonButton from "../components/shared/ComparisonButton";
 import { seoPages } from "../utils/seo";
 import {
   organizationSchema,
@@ -39,7 +43,7 @@ function Home() {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet {...seoPages.home} structuredData={combinedStructuredData} />
       <Header />
-      <main className="pt-[213px]">
+      <main id="main-content" className="pt-[213px]">
         <HeroSlider />
         <AdvancedFeatures />
         <CompanyMap />
@@ -55,6 +59,12 @@ function Home() {
         <ContactForm />
       </main>
       <Footer />
+      
+      {/* Floating accessibility and interaction elements */}
+      <AccessibilityControls />
+      <ChatWidget />
+      <QuickCallButton />
+      <ComparisonButton />
     </div>
   );
 }

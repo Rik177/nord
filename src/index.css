@@ -83,6 +83,19 @@
     min-height: 44px;
     display: inline-flex;
     align-items: center;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  a:focus {
+    outline: 2px solid #4D9DE0;
+    outline-offset: 2px;
+    text-decoration-color: currentColor;
   }
 
   img {
@@ -103,10 +116,6 @@
   }
 
   /* Улучшение доступности для мобильных */
-
-
-
-  /* Улучшение читаемости текста */
   @media (max-width: 768px) {
     body {
       font-size: 1rem;
@@ -121,11 +130,55 @@
     small, .text-sm {
       font-size: 0.875rem !important;
     }
+    
     button, [role="button"] {
       min-height: 44px;
       min-width: 44px;
       touch-action: manipulation;
     }
+  }
+
+  /* Skip link для навигации с клавиатуры */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 1000;
+    border-radius: 4px;
+  }
+
+  .skip-link:focus {
+    top: 6px;
+  }
+
+  /* Улучшенная видимость фокуса */
+  *:focus {
+    outline: 2px solid #4D9DE0;
+    outline-offset: 2px;
+  }
+
+  /* Скрытие outline для мыши, но сохранение для клавиатуры */
+  .js-focus-visible *:focus:not(.focus-visible) {
+    outline: none;
+  }
+
+  /* Высокий контраст для важных элементов */
+  .high-contrast {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+  }
+
+  /* Улучшение читаемости для людей с дислексией */
+  .dyslexia-friendly {
+    font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif;
+    letter-spacing: 0.05em;
+    word-spacing: 0.1em;
+    line-height: 1.8;
   }
 }
 
@@ -136,23 +189,66 @@
     font-size: 1rem; /* Минимум 16px */
     line-height: 1.2;
     touch-action: manipulation;
+    position: relative;
+    border: 2px solid transparent;
+  }
+
+  .btn:focus {
+    outline: 2px solid #4D9DE0;
+    outline-offset: 2px;
   }
 
   .btn-primary {
     @apply bg-primary text-white hover:bg-opacity-90 dark:bg-primary dark:text-white dark:hover:bg-opacity-80;
+    border-color: #1A3C6E;
+  }
+
+  .btn-primary:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #1A3C6E;
   }
 
   .btn-secondary {
     @apply bg-secondary text-white hover:bg-opacity-90 dark:bg-secondary dark:text-white dark:hover:bg-opacity-80;
+    border-color: #4D9DE0;
+  }
+
+  .btn-secondary:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #4D9DE0;
   }
 
   .btn-accent {
     @apply bg-accent text-white hover:bg-opacity-90;
+    border-color: #FF7D00;
+  }
+
+  .btn-accent:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #FF7D00;
   }
 
   .btn-outline {
     @apply border-2 border-primary text-primary hover:bg-primary hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900;
     min-height: 44px;
+    background: transparent;
+  }
+
+  .btn-outline:focus {
+    box-shadow: 0 0 0 2px #4D9DE0;
+  }
+
+  /* Улучшенные состояния для кнопок */
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #9CA3AF;
+    border-color: #9CA3AF;
+    color: #fff;
+  }
+
+  .btn:disabled:focus {
+    outline: 2px solid #9CA3AF;
   }
 
   .container {
@@ -189,9 +285,32 @@
     font-size: 1rem;
   }
 
+  .input-field:focus {
+    outline: 2px solid #4D9DE0;
+    outline-offset: 2px;
+  }
+
+  .input-field:invalid {
+    border-color: #EF4444;
+    box-shadow: 0 0 0 1px #EF4444;
+  }
+
   .label {
     @apply block mb-2 font-semibold text-gray-700 dark:text-gray-300;
     font-size: 1rem;
+  }
+
+  /* Улучшенные состояния для форм */
+  .form-error {
+    color: #EF4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .form-success {
+    color: #10B981;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
   }
 
   /* Мобильные улучшения */
@@ -219,6 +338,54 @@
       padding: 20px;
     }
   }
+
+  /* Улучшения для скрин-ридеров */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Индикаторы состояния */
+  .loading {
+    position: relative;
+  }
+
+  .loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #4D9DE0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 }
 
 .swiper-pagination-bullet {
@@ -240,6 +407,11 @@
 .swiper-pagination-bullet:hover {
   background: rgba(255, 255, 255, 0.8) !important;
   transform: scale(1.05);
+}
+
+.swiper-pagination-bullet:focus {
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
 }
 
 .swiper-pagination {
@@ -278,6 +450,11 @@
   @apply shadow-card-hover;
 }
 
+.category-card:focus {
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
+}
+
 .service-card {
   @apply transition-all duration-300;
 }
@@ -285,6 +462,11 @@
 .service-card:hover {
   transform: translateY(-5px);
   @apply shadow-card-hover;
+}
+
+.service-card:focus {
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
 }
 
 .partner-logo-container {
@@ -309,10 +491,15 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  
+  .partner-logo-container {
+    animation: none;
+  }
 }
 
+/* Улучшенная видимость фокуса */
 .focus-visible:focus {
-  outline: 2px solid var(--secondary-color);
+  outline: 2px solid #4D9DE0;
   outline-offset: 2px;
 }
 
@@ -320,6 +507,34 @@
 @media (forced-colors: active) {
   .btn {
     border: 2px solid currentColor;
+  }
+  
+  .card {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Улучшения для пользователей с нарушениями зрения */
+@media (prefers-contrast: high) {
+  :root {
+    --primary-color: #000080;
+    --secondary-color: #0066CC;
+    --accent-color: #CC6600;
+  }
+  
+  .btn-primary {
+    background-color: #000080;
+    border-color: #000080;
+  }
+  
+  .btn-secondary {
+    background-color: #0066CC;
+    border-color: #0066CC;
+  }
+  
+  .btn-accent {
+    background-color: #CC6600;
+    border-color: #CC6600;
   }
 }
 
@@ -482,6 +697,11 @@
   transform: scale(1.1);
 }
 
+.messenger-icon:focus {
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
+}
+
 /* Chat notification dot */
 .chat-notification {
   position: absolute;
@@ -501,4 +721,172 @@
   50% {
     opacity: 0.5;
   }
+}
+
+/* Улучшения для навигации с клавиатуры */
+.keyboard-navigation {
+  position: relative;
+}
+
+.keyboard-navigation:focus-within::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #4D9DE0;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Улучшения для таблиц */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Улучшения для модальных окон */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1001;
+}
+
+.modal-content:focus {
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
+}
+
+/* Улучшения для уведомлений */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  z-index: 1000;
+  min-width: 300px;
+}
+
+.notification-success {
+  background-color: #10B981;
+}
+
+.notification-error {
+  background-color: #EF4444;
+}
+
+.notification-warning {
+  background-color: #F59E0B;
+}
+
+.notification-info {
+  background-color: #3B82F6;
+}
+
+/* Улучшения для прогресс-баров */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #E5E7EB;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #4D9DE0;
+  transition: width 0.3s ease;
+}
+
+/* Улучшения для переключателей */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.toggle input:checked + .toggle-slider {
+  background-color: #4D9DE0;
+}
+
+.toggle input:focus + .toggle-slider {
+  box-shadow: 0 0 1px #4D9DE0;
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
+}
+
+.toggle input:checked + .toggle-slider:before {
+  transform: translateX(26px);
 }
