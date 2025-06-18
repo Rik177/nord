@@ -1,13 +1,13 @@
-const CACHE_NAME = "nordengineering-v1";
+const CACHE_NAME = "nordengineering-v2";
 const STATIC_CACHE_URLS = [
   "/",
-  "/static/js/bundle.js",
-  "/static/css/main.css",
-  "/favicon.ico",
-  "/logo.png",
+  "/manifest.json",
+  "/offline.html"
 ];
 
-const RUNTIME_CACHE = "runtime-cache-v1";
+const RUNTIME_CACHE = "runtime-cache-v2";
+const IMAGE_CACHE = "image-cache-v2";
+const FONT_CACHE = "font-cache-v2";
 
 // Install Service Worker
 self.addEventListener("install", (event) => {
@@ -31,7 +31,7 @@ self.addEventListener("activate", (event) => {
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+            if (![CACHE_NAME, RUNTIME_CACHE, IMAGE_CACHE, FONT_CACHE].includes(cacheName)) {
               return caches.delete(cacheName);
             }
           }),
@@ -43,19 +43,63 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch Event - Cache Strategy
+// Fetch Event - Advanced Caching Strategy
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Only handle requests from the same origin
-  if (url.origin !== location.origin) {
+  // Only handle requests from the same origin or allowed external domains
+  if (url.origin !== location.origin && 
+      !url.hostname.includes('pexels.com') && 
+      !url.hostname.includes('fonts.googleapis.com') &&
+      !url.hostname.includes('fonts.gstatic.com')) {
     return;
   }
 
-  // Different strategies for different types of requests
-  if (request.mode === "navigate") {
-    // Network First for navigation (HTML pages)
+  // Font caching strategy
+  if (request.destination === 'font' || url.pathname.includes('.woff')) {
+    event.respondWith(
+      caches.open(FONT_CACHE).then(cache => {
+        return cache.match(request).then(response => {
+          if (response) {
+            return response;
+          }
+          return fetch(request).then(fetchResponse => {
+            cache.put(request, fetchResponse.clone());
+            return fetchResponse;
+          });
+        });
+      })
+    );
+    return;
+  }
+
+  // Image caching strategy
+  if (request.destination === 'image' || url.pathname.match(/\.(jpg|jpeg|png|gif|webp|svg)$/)) {
+    event.respondWith(
+      caches.open(IMAGE_CACHE).then(cache => {
+        return cache.match(request).then(response => {
+          if (response) {
+            return response;
+          }
+          return fetch(request).then(fetchResponse => {
+            // Only cache successful responses
+            if (fetchResponse.status === 200) {
+              cache.put(request, fetchResponse.clone());
+            }
+            return fetchResponse;
+          }).catch(() => {
+            // Return a fallback image if available
+            return cache.match('/images/placeholder.jpg');
+          });
+        });
+      })
+    );
+    return;
+  }
+
+  // Navigation requests (HTML pages)
+  if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then((response) => {
@@ -67,74 +111,89 @@ self.addEventListener("fetch", (event) => {
         })
         .catch(() => {
           return caches.match(request).then((cachedResponse) => {
-            return cachedResponse || caches.match("/");
+            return cachedResponse || caches.match('/offline.html');
           });
         }),
     );
-  } else if (request.destination === "image") {
-    // Cache First for images
-    event.respondWith(
-      caches.match(request).then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(request).then((response) => {
-          const responseClone = response.clone();
-          caches.open(RUNTIME_CACHE).then((cache) => {
-            cache.put(request, responseClone);
-          });
-          return response;
-        });
-      }),
-    );
-  } else if (
-    request.destination === "script" ||
-    request.destination === "style"
-  ) {
-    // Stale While Revalidate for CSS/JS
-    event.respondWith(
-      caches.match(request).then((cachedResponse) => {
-        const fetchPromise = fetch(request).then((response) => {
-          const responseClone = response.clone();
-          caches.open(RUNTIME_CACHE).then((cache) => {
-            cache.put(request, responseClone);
-          });
-          return response;
-        });
+    return;
+  }
 
-        return cachedResponse || fetchPromise;
-      }),
+  // CSS and JS files - Cache First with Network Fallback
+  if (request.destination === 'script' || 
+      request.destination === 'style' ||
+      url.pathname.includes('.css') ||
+      url.pathname.includes('.js')) {
+    event.respondWith(
+      caches.open(RUNTIME_CACHE).then(cache => {
+        return cache.match(request).then(response => {
+          if (response) {
+            // Serve from cache and update in background
+            fetch(request).then(fetchResponse => {
+              if (fetchResponse.status === 200) {
+                cache.put(request, fetchResponse.clone());
+              }
+            }).catch(() => {});
+            return response;
+          }
+          
+          return fetch(request).then(fetchResponse => {
+            if (fetchResponse.status === 200) {
+              cache.put(request, fetchResponse.clone());
+            }
+            return fetchResponse;
+          });
+        });
+      })
     );
-  } else {
-    // Network First for other requests
+    return;
+  }
+
+  // API requests - Network First with Cache Fallback
+  if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const responseClone = response.clone();
-          caches.open(RUNTIME_CACHE).then((cache) => {
-            cache.put(request, responseClone);
-          });
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
           return response;
         })
         .catch(() => {
           return caches.match(request);
         }),
     );
+    return;
   }
+
+  // Default strategy for other requests
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        if (response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(RUNTIME_CACHE).then((cache) => {
+            cache.put(request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        return caches.match(request);
+      }),
+  );
 });
 
 // Background Sync for form submissions
 self.addEventListener("sync", (event) => {
   if (event.tag === "contact-form") {
-    event.waitUntil(
-      // Handle offline form submissions
-      sendPendingContactForms(),
-    );
+    event.waitUntil(sendPendingContactForms());
   }
 });
 
 async function sendPendingContactForms() {
-  // Implementation for handling offline form submissions
   const formData = await getStoredFormData();
   if (formData && formData.length > 0) {
     for (const form of formData) {
@@ -155,12 +214,10 @@ async function sendPendingContactForms() {
 }
 
 async function getStoredFormData() {
-  // Get stored form data from IndexedDB
   return [];
 }
 
 async function removeStoredFormData(id) {
-  // Remove sent form data from IndexedDB
   return Promise.resolve();
 }
 
@@ -204,3 +261,20 @@ self.addEventListener("notificationclick", (event) => {
     event.waitUntil(clients.openWindow("/"));
   }
 });
+
+// Periodic background sync for cache cleanup
+self.addEventListener("periodicsync", (event) => {
+  if (event.tag === "cache-cleanup") {
+    event.waitUntil(cleanupOldCaches());
+  }
+});
+
+async function cleanupOldCaches() {
+  const cacheNames = await caches.keys();
+  const oldCaches = cacheNames.filter(name => 
+    !name.includes('v2') && 
+    (name.includes('nordengineering') || name.includes('runtime') || name.includes('image'))
+  );
+  
+  await Promise.all(oldCaches.map(name => caches.delete(name)));
+}

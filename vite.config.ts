@@ -15,25 +15,56 @@ export default defineConfig({
     }),
     imagetools(),
     ViteImageOptimizer({
-      test: /\.(jpe?g|png)$/i,
-      webp: {
-        quality: 85,
-      }
+      test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
+      gifsicle: { optimizationLevel: 7, interlaced: false },
+      mozjpeg: { quality: 80 },
+      optipng: { optimizationLevel: 7 },
+      pngquant: { quality: [0.65, 0.8], speed: 4 },
+      svgo: {
+        plugins: [
+          { name: 'removeViewBox', active: false },
+          { name: 'removeEmptyAttrs', active: false }
+        ]
+      },
+      webp: { quality: 85 },
+      avif: { quality: 80 }
     })
   ],
   optimizeDeps: {
-    include: ['react', 'react-dom'],
+    include: ['react', 'react-dom', 'react-router-dom', 'lucide-react'],
   },
   build: {
-    cssMinify: true,
+    target: 'es2015',
+    cssMinify: 'esbuild',
+    minify: 'esbuild',
     cssCodeSplit: true,
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          icons: ['lucide-react'],
+          swiper: ['swiper'],
+          helmet: ['react-helmet-async']
         },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.');
+          const ext = info[info.length - 1];
+          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name)) {
+            return `assets/images/[name]-[hash].${ext}`;
+          }
+          if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name)) {
+            return `assets/fonts/[name]-[hash].${ext}`;
+          }
+          return `assets/[ext]/[name]-[hash].${ext}`;
+        }
       },
     },
+    // Увеличиваем лимит для предупреждений о размере чанков
+    chunkSizeWarningLimit: 1000,
   },
   server: {
     port: 3008,
@@ -54,7 +85,9 @@ export default defineConfig({
       'X-Frame-Options': 'DENY',
       'X-XSS-Protection': '1; mode=block',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+      // Кэширование статических ресурсов
+      'Cache-Control': 'public, max-age=31536000'
     }
   }
 });

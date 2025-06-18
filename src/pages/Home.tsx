@@ -16,7 +16,6 @@ import RecommendationLetters from "../components/home/RecommendationLetters";
 import { TestimonialsSection } from "../components/home/Testimonials";
 import Partners from "../components/home/Partners";
 import ContactForm from "../components/home/ContactForm";
-import AccessibilityControls from "../components/shared/AccessibilityControls";
 import ChatWidget from "../components/shared/ChatWidget";
 import QuickCallButton from "../components/shared/QuickCallButton";
 import ComparisonButton from "../components/shared/ComparisonButton";
@@ -26,11 +25,28 @@ import {
   websiteSchema,
   localBusinessSchema,
 } from "../utils/schema";
-import { initPerformanceOptimizations } from "../utils/performance";
+import { initPerformanceOptimizations, registerServiceWorker } from "../utils/performanceOptimizations";
 
 function Home() {
   useEffect(() => {
+    // Инициализация оптимизаций производительности
     initPerformanceOptimizations();
+    
+    // Регистрация Service Worker
+    registerServiceWorker();
+    
+    // Предзагрузка критических ресурсов
+    const preloadLinks = [
+      { href: 'https://fonts.googleapis.com', rel: 'preconnect' },
+      { href: 'https://fonts.gstatic.com', rel: 'preconnect', crossOrigin: 'anonymous' },
+      { href: 'https://images.pexels.com', rel: 'preconnect' }
+    ];
+    
+    preloadLinks.forEach(link => {
+      const linkElement = document.createElement('link');
+      Object.assign(linkElement, link);
+      document.head.appendChild(linkElement);
+    });
   }, []);
 
   const combinedStructuredData = [
@@ -45,23 +61,46 @@ function Home() {
       <Header />
       <main id="main-content" className="pt-[169px]">
         <HeroSlider />
-        <AdvancedFeatures />
-        <CompanyMap />
-        <Categories />
-        <PopularProducts />
-        <FrequentlyOrdered />
-        <Services />
-        <AboutCompany />
-        <LatestProjects />
-        <RecommendationLetters />
-        <TestimonialsSection />
-        <Partners />
-        <ContactForm />
+        <div className="content-visibility-auto">
+          <AdvancedFeatures />
+        </div>
+        <div className="content-visibility-auto">
+          <CompanyMap />
+        </div>
+        <div className="content-visibility-auto">
+          <Categories />
+        </div>
+        <div className="content-visibility-auto">
+          <PopularProducts />
+        </div>
+        <div className="content-visibility-auto">
+          <FrequentlyOrdered />
+        </div>
+        <div className="content-visibility-auto">
+          <Services />
+        </div>
+        <div className="content-visibility-auto">
+          <AboutCompany />
+        </div>
+        <div className="content-visibility-auto">
+          <LatestProjects />
+        </div>
+        <div className="content-visibility-auto">
+          <RecommendationLetters />
+        </div>
+        <div className="content-visibility-auto">
+          <TestimonialsSection />
+        </div>
+        <div className="content-visibility-auto">
+          <Partners />
+        </div>
+        <div className="content-visibility-auto">
+          <ContactForm />
+        </div>
       </main>
       <Footer />
       
       {/* Floating accessibility and interaction elements */}
-      {/* <AccessibilityControls /> */}
       <ChatWidget />
       <QuickCallButton />
       <ComparisonButton />

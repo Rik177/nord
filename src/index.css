@@ -46,23 +46,49 @@
   --white: #FFFFFF;
 }
 
+/* Critical CSS - инлайн для первого рендера */
+.critical-above-fold {
+  font-display: swap;
+}
+
+/* Предзагрузка шрифтов */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Ew-.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300 600;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/opensans/v34/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsg-1x4gaVQUwaEQbjB_mQ.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @layer base {
   html {
     font-family: 'Open Sans', sans-serif;
-    font-size: 16px; /* Базовый размер шрифта */
+    font-size: 16px;
     line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
-    /* Улучшение читаемости на мобильных */
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
   }
   
   body {
     @apply bg-white text-gray-900;
-    font-size: 1rem; /* 16px минимум */
+    font-size: 1rem;
     line-height: 1.5;
+    /* Оптимизация для производительности */
+    will-change: auto;
+    transform: translateZ(0);
   }
   
   [data-theme="dark"] body {
@@ -74,18 +100,19 @@
     font-weight: 700;
     line-height: 1.2;
     @apply text-primary;
+    /* Оптимизация рендеринга текста */
+    text-rendering: optimizeLegibility;
   }
 
   p {
     margin-bottom: 1rem;
     @apply text-gray-700;
-    font-size: 1rem; /* Минимум 16px */
+    font-size: 1rem;
     line-height: 1.5;
   }
 
   a {
     @apply text-secondary hover:text-primary dark:hover:text-white transition-colors duration-200;
-    /* Минимальная область касания 44px */
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -107,12 +134,15 @@
   img {
     max-width: 100%;
     height: auto;
+    /* Оптимизация загрузки изображений */
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
   }
 
   input, textarea, select {
     @apply bg-white text-gray-900 border-gray-300;
-    font-size: 1rem; /* Предотвращает зум на iOS */
-    min-height: 44px; /* Минимальная высота для касания */
+    font-size: 1rem;
+    min-height: 44px;
   }
 
   [data-theme="dark"] input,
@@ -191,12 +221,14 @@
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-semibold transition-all duration-200;
-    min-height: 44px; /* Минимальная высота для касания */
-    font-size: 1rem; /* Минимум 16px */
+    min-height: 44px;
+    font-size: 1rem;
     line-height: 1.2;
     touch-action: manipulation;
     position: relative;
     border: 2px solid transparent;
+    /* Оптимизация для анимаций */
+    will-change: transform, opacity;
   }
 
   .btn:focus {
@@ -279,6 +311,8 @@
 
   .card {
     @apply bg-white dark:bg-gray-800 rounded-lg shadow-card transition-all duration-300;
+    /* Оптимизация для анимаций */
+    will-change: transform, box-shadow;
   }
 
   .card-hover {
@@ -322,7 +356,7 @@
   /* Мобильные улучшения */
   @media (max-width: 768px) {
     .btn {
-      min-height: 48px; /* Увеличиваем на мобильных */
+      min-height: 48px;
       padding: 12px 24px;
       font-size: 1rem;
     }
@@ -394,10 +428,13 @@
   }
 }
 
-/* Swiper custom styles */
+/* Оптимизированные Swiper стили */
 .swiper {
   width: 100%;
   height: 100%;
+  /* Оптимизация для GPU */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .swiper-slide {
@@ -407,6 +444,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Оптимизация рендеринга */
+  contain: layout style paint;
 }
 
 .swiper-pagination-bullet {
@@ -447,6 +486,8 @@
   height: 40px !important;
   border-radius: 50%;
   transition: background 0.3s ease;
+  /* Оптимизация для GPU */
+  will-change: background-color;
 }
 
 .swiper-button-next:hover,
@@ -473,6 +514,8 @@
   background-size: cover;
   background-position: center;
   position: relative;
+  /* Оптимизация для больших изображений */
+  contain: layout style paint;
 }
 
 .hero-slide::before {
@@ -487,7 +530,6 @@
 
 /* Foldable screen adaptations */
 @media (max-width: 280px) {
-  /* For extremely narrow screens like Galaxy Fold */
   .container {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -523,6 +565,8 @@
 
 .category-card {
   @apply transition-all duration-300;
+  /* Оптимизация для анимаций */
+  will-change: transform, box-shadow;
 }
 
 .category-card:hover {
@@ -537,6 +581,8 @@
 
 .service-card {
   @apply transition-all duration-300;
+  /* Оптимизация для анимаций */
+  will-change: transform, box-shadow;
 }
 
 .service-card:hover {
@@ -549,20 +595,6 @@
   outline-offset: 2px;
 }
 
-.partner-logo-container {
-  animation: scroll 30s linear infinite;
-  display: flex;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -572,8 +604,12 @@
     scroll-behavior: auto !important;
   }
   
-  .partner-logo-container {
-    animation: none;
+  .swiper {
+    will-change: auto;
+  }
+  
+  .card, .category-card, .service-card {
+    will-change: auto;
   }
 }
 
@@ -618,65 +654,26 @@
   }
 }
 
-/* Article content styling */
-.article-content {
-  @apply text-gray-700 dark:text-gray-300;
+/* Оптимизация для содержимого */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
 }
 
-.article-content h2 {
-  @apply font-heading font-bold text-h2-mobile md:text-h2-desktop text-primary dark:text-white mt-8 mb-4;
+/* Lazy loading placeholder */
+.lazy-placeholder {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
 }
 
-.article-content h3 {
-  @apply font-heading font-bold text-h3-mobile md:text-h3-desktop text-primary dark:text-white mt-6 mb-3;
-}
-
-.article-content h4 {
-  @apply font-heading font-semibold text-lg text-primary dark:text-white mt-4 mb-2;
-}
-
-.article-content p {
-  @apply mb-4 leading-relaxed;
-}
-
-.article-content ul, .article-content ol {
-  @apply mb-4 pl-6;
-}
-
-.article-content li {
-  @apply mb-2;
-}
-
-.article-content ul li {
-  @apply list-disc;
-}
-
-.article-content ol li {
-  @apply list-decimal;
-}
-
-.article-content strong {
-  @apply font-semibold text-primary dark:text-white;
-}
-
-.article-content table {
-  @apply w-full border-collapse my-6;
-}
-
-.article-content th {
-  @apply bg-lightBg dark:bg-gray-700 font-semibold text-primary dark:text-white p-3 border border-gray-300 dark:border-gray-600 text-left;
-}
-
-.article-content td {
-  @apply p-3 border border-gray-300 dark:border-gray-600;
-}
-
-.article-content blockquote {
-  @apply border-l-4 border-secondary pl-4 my-4 italic text-gray-600 dark:text-gray-400;
-}
-
-.article-content code {
-  @apply bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono;
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Line clamp utilities */
@@ -719,7 +716,7 @@
   }
 }
 
-/* Chat widget animations */
+/* Оптимизированные анимации */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -775,6 +772,7 @@
 /* Messenger icons */
 .messenger-icon {
   transition: all 0.3s ease;
+  will-change: transform;
 }
 
 .messenger-icon:hover {
@@ -805,172 +803,4 @@
   50% {
     opacity: 0.5;
   }
-}
-
-/* Улучшения для навигации с клавиатуры */
-.keyboard-navigation {
-  position: relative;
-}
-
-.keyboard-navigation:focus-within::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border: 2px solid #4D9DE0;
-  border-radius: 6px;
-  pointer-events: none;
-}
-
-/* Улучшения для таблиц */
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th, td {
-  text-align: left;
-  padding: 12px;
-  border: 1px solid #ddd;
-}
-
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-/* Улучшения для модальных окон */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  border-radius: 8px;
-  padding: 24px;
-  max-width: 90vw;
-  max-height: 90vh;
-  overflow-y: auto;
-  z-index: 1001;
-}
-
-.modal-content:focus {
-  outline: 2px solid #4D9DE0;
-  outline-offset: 2px;
-}
-
-/* Улучшения для уведомлений */
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 16px;
-  border-radius: 8px;
-  color: white;
-  font-weight: 500;
-  z-index: 1000;
-  min-width: 300px;
-}
-
-.notification-success {
-  background-color: #10B981;
-}
-
-.notification-error {
-  background-color: #EF4444;
-}
-
-.notification-warning {
-  background-color: #F59E0B;
-}
-
-.notification-info {
-  background-color: #3B82F6;
-}
-
-/* Улучшения для прогресс-баров */
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background-color: #E5E7EB;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background-color: #4D9DE0;
-  transition: width 0.3s ease;
-}
-
-/* Улучшения для переключателей */
-.toggle {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.toggle-slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-.toggle input:checked + .toggle-slider {
-  background-color: #4D9DE0;
-}
-
-.toggle input:focus + .toggle-slider {
-  box-shadow: 0 0 1px #4D9DE0;
-  outline: 2px solid #4D9DE0;
-  outline-offset: 2px;
-}
-
-.toggle input:checked + .toggle-slider:before {
-  transform: translateX(26px);
 }

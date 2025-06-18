@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Loader2 } from "lucide-react";
+import { generateSrcSet, generateOptimizedUrl } from "../../utils/imageOptimization";
 
 interface OptimizedImageProps {
   src: string;
@@ -22,7 +23,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   width,
   height,
   priority = false,
-  sizes,
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
   onLoad,
   onError,
   placeholder,
@@ -68,21 +69,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     onError?.();
   };
 
-  // Generate responsive image sources
-  const generateSrcSet = (originalSrc: string) => {
-    if (!originalSrc.includes("pexels.com")) return "";
-
-    const baseUrl = originalSrc.split("?")[0];
-    return [
-      `${baseUrl}?auto=compress&cs=tinysrgb&w=400 400w`,
-      `${baseUrl}?auto=compress&cs=tinysrgb&w=800 800w`,
-      `${baseUrl}?auto=compress&cs=tinysrgb&w=1200 1200w`,
-      `${baseUrl}?auto=compress&cs=tinysrgb&w=1600 1600w`,
-    ].join(", ");
-  };
-
-  const defaultSizes =
-    sizes || "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+  const optimizedSrc = generateOptimizedUrl(src, width);
   const srcSet = generateSrcSet(src);
 
   if (error) {
@@ -107,6 +94,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
               ? {
                   backgroundImage: `url(${blurDataURL})`,
                   backgroundSize: "cover",
+                  filter: "blur(10px)",
                 }
               : {}
           }
@@ -115,7 +103,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
             <img
               src={placeholder}
               alt=""
-              className="w-full h-full object-cover blur-sm"
+              className="w-full h-full object-cover blur-sm opacity-50"
               aria-hidden="true"
             />
           ) : (
@@ -126,24 +114,34 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
       {/* Main Image */}
       {isInView && (
-        <img
-          src={src}
-          alt={alt}
-          className={`transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"} ${className}`}
-          width={width}
-          height={height}
-          srcSet={srcSet}
-          sizes={defaultSizes}
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          onLoad={handleLoad}
-          onError={handleError}
-          style={{
-            objectFit: "cover",
-            width: width ? `${width}px` : "100%",
-            height: height ? `${height}px` : "100%",
-          }}
-        />
+        <picture>
+          {/* WebP format для поддерживающих браузеров */}
+          <source
+            srcSet={srcSet.replace(/\.(jpe?g|png)/gi, '.webp')}
+            sizes={sizes}
+            type="image/webp"
+          />
+          
+          {/* Оригинальный формат */}
+          <img
+            src={optimizedSrc}
+            alt={alt}
+            className={`transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"} w-full h-full object-cover`}
+            width={width}
+            height={height}
+            srcSet={srcSet}
+            sizes={sizes}
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
+            onLoad={handleLoad}
+            onError={handleError}
+            style={{
+              objectFit: "cover",
+              width: width ? `${width}px` : "100%",
+              height: height ? `${height}px` : "100%",
+            }}
+          />
+        </picture>
       )}
     </div>
   );
