@@ -1,190 +1,194 @@
-// Утилиты для оптимизации производительности
+// Performance optimization utilities
 
-// Предварительная загрузка критических ресурсов
-export const preloadCriticalResources = () => {
-  // Предзагрузка шрифтов
-  const fontLinks = [
-    'https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Ew-.woff2',
-    'https://fonts.gstatic.com/s/opensans/v34/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsg-1x4gaVQUwaEQbjB_mQ.woff2'
+export const initPerformanceOptimizations = (): void => {
+  // Preload critical resources
+  preloadCriticalResources();
+  
+  // Initialize intersection observer for lazy loading
+  initLazyLoading();
+  
+  // Optimize images
+  optimizeImages();
+  
+  // Setup performance monitoring
+  setupPerformanceMonitoring();
+};
+
+const preloadCriticalResources = (): void => {
+  const criticalResources = [
+    { href: 'https://fonts.googleapis.com', rel: 'preconnect' },
+    { href: 'https://fonts.gstatic.com', rel: 'preconnect', crossOrigin: 'anonymous' },
+    { href: 'https://images.pexels.com', rel: 'preconnect' }
   ];
 
-  fontLinks.forEach(href => {
+  criticalResources.forEach(resource => {
     const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'font';
-    link.type = 'font/woff2';
-    link.crossOrigin = 'anonymous';
-    link.href = href;
-    document.head.appendChild(link);
-  });
-
-  // Предзагрузка критических изображений
-  const criticalImages = [
-    'https://images.pexels.com/photos/3970330/pexels-photo-3970330.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ];
-
-  criticalImages.forEach(src => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = src;
+    Object.assign(link, resource);
     document.head.appendChild(link);
   });
 };
 
-// Оптимизация рендеринга
-export const optimizeRendering = () => {
-  // Отложенная загрузка некритических компонентов
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => {
-      // Загружаем некритические компоненты
-      import('../components/shared/ChatWidget');
-      import('../components/shared/AccessibilityControls');
+const initLazyLoading = (): void => {
+  if ('IntersectionObserver' in window) {
+    const lazyImageObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          const src = img.dataset.src;
+          
+          if (src) {
+            img.src = src;
+            img.classList.remove('lazy');
+            lazyImageObserver.unobserve(img);
+          }
+        }
+      });
+    }, {
+      rootMargin: '50px'
+    });
+
+    // Observe all lazy images
+    document.querySelectorAll('img[data-src]').forEach((img) => {
+      lazyImageObserver.observe(img);
     });
   }
 };
 
-// Кэширование в localStorage
-export const cacheManager = {
-  set: (key: string, data: any, ttl: number = 3600000) => { // 1 час по умолчанию
-    const item = {
-      data,
-      timestamp: Date.now(),
-      ttl
-    };
-    localStorage.setItem(key, JSON.stringify(item));
-  },
-
-  get: (key: string) => {
-    const item = localStorage.getItem(key);
-    if (!item) return null;
-
-    try {
-      const parsed = JSON.parse(item);
-      if (Date.now() - parsed.timestamp > parsed.ttl) {
-        localStorage.removeItem(key);
-        return null;
-      }
-      return parsed.data;
-    } catch {
-      localStorage.removeItem(key);
-      return null;
+const optimizeImages = (): void => {
+  // Add loading="lazy" to images below the fold
+  const images = document.querySelectorAll('img');
+  images.forEach((img, index) => {
+    if (index > 2) { // Skip first 3 images (above the fold)
+      img.loading = 'lazy';
     }
-  },
-
-  clear: () => {
-    localStorage.clear();
-  }
+  });
 };
 
-// Дебаунс для поиска
-export const debounce = <T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): ((...args: Parameters<T>) => void) => {
-  let timeout: NodeJS.Timeout;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-};
+const setupPerformanceMonitoring = (): void => {
+  // Monitor Core Web Vitals
+  if ('PerformanceObserver' in window) {
+    // Largest Contentful Paint (LCP)
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      console.log('LCP:', lastEntry.startTime);
+    }).observe({ entryTypes: ['largest-contentful-paint'] });
 
-// Троттлинг для скролла
-export const throttle = <T extends (...args: any[]) => any>(
-  func: T,
-  limit: number
-): ((...args: Parameters<T>) => void) => {
-  let inThrottle: boolean;
-  return (...args: Parameters<T>) => {
-    if (!inThrottle) {
-      func(...args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
-};
-
-// Мониторинг производительности
-export const performanceMonitor = {
-  measurePageLoad: () => {
-    if ('performance' in window) {
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          const perfData = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-          console.log('Page Load Metrics:', {
-            'DNS Lookup': perfData.domainLookupEnd - perfData.domainLookupStart,
-            'TCP Connection': perfData.connectEnd - perfData.connectStart,
-            'Request': perfData.responseStart - perfData.requestStart,
-            'Response': perfData.responseEnd - perfData.responseStart,
-            'DOM Processing': perfData.domContentLoadedEventStart - perfData.responseEnd,
-            'Total Load Time': perfData.loadEventEnd - perfData.navigationStart
-          });
-        }, 0);
+    // First Input Delay (FID)
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      entries.forEach((entry) => {
+        console.log('FID:', entry.processingStart - entry.startTime);
       });
-    }
-  },
+    }).observe({ entryTypes: ['first-input'] });
 
-  measureCLS: () => {
-    if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.entryType === 'layout-shift' && !(entry as any).hadRecentInput) {
-            console.log('Layout Shift:', entry);
-          }
+    // Cumulative Layout Shift (CLS)
+    new PerformanceObserver((entryList) => {
+      let clsValue = 0;
+      const entries = entryList.getEntries();
+      entries.forEach((entry) => {
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value;
         }
       });
-      observer.observe({ entryTypes: ['layout-shift'] });
-    }
-  },
-
-  measureLCP: () => {
-    if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1];
-        console.log('Largest Contentful Paint:', lastEntry.startTime);
-      });
-      observer.observe({ entryTypes: ['largest-contentful-paint'] });
-    }
-  },
-
-  measureFID: () => {
-    if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          console.log('First Input Delay:', (entry as any).processingStart - entry.startTime);
-        }
-      });
-      observer.observe({ entryTypes: ['first-input'] });
-    }
+      console.log('CLS:', clsValue);
+    }).observe({ entryTypes: ['layout-shift'] });
   }
 };
 
-// Инициализация всех оптимизаций
-export const initPerformanceOptimizations = () => {
-  // Предзагрузка критических ресурсов
-  preloadCriticalResources();
-  
-  // Оптимизация рендеринга
-  optimizeRendering();
-  
-  // Мониторинг производительности (только в development)
-  if (process.env.NODE_ENV === 'development') {
-    performanceMonitor.measurePageLoad();
-    performanceMonitor.measureCLS();
-    performanceMonitor.measureLCP();
-    performanceMonitor.measureFID();
-  }
-};
-
-// Service Worker для кэширования
-export const registerServiceWorker = async () => {
+export const registerServiceWorker = (): void => {
   if ('serviceWorker' in navigator) {
-    try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registered:', registration);
-    } catch (error) {
-      console.log('Service Worker registration failed:', error);
-    }
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('SW registered: ', registration);
+        })
+        .catch((registrationError) => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    });
   }
 };
+
+export const prefetchRoute = (route: string): void => {
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = route;
+  document.head.appendChild(link);
+};
+
+export const preloadRoute = (route: string): void => {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.href = route;
+  link.as = 'document';
+  document.head.appendChild(link);
+};
+
+// Optimize bundle loading
+export const loadChunkOnDemand = async (chunkName: string): Promise<any> => {
+  try {
+    const module = await import(/* webpackChunkName: "[request]" */ `../components/${chunkName}`);
+    return module.default;
+  } catch (error) {
+    console.error(`Failed to load chunk: ${chunkName}`, error);
+    throw error;
+  }
+};
+
+// Memory optimization
+export const cleanupUnusedResources = (): void => {
+  // Remove unused event listeners
+  const unusedElements = document.querySelectorAll('[data-cleanup]');
+  unusedElements.forEach(element => {
+    element.remove();
+  });
+  
+  // Clear caches if needed
+  if ('caches' in window) {
+    caches.keys().then(names => {
+      names.forEach(name => {
+        if (name.includes('old-version')) {
+          caches.delete(name);
+        }
+      });
+    });
+  }
+};
+
+// Network optimization
+export const optimizeNetworkRequests = (): void => {
+  // Implement request deduplication
+  const requestCache = new Map();
+  
+  const originalFetch = window.fetch;
+  window.fetch = function(input: RequestInfo | URL, init?: RequestInit) {
+    const key = typeof input === 'string' ? input : input.toString();
+    
+    if (requestCache.has(key)) {
+      return requestCache.get(key);
+    }
+    
+    const promise = originalFetch(input, init);
+    requestCache.set(key, promise);
+    
+    // Clean up cache after request completes
+    promise.finally(() => {
+      setTimeout(() => requestCache.delete(key), 5000);
+    });
+    
+    return promise;
+  };
+};
+
+// Initialize optimizations
+if (typeof window !== 'undefined') {
+  // Run optimizations when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initPerformanceOptimizations, 100);
+    });
+  } else {
+    setTimeout(initPerformanceOptimizations, 100);
+  }
+}
