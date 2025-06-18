@@ -1,5 +1,7 @@
 import React from 'react';
-import { X, Phone, Mail } from 'lucide-react';
+import { X } from 'lucide-react';
+import FormField from '../shared/FormField';
+import { useFormValidation, commonValidationRules } from '../../utils/formValidation';
 
 export interface ConsultationFormData {
     name: string;
@@ -16,6 +18,32 @@ interface ConsultationFormProps {
 }
 
 const ConsultationForm: React.FC<ConsultationFormProps> = ({ onClose, onSubmit, value, setValue}) => {
+    const validationRules = {
+        name: commonValidationRules.name,
+        phone: commonValidationRules.phone,
+        email: commonValidationRules.email,
+        message: commonValidationRules.message
+    };
+
+    const {
+        data,
+        errors,
+        touched,
+        updateField,
+        touchField,
+        validateAll
+    } = useFormValidation(value, validationRules);
+
+    React.useEffect(() => {
+        setValue(data as ConsultationFormData);
+    }, [data, setValue]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (validateAll()) {
+            onSubmit(e);
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -38,54 +66,55 @@ const ConsultationForm: React.FC<ConsultationFormProps> = ({ onClose, onSubmit, 
                         </button>
                     </div>
             
-                    <form onSubmit={onSubmit} className="space-y-4">
-                        <div>
-                            <label className="block mb-2 font-semibold text-gray-700 dark:text-gray-300">
-                                Ваше имя*
-                            </label>
-                            <input
-                                type="text"
-                                required
-                                value={value.name}
-                                onChange={(e) => setValue({ ...value, name: e.target.value })}
-                                className="w-full p-3 rounded-md bg-lightBg dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
-                            />
-                        </div>
-                        <div>
-                            <label className="block mb-2 font-semibold text-gray-700 dark:text-gray-300">
-                                Телефон*
-                            </label>
-                            <input
-                                type="tel"
-                                required
-                                value={value.phone}
-                                onChange={(e) => setValue({ ...value, phone: e.target.value })}
-                                className="w-full p-3 rounded-md bg-lightBg dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
-                            />
-                        </div>
-                        <div>
-                            <label className="block mb-2 font-semibold text-gray-700 dark:text-gray-300">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                value={value.email}
-                                onChange={(e) => setValue({ ...value, email: e.target.value })}
-                                className="w-full p-3 rounded-md bg-lightBg dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
-                            />
-                        </div>
-                        <div>
-                            <label className="block mb-2 font-semibold text-gray-700 dark:text-gray-300">
-                                Сообщение
-                            </label>
-                            <textarea
-                                rows={4}
-                                value={value.message}
-                                onChange={(e) => setValue({ ...value, message: e.target.value })}
-                                className="w-full p-3 rounded-md bg-lightBg dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
-                                placeholder="Опишите ваши требования или задайте вопрос..."
-                            />
-                        </div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <FormField
+                            label="Ваше имя"
+                            name="name"
+                            type="text"
+                            value={data.name}
+                            error={errors.name}
+                            touched={touched.name}
+                            required
+                            onChange={updateField}
+                            onBlur={touchField}
+                        />
+                        
+                        <FormField
+                            label="Телефон"
+                            name="phone"
+                            type="tel"
+                            value={data.phone}
+                            error={errors.phone}
+                            touched={touched.phone}
+                            required
+                            onChange={updateField}
+                            onBlur={touchField}
+                        />
+                        
+                        <FormField
+                            label="Email"
+                            name="email"
+                            type="email"
+                            value={data.email}
+                            error={errors.email}
+                            touched={touched.email}
+                            onChange={updateField}
+                            onBlur={touchField}
+                        />
+                        
+                        <FormField
+                            label="Сообщение"
+                            name="message"
+                            type="textarea"
+                            value={data.message}
+                            error={errors.message}
+                            touched={touched.message}
+                            placeholder="Опишите ваши требования или задайте вопрос..."
+                            rows={4}
+                            onChange={updateField}
+                            onBlur={touchField}
+                        />
+                        
                         <button
                             type="submit"
                             className="w-full bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded-md transition-colors"
@@ -100,12 +129,12 @@ const ConsultationForm: React.FC<ConsultationFormProps> = ({ onClose, onSubmit, 
                         </p>
                         <div className="flex flex-col space-y-2">
                             <a href="tel:+71234567890" className="flex items-center text-primary hover:text-secondary">
-                                <Phone className="h-4 w-4 mr-2" />
-                                +7 (123) 456-78-90
+                                <span>📞</span>
+                                <span className="ml-2">+7 (123) 456-78-90</span>
                             </a>
                             <a href="mailto:info@nordengineering.ru" className="flex items-center text-primary hover:text-secondary">
-                                <Mail className="h-4 w-4 mr-2" />
-                                info@nordengineering.ru
+                                <span>✉️</span>
+                                <span className="ml-2">info@nordengineering.ru</span>
                             </a>
                         </div>
                     </div>
