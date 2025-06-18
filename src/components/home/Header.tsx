@@ -62,8 +62,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: 'Бренды',
-    path: '/brands',
-    icon: <Award className="h-5 w-5" />
+    path: '/brands'
   }
 ];
 

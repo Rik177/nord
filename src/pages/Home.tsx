@@ -47,9 +47,6 @@ function Home() {
       Object.assign(linkElement, link);
       document.head.appendChild(linkElement);
     });
-
-    // Убираем автоматическую прокрутку при загрузке страницы
-    window.scrollTo(0, 0);
   }, []);
 
   const combinedStructuredData = [
@@ -62,7 +59,7 @@ function Home() {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet {...seoPages.home} structuredData={combinedStructuredData} />
       <Header />
-      <main id="main-content" className="pt-[213px]">
+      <main id="main-content" className="pt-[169px]">
         <HeroSlider />
         <div className="content-visibility-auto">
           <AdvancedFeatures />
