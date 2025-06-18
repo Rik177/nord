@@ -105,20 +105,9 @@ const LatestProjects: React.FC = () => {
         <Swiper
           modules={[Navigation, Pagination, A11y]}
           slidesPerView={1}
-          navigation={{
-            nextEl: '.projects-swiper-button-next',
-            prevEl: '.projects-swiper-button-prev',
-          }}
-          pagination={{ 
-            clickable: true,
-            el: '.projects-swiper-pagination'
-          }}
-          className="projects-swiper mb-12"
-          grabCursor={true}
-          touchRatio={1}
-          touchAngle={45}
-          preventClicks={true}
-          preventClicksPropagation={true}
+          navigation
+          pagination={{ clickable: true }}
+          className="mb-12"
           a11y={{
             prevSlideMessage: 'Предыдущий проект',
             nextSlideMessage: 'Следующий проект',
@@ -190,7 +179,6 @@ const LatestProjects: React.FC = () => {
                           src={project.beforeImage}
                           alt={`${project.title} - до`}
                           className="w-full h-64 object-cover rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105"
-                          loading="lazy"
                         />
                         <div className="absolute bottom-3 left-3 bg-black/70 text-white px-3 py-1 rounded text-sm font-semibold">
                           ДО
@@ -201,7 +189,6 @@ const LatestProjects: React.FC = () => {
                           src={project.afterImage}
                           alt={`${project.title} - после`}
                           className="w-full h-64 object-cover rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105"
-                          loading="lazy"
                         />
                         <div className="absolute bottom-3 right-3 bg-accent text-white px-3 py-1 rounded text-sm font-semibold">
                           ПОСЛЕ
@@ -213,21 +200,6 @@ const LatestProjects: React.FC = () => {
               </div>
             </SwiperSlide>
           ))}
-          
-          {/* Custom Navigation */}
-          <div className="projects-swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
-            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </div>
-          <div className="projects-swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
-            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-          
-          {/* Custom Pagination */}
-          <div className="projects-swiper-pagination mt-8 text-center"></div>
         </Swiper>
 
         {/* CTA */}
