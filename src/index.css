@@ -77,7 +77,8 @@
     line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
+    /* Убираем автоматическую плавную прокрутку */
+    scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
   }
@@ -89,6 +90,8 @@
     /* Оптимизация для производительности */
     will-change: auto;
     transform: translateZ(0);
+    /* Предотвращаем автоматическую прокрутку */
+    overflow-x: hidden;
   }
   
   [data-theme="dark"] body {

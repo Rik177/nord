@@ -47,6 +47,21 @@ function Home() {
       Object.assign(linkElement, link);
       document.head.appendChild(linkElement);
     });
+
+    // Убираем любую автоматическую прокрутку при загрузке страницы
+    window.scrollTo(0, 0);
+    
+    // Предотвращаем автоматическую прокрутку к якорям
+    const handleHashChange = (e: HashChangeEvent) => {
+      e.preventDefault();
+      window.scrollTo(0, 0);
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
   }, []);
 
   const combinedStructuredData = [
