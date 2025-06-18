@@ -1,7 +1,6 @@
 src/pages/FAQ.tsx
 src/schemas/*
 src/utils/*
-src/App.tsx
 src/pages/about/*
 src/pages/services/*
 src/pages/Contacts.tsx
