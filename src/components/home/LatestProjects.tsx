@@ -114,6 +114,11 @@ const LatestProjects: React.FC = () => {
             el: '.projects-swiper-pagination'
           }}
           className="projects-swiper mb-12"
+          grabCursor={true}
+          touchRatio={1}
+          touchAngle={45}
+          preventClicks={true}
+          preventClicksPropagation={true}
           a11y={{
             prevSlideMessage: 'Предыдущий проект',
             nextSlideMessage: 'Следующий проект',
