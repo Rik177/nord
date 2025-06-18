@@ -1,33 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { imagetools } from 'vite-imagetools';
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig({
   plugins: [
     react({
       jsxRuntime: 'automatic',
-      babel: {
-        plugins: [
-          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }]
-        ]
-      }
-    }),
-    imagetools(),
-    ViteImageOptimizer({
-      test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
-      gifsicle: { optimizationLevel: 7, interlaced: false },
-      mozjpeg: { quality: 80 },
-      optipng: { optimizationLevel: 7 },
-      pngquant: { quality: [0.65, 0.8], speed: 4 },
-      svgo: {
-        plugins: [
-          { name: 'removeViewBox', active: false },
-          { name: 'removeEmptyAttrs', active: false }
-        ]
-      },
-      webp: { quality: 85 },
-      avif: { quality: 80 }
+      jsxImportSource: 'react'
     })
   ],
   optimizeDeps: {
@@ -63,7 +41,6 @@ export default defineConfig({
         }
       },
     },
-    // Увеличиваем лимит для предупреждений о размере чанков
     chunkSizeWarningLimit: 1000,
   },
   server: {
@@ -86,7 +63,6 @@ export default defineConfig({
       'X-XSS-Protection': '1; mode=block',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
       'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-      // Кэширование статических ресурсов
       'Cache-Control': 'public, max-age=31536000'
     }
   }
