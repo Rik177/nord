@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Search, Phone, Heart, ChevronDown, Sun, Moon, MapPin, Building2, Box, Wrench, FolderOpen, Award } from 'lucide-react';
+import { Menu, Search, Phone, Heart, ChevronDown, Sun, Moon, MapPin, Building2, Box, Wrench, FolderOpen, Award, PanelTop} from 'lucide-react';
 import GlobalSearch from '../shared/GlobalSearch';
 import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 import SkipLink from '../shared/SkipLink';
@@ -56,9 +56,13 @@ const menuItems: MenuItem[] = [
     icon: <FolderOpen className="h-5 w-5" />
   },
   {
+    label: 'Блог',
+    path: '/blog',
+    icon: <PanelTop className="h-5 w-5"/>
+  },
+  {
     label: 'Бренды',
-    path: '/brands',
-    icon: <Award className="h-5 w-5" />
+    path: '/brands'
   }
 ];
 

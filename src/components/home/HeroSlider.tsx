@@ -85,7 +85,7 @@ const HeroSlider: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/50" />
               
-              <div className="relative h-full container mx-auto px-4 flex items-center z-10">
+              <div className="relative h-full container mx-auto px-4 flex items-center text-left z-10">
                 <div className="max-w-2xl text-white">
                   <h1 className="font-heading text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 md:mb-6 leading-tight animate-fade-in">
                     {slide.title}

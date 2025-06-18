@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
 
           {/* Catalog */}
           <div className="lg:col-span-1">
-            <h3 className="font-heading text-lg font-bold mb-4">Каталог</h3>
+            <h3 className="font-heading text-lg font-bold mb-4 text-white">Каталог</h3>
             <ul className="space-y-2">
               <li><a href="#" className="hover:text-secondary">Вентиляционное оборудование</a></li>
               <li><a href="#" className="hover:text-secondary">Кондиционирование</a></li>
@@ -77,7 +77,7 @@ const Footer: React.FC = () => {
           
           {/* Company */}
           <div className="lg:col-span-1">
-            <h3 className="font-heading text-lg font-bold mb-4">О компании</h3>
+            <h3 className="font-heading text-lg font-bold mb-4 text-white">О компании</h3>
             <ul className="space-y-2">
               <li><a href="#" className="hover:text-secondary">О нас</a></li>
               <li><a href="/services" className="hover:text-secondary">Наши услуги</a></li>
@@ -90,7 +90,7 @@ const Footer: React.FC = () => {
           
           {/* Information */}
           <div className="lg:col-span-1">
-            <h3 className="font-heading text-lg font-bold mb-4">Информация</h3>
+            <h3 className="font-heading text-lg font-bold mb-4 text-white">Информация</h3>
             <ul className="space-y-2">
               <li><a href="/faq" className="hover:text-secondary">Часто задаваемые вопросы (FAQ)</a></li>
               <li><a href="/delivery" className="hover:text-secondary">Условия доставки</a></li>

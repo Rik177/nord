@@ -43,7 +43,7 @@ function Home() {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet {...seoPages.home} structuredData={combinedStructuredData} />
       <Header />
-      <main id="main-content" className="pt-[213px]">
+      <main id="main-content" className="pt-[169px]">
         <HeroSlider />
         <AdvancedFeatures />
         <CompanyMap />
@@ -61,7 +61,7 @@ function Home() {
       <Footer />
       
       {/* Floating accessibility and interaction elements */}
-      <AccessibilityControls />
+      {/* <AccessibilityControls /> */}
       <ChatWidget />
       <QuickCallButton />
       <ComparisonButton />

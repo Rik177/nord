@@ -105,7 +105,7 @@ const Catalog: React.FC = () => {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet {...seoPages.catalog} structuredData={structuredData} />
       <Header />
-      <main className="pt-[213.39px] pb-12">
+      <main className="pt-[169px] pb-12">
         <Breadcrumbs />
 
         {/* Hero Section */}
