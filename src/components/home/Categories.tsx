@@ -60,7 +60,7 @@ const Categories: React.FC = () => {
     <section className="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
+        <div className="text-center mb-8 sm:mb-12 fade-in-element">
           <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-primary dark:text-white mb-3 sm:mb-4">
             Каталог оборудования
           </h2>
@@ -75,7 +75,7 @@ const Categories: React.FC = () => {
             <a
               key={category.id}
               href={category.link}
-              className="category-card group relative rounded-xl sm:rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-gray-800"
+              className="category-card parallax-card group relative rounded-xl sm:rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-gray-800"
             >
               {/* Image container with aspect ratio */}
               <div className="relative aspect-[4/3] sm:aspect-[3/2] lg:aspect-[4/3] overflow-hidden">
@@ -112,13 +112,16 @@ const Categories: React.FC = () => {
 
                 {/* Hover effect border */}
                 <div className="absolute inset-0 border-2 border-transparent group-hover:border-accent/50 rounded-xl sm:rounded-2xl transition-colors duration-300"></div>
+                
+                {/* Card shine effect */}
+                <div className="card-shine"></div>
               </div>
             </a>
           ))}
         </div>
 
         {/* CTA Section */}
-        <div className="mt-8 sm:mt-12 lg:mt-16 text-center">
+        <div className="mt-8 sm:mt-12 lg:mt-16 text-center fade-in-element">
           <div className="bg-gradient-to-r from-primary to-secondary rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12">
             <h3 className="font-heading font-bold text-xl sm:text-2xl lg:text-3xl text-white mb-3 sm:mb-4">
               Не нашли нужное оборудование?
@@ -129,13 +132,13 @@ const Categories: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md sm:max-w-none mx-auto">
               <a
                 href="/contacts"
-                className="inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors min-h-[48px] text-base sm:text-lg"
+                className="magnetic-effect inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors min-h-[48px] text-base sm:text-lg"
               >
                 Получить консультацию
               </a>
               <a
                 href="/catalog"
-                className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors border border-white/20 hover:border-white/30 min-h-[48px] text-base sm:text-lg"
+                className="magnetic-effect inline-flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors border border-white/20 hover:border-white/30 min-h-[48px] text-base sm:text-lg"
               >
                 Весь каталог
                 <ArrowRight className="ml-2 h-5 w-5" />

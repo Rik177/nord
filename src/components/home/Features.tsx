@@ -44,7 +44,7 @@ const features: Feature[] = [
     title: 'Энергоэффективность',
     description: 'Современные технологии для снижения расходов',
     highlight: 'До 40% экономии'
-  }
+  },
 ];
 
 const Features: React.FC = () => {
@@ -52,7 +52,7 @@ const Features: React.FC = () => {
     <section className="py-8 sm:py-12 lg:py-16 bg-lightBg dark:bg-gray-800">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
+        <div className="text-center mb-8 sm:mb-12 fade-in-element">
           <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-primary dark:text-white mb-3 sm:mb-4">
             Почему выбирают нас
           </h2>
@@ -66,7 +66,7 @@ const Features: React.FC = () => {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="group bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-card p-6 sm:p-8 text-center transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2 border border-gray-100 dark:border-gray-700"
+              className="stagger-item group bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-card p-6 sm:p-8 text-center transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2 border border-gray-100 dark:border-gray-700 parallax-card"
             >
               {/* Icon with highlight badge */}
               <div className="relative inline-flex items-center justify-center mb-4 sm:mb-6">
@@ -86,27 +86,30 @@ const Features: React.FC = () => {
               <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base leading-relaxed">
                 {feature.description}
               </p>
+              
+              {/* Card shine effect */}
+              <div className="card-shine"></div>
             </div>
           ))}
         </div>
 
         {/* Stats Section */}
-        <div className="mt-12 sm:mt-16 lg:mt-20">
+        <div className="mt-12 sm:mt-16 lg:mt-20 fade-in-element">
           <div className="bg-gradient-to-r from-primary to-secondary rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
-              <div className="text-white">
+              <div className="text-white floating">
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">1000+</div>
                 <div className="text-white/90 text-sm sm:text-base">Реализованных проектов</div>
               </div>
-              <div className="text-white">
+              <div className="text-white floating" style={{ animationDelay: '0.2s' }}>
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">5000+</div>
                 <div className="text-white/90 text-sm sm:text-base">Довольных клиентов</div>
               </div>
-              <div className="text-white">
+              <div className="text-white floating" style={{ animationDelay: '0.4s' }}>
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">98%</div>
                 <div className="text-white/90 text-sm sm:text-base">Положительных отзывов</div>
               </div>
-              <div className="text-white">
+              <div className="text-white floating" style={{ animationDelay: '0.6s' }}>
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">24ч</div>
                 <div className="text-white/90 text-sm sm:text-base">Время реакции</div>
               </div>
@@ -115,10 +118,12 @@ const Features: React.FC = () => {
         </div>
 
         {/* CTA */}
-        <div className="mt-8 sm:mt-12 text-center">
+        <div className="mt-8 sm:mt-12 text-center fade-in-element">
           <div className="max-w-2xl mx-auto">
             <h3 className="font-heading font-bold text-xl sm:text-2xl text-primary dark:text-white mb-4">
-              Готовы обсудить ваш проект?
+              <span className="text-reveal visible">
+                <span>Готовы обсудить ваш проект?</span>
+              </span>
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6 text-base sm:text-lg">
               Получите бесплатную консультацию и расчет стоимости
@@ -126,13 +131,13 @@ const Features: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md sm:max-w-none mx-auto">
               <a
                 href="/contacts"
-                className="inline-flex items-center justify-center bg-primary hover:bg-opacity-90 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors min-h-[48px] text-base sm:text-lg"
+                className="magnetic-effect inline-flex items-center justify-center bg-primary hover:bg-opacity-90 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors min-h-[48px] text-base sm:text-lg"
               >
                 Получить консультацию
               </a>
               <a
                 href="/tools"
-                className="inline-flex items-center justify-center border-2 border-primary text-primary hover:bg-primary hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900 font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors min-h-[48px] text-base sm:text-lg"
+                className="magnetic-effect inline-flex items-center justify-center border-2 border-primary text-primary hover:bg-primary hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900 font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-colors min-h-[48px] text-base sm:text-lg"
               >
                 Рассчитать стоимость
               </a>

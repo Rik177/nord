@@ -8,11 +8,9 @@ import CompanyMap from "../components/home/CompanyMap";
 import Features from "../components/home/Features";
 import Categories from "../components/home/Categories";
 import PopularProducts from "../components/home/PopularProducts";
-import FrequentlyOrdered from "../components/home/FrequentlyOrdered";
 import Services from "../components/home/Services";
 import AboutCompany from "../components/home/AboutCompany";
 import LatestProjects from "../components/home/LatestProjects";
-import RecommendationLetters from "../components/home/RecommendationLetters";
 import { TestimonialsSection } from "../components/home/Testimonials";
 import Partners from "../components/home/Partners";
 import ContactForm from "../components/home/ContactForm";
@@ -26,6 +24,7 @@ import {
   localBusinessSchema,
 } from "../utils/schema";
 import { initPerformanceOptimizations, registerServiceWorker } from "../utils/performanceOptimizations";
+import { initCursorEffects, initHoverEffects, initScrollAnimations } from "../utils/cursorEffects";
 
 function Home() {
   useEffect(() => {
@@ -34,6 +33,15 @@ function Home() {
     
     // Регистрация Service Worker
     registerServiceWorker();
+    
+    // Инициализация интерактивных эффектов
+    initCursorEffects();
+    initHoverEffects();
+    
+    // Инициализация анимаций при скролле
+    setTimeout(() => {
+      initScrollAnimations();
+    }, 500);
     
     // Предзагрузка критических ресурсов
     const preloadLinks = [
@@ -82,31 +90,31 @@ function Home() {
         <div className="content-visibility-auto">
           <Categories />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <PopularProducts />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <Services />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <AdvancedFeatures />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <AboutCompany />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <LatestProjects />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <TestimonialsSection />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <Partners />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <CompanyMap />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-auto fade-in-element">
           <ContactForm />
         </div>
       </main>

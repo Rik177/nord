@@ -50,9 +50,9 @@ const Services: React.FC = () => {
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 fade-in-element">
           <h2 className="font-heading font-bold text-h2-mobile md:text-h2-desktop text-primary dark:text-white mb-4">
-            Полный спектр услуг для вашего комфорта
+            <span className="animated-underline">Полный спектр услуг</span> для вашего комфорта
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg">
             От проектирования до сервисного обслуживания — мы обеспечиваем комплексный подход к созданию идеального микроклимата
@@ -63,7 +63,8 @@ const Services: React.FC = () => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="service-card bg-white dark:bg-gray-800 rounded-xl shadow-card p-8 border border-gray-100 dark:border-gray-700 transition-all duration-300 flex flex-col justify-between group hover:shadow-card-hover hover:-translate-y-2"
+              className="service-card bg-white dark:bg-gray-800 rounded-xl shadow-card p-8 border border-gray-100 dark:border-gray-700 transition-all duration-300 flex flex-col justify-between group hover:shadow-card-hover hover:-translate-y-2 parallax-card"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="mb-6">
                 <div className="bg-primary/10 rounded-lg p-4 w-fit mb-4 group-hover:bg-primary/20 transition-colors">
@@ -78,17 +79,20 @@ const Services: React.FC = () => {
               </div>
               <a 
                 href={service.link} 
-                className="inline-flex items-center text-secondary font-semibold hover:text-primary dark:hover:text-white transition-colors group-hover:translate-x-1"
+                className="inline-flex items-center text-secondary font-semibold hover:text-primary dark:hover:text-white transition-colors group-hover:translate-x-1 animated-underline"
               >
                 <span>Подробнее</span>
                 <ArrowRight className="h-5 w-5 ml-2 transition-transform" />
               </a>
+              
+              {/* Card shine effect */}
+              <div className="card-shine"></div>
             </div>
           ))}
         </div>
         
         {/* Enhanced CTA */}
-        <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 text-center">
+        <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 text-center fade-in-element">
           <h3 className="font-heading font-bold text-h2-mobile md:text-h2-desktop text-white mb-4">
             Готовы начать ваш проект?
           </h3>
@@ -97,12 +101,12 @@ const Services: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              className="bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-md transition-colors"
+              className="magnetic-effect bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
               onClick={() => setShowConsultationForm(true)}
             >
               Получить консультацию
             </button>
-            <button className="bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-8 rounded-md transition-colors">
+            <button className="magnetic-effect bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
               Рассчитать стоимость
             </button>
           </div>

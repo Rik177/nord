@@ -15,6 +15,13 @@
   --light-bg: #F2F2F2;
   --white: #FFFFFF;
   color-scheme: light;
+  
+  /* Custom cursor variables */
+  --cursor-size: 30px;
+  --cursor-inner-size: 8px;
+  --cursor-color: rgba(26, 60, 110, 0.5);
+  --cursor-hover-color: rgba(255, 125, 0, 0.5);
+  --cursor-click-scale: 0.8;
 }
 
 /* System dark mode preference */
@@ -27,6 +34,7 @@
     --primary-color: #4D9DE0;
     --light-bg: #121212;
     --white: #1E1E1E;
+    --cursor-color: rgba(77, 157, 224, 0.5);
   }
 }
 
@@ -36,6 +44,7 @@
   --primary-color: #4D9DE0;
   --light-bg: #121212;
   --white: #1E1E1E;
+  --cursor-color: rgba(77, 157, 224, 0.5);
 }
 
 /* Force light mode */
@@ -44,6 +53,7 @@
   --primary-color: #1A3C6E;
   --light-bg: #F2F2F2;
   --white: #FFFFFF;
+  --cursor-color: rgba(26, 60, 110, 0.5);
 }
 
 /* Critical CSS - инлайн для первого рендера */
@@ -80,6 +90,7 @@
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
+    cursor: none;
   }
   
   body {
@@ -118,6 +129,7 @@
     text-decoration: underline;
     text-decoration-color: transparent;
     transition: text-decoration-color 0.2s ease;
+    cursor: none;
   }
 
   a:hover {
@@ -141,12 +153,17 @@
     @apply bg-white text-gray-900 border-gray-300;
     font-size: 1rem;
     min-height: 44px;
+    cursor: text;
   }
 
   [data-theme="dark"] input,
   [data-theme="dark"] textarea,
   [data-theme="dark"] select {
     @apply bg-gray-800 text-white border-gray-700;
+  }
+
+  button {
+    cursor: none;
   }
 
   /* Mobile-first improvements */
@@ -175,6 +192,11 @@
     a:not(.btn) {
       min-height: 48px;
       padding: 8px 0;
+    }
+    
+    /* Reset cursor for touch devices */
+    html, a, button {
+      cursor: auto;
     }
   }
 
@@ -232,11 +254,46 @@
     position: relative;
     border: 2px solid transparent;
     will-change: transform, opacity;
+    overflow: hidden;
   }
 
   .btn:focus {
     outline: 2px solid #4D9DE0;
     outline-offset: 2px;
+  }
+
+  /* Button ripple effect */
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+  }
+
+  .btn:active::after {
+    animation: ripple 0.6s ease-out;
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0);
+      opacity: 0.5;
+    }
+    20% {
+      transform: scale(25, 25);
+      opacity: 0.3;
+    }
+    100% {
+      transform: scale(50, 50);
+      opacity: 0;
+    }
   }
 
   .btn-primary {
@@ -314,6 +371,31 @@
   .card {
     @apply bg-white dark:bg-gray-800 rounded-xl shadow-card transition-all duration-300;
     will-change: transform, box-shadow;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Card shine effect */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transform: skewX(-25deg);
+    transition: all 0.75s ease;
+    z-index: 1;
+  }
+
+  .card:hover::before {
+    left: 125%;
   }
 
   .card-hover {
@@ -424,6 +506,68 @@
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+}
+
+/* Custom cursor styles */
+.cursor-outer {
+  position: fixed;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  border: 1px solid var(--cursor-color);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+  mix-blend-mode: difference;
+}
+
+.cursor-inner {
+  position: fixed;
+  width: var(--cursor-inner-size);
+  height: var(--cursor-inner-size);
+  background-color: var(--cursor-color);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: width 0.1s, height 0.1s, background-color 0.1s;
+}
+
+.cursor-hover {
+  width: calc(var(--cursor-size) * 1.5);
+  height: calc(var(--cursor-size) * 1.5);
+  background-color: transparent;
+  border-color: var(--cursor-hover-color);
+}
+
+.cursor-inner.cursor-hover {
+  width: calc(var(--cursor-inner-size) * 1.5);
+  height: calc(var(--cursor-inner-size) * 1.5);
+  background-color: var(--cursor-hover-color);
+}
+
+.cursor-click {
+  transform: translate(-50%, -50%) scale(var(--cursor-click-scale));
+}
+
+/* Hide default cursor on non-touch devices */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+  
+  /* Exceptions for specific elements */
+  input, textarea, select {
+    cursor: text !important;
+  }
+}
+
+/* Disable custom cursor on touch devices */
+@media (pointer: coarse) {
+  .cursor-outer, .cursor-inner {
+    display: none !important;
   }
 }
 
@@ -756,5 +900,215 @@
   
   .mobile-menu.open {
     transform: translateX(0);
+  }
+}
+
+/* Scroll animations */
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scale-in-element {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scale-in-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.slide-in-element {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.slide-in-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Magnetic button effect */
+.magnetic-effect {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Parallax card effect */
+.parallax-card {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.card-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Interactive hover effects */
+.hover-lift {
+  transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-rotate {
+  transition: transform 0.3s ease;
+}
+
+.hover-rotate:hover {
+  transform: rotate(3deg);
+}
+
+/* Text reveal animation */
+.text-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.text-reveal span {
+  display: block;
+  transform: translateY(100%);
+  transition: transform 0.5s ease;
+}
+
+.text-reveal.visible span {
+  transform: translateY(0);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Animated underline */
+.animated-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--accent-color);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.animated-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Floating elements */
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Staggered animation for lists */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger-visible .stagger-item:nth-child(1) {
+  animation: staggerFade 0.5s 0.1s forwards;
+}
+
+.stagger-visible .stagger-item:nth-child(2) {
+  animation: staggerFade 0.5s 0.2s forwards;
+}
+
+.stagger-visible .stagger-item:nth-child(3) {
+  animation: staggerFade 0.5s 0.3s forwards;
+}
+
+.stagger-visible .stagger-item:nth-child(4) {
+  animation: staggerFade 0.5s 0.4s forwards;
+}
+
+.stagger-visible .stagger-item:nth-child(5) {
+  animation: staggerFade 0.5s 0.5s forwards;
+}
+
+.stagger-visible .stagger-item:nth-child(6) {
+  animation: staggerFade 0.5s 0.6s forwards;
+}
+
+@keyframes staggerFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-outer, .cursor-inner {
+    display: none !important;
+  }
+  
+  * {
+    cursor: auto !important;
+  }
+  
+  .fade-in-element, .scale-in-element, .slide-in-element,
+  .stagger-item, .floating, .text-reveal span {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
+  .btn::after {
+    display: none !important;
+  }
+  
+  .card::before {
+    display: none !important;
   }
 }
