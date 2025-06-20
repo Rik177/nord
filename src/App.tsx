@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -45,12 +45,50 @@ import CookiePolicy from './pages/CookiePolicy';
 
 // Компоненты
 import AccessibilityControls from './components/shared/AccessibilityControls';
+import OfflineIndicator from './components/shared/OfflineIndicator';
+import PWAInstallPrompt from './components/shared/PWAInstallPrompt';
+
+// PWA utilities
+import { handleShareTarget } from './utils/pwaUtils';
 
 function App() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  
+  useEffect(() => {
+    // Handle online/offline events
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    // Handle PWA share target
+    const url = new URL(window.location.href);
+    const sharedTitle = url.searchParams.get('title');
+    const sharedText = url.searchParams.get('text');
+    const sharedUrl = url.searchParams.get('url');
+    
+    if (sharedTitle || sharedText || sharedUrl) {
+      handleShareTarget({
+        title: sharedTitle || undefined,
+        text: sharedText || undefined,
+        url: sharedUrl || undefined
+      });
+    }
+    
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   return (
     <HelmetProvider>
       <Router>
         <div className="App">
+          {/* Offline indicator */}
+          <OfflineIndicator />
+          
           <Routes>
             {/* Главная страница */}
             <Route path="/" element={<Home />} />
@@ -97,7 +135,11 @@ function App() {
             {/* Страница 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          
           <AccessibilityControls />
+          
+          {/* PWA Install Prompt */}
+          <PWAInstallPrompt />
         </div>
       </Router>
     </HelmetProvider>

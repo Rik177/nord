@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { generateSrcSet, generateOptimizedUrl } from "../../utils/imageOptimization";
+import { generateSrcSet, generateOptimizedUrl, supportsWebP, supportsAVIF, generatePlaceholderUrl } from "../../utils/imageOptimization";
 
 interface OptimizedImageProps {
   src: string;
@@ -14,6 +14,7 @@ interface OptimizedImageProps {
   onError?: () => void;
   placeholder?: string;
   blurDataURL?: string;
+  fetchpriority?: "high" | "low" | "auto";
 }
 
 const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -28,15 +29,35 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   onError,
   placeholder,
   blurDataURL,
+  fetchpriority = "auto",
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
   const [error, setError] = useState(false);
+  const [imageFormat, setImageFormat] = useState<'avif' | 'webp' | 'original'>('original');
   const imgRef = useRef<HTMLImageElement>(null);
   const observerRef = useRef<IntersectionObserver>();
+  const placeholderUrl = blurDataURL || generatePlaceholderUrl(src);
 
+  // Check supported image formats
   useEffect(() => {
-    if (priority) return;
+    const checkFormats = async () => {
+      if (await supportsAVIF()) {
+        setImageFormat('avif');
+      } else if (await supportsWebP()) {
+        setImageFormat('webp');
+      }
+    };
+    
+    checkFormats();
+  }, []);
+
+  // Set up intersection observer for lazy loading
+  useEffect(() => {
+    if (priority) {
+      setIsInView(true);
+      return;
+    }
 
     observerRef.current = new IntersectionObserver(
       ([entry]) => {
@@ -46,7 +67,8 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         }
       },
       {
-        rootMargin: "50px",
+        rootMargin: "200px", // Load images 200px before they enter viewport
+        threshold: 0.01,
       },
     );
 
@@ -90,10 +112,11 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         <div
           className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700"
           style={
-            blurDataURL
+            placeholderUrl
               ? {
-                  backgroundImage: `url(${blurDataURL})`,
+                  backgroundImage: `url(${placeholderUrl})`,
                   backgroundSize: "cover",
+                  backgroundPosition: "center",
                   filter: "blur(10px)",
                 }
               : {}
@@ -115,14 +138,25 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
       {/* Main Image */}
       {isInView && (
         <picture>
-          {/* WebP format для поддерживающих браузеров */}
-          <source
-            srcSet={srcSet.replace(/\.(jpe?g|png)/gi, '.webp')}
-            sizes={sizes}
-            type="image/webp"
-          />
+          {/* AVIF format for browsers that support it */}
+          {imageFormat === 'avif' && (
+            <source
+              srcSet={srcSet.replace(/\.(jpe?g|png)/gi, '.avif')}
+              sizes={sizes}
+              type="image/avif"
+            />
+          )}
           
-          {/* Оригинальный формат */}
+          {/* WebP format for browsers that support it */}
+          {(imageFormat === 'webp' || imageFormat === 'avif') && (
+            <source
+              srcSet={srcSet.replace(/\.(jpe?g|png)/gi, '.webp')}
+              sizes={sizes}
+              type="image/webp"
+            />
+          )}
+          
+          {/* Original format as fallback */}
           <img
             src={optimizedSrc}
             alt={alt}
@@ -133,6 +167,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
             sizes={sizes}
             loading={priority ? "eager" : "lazy"}
             decoding="async"
+            fetchpriority={fetchpriority}
             onLoad={handleLoad}
             onError={handleError}
             style={{

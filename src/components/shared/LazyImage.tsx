@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { generateSrcSet, generateOptimizedUrl, supportsWebP, supportsAVIF } from '../../utils/imageOptimization';
+import { Loader2 } from 'lucide-react';
+import { generateSrcSet, generateOptimizedUrl, supportsWebP, supportsAVIF, generatePlaceholderUrl } from '../../utils/imageOptimization';
 
 interface LazyImageProps {
   src: string;
@@ -12,6 +13,8 @@ interface LazyImageProps {
   onLoad?: () => void;
   onError?: () => void;
   placeholder?: string;
+  blurDataURL?: string;
+  fetchpriority?: "high" | "low" | "auto";
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({
@@ -24,7 +27,9 @@ const LazyImage: React.FC<LazyImageProps> = ({
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
   onLoad,
   onError,
-  placeholder
+  placeholder,
+  blurDataURL,
+  fetchpriority = "auto"
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -32,9 +37,10 @@ const LazyImage: React.FC<LazyImageProps> = ({
   const [imageFormat, setImageFormat] = useState<'avif' | 'webp' | 'original'>('original');
   const imgRef = useRef<HTMLImageElement>(null);
   const observerRef = useRef<IntersectionObserver>();
+  const placeholderUrl = blurDataURL || generatePlaceholderUrl(src);
 
   useEffect(() => {
-    // Определяем поддерживаемый формат изображений
+    // Determine supported image formats
     const checkFormats = async () => {
       if (await supportsAVIF()) {
         setImageFormat('avif');
@@ -47,7 +53,10 @@ const LazyImage: React.FC<LazyImageProps> = ({
   }, []);
 
   useEffect(() => {
-    if (priority) return;
+    if (priority) {
+      setIsInView(true);
+      return;
+    }
 
     observerRef.current = new IntersectionObserver(
       ([entry]) => {
@@ -56,7 +65,10 @@ const LazyImage: React.FC<LazyImageProps> = ({
           observerRef.current?.disconnect();
         }
       },
-      { rootMargin: '50px' }
+      { 
+        rootMargin: '200px', // Start loading before image enters viewport
+        threshold: 0.01 
+      }
     );
 
     if (imgRef.current) {
@@ -77,14 +89,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
   };
 
   const getOptimizedSrc = () => {
-    if (imageFormat === 'avif') {
-      // Для AVIF используем оригинальный URL с параметрами
-      return generateOptimizedUrl(src, width, 80);
-    } else if (imageFormat === 'webp') {
-      // Для WebP используем оригинальный URL с параметрами
-      return generateOptimizedUrl(src, width, 85);
-    }
-    return generateOptimizedUrl(src, width, 90);
+    return generateOptimizedUrl(src, width);
   };
 
   if (error) {
@@ -103,16 +108,27 @@ const LazyImage: React.FC<LazyImageProps> = ({
       {/* Placeholder */}
       {!isLoaded && (
         <div
-          className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse"
-          style={{ width, height }}
+          className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700"
+          style={
+            placeholderUrl
+              ? {
+                  backgroundImage: `url(${placeholderUrl})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  filter: "blur(10px)",
+                }
+              : {}
+          }
         >
-          {placeholder && (
+          {placeholder ? (
             <img
               src={placeholder}
               alt=""
               className="w-full h-full object-cover blur-sm opacity-50"
               aria-hidden="true"
             />
+          ) : (
+            <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
           )}
         </div>
       )}
@@ -123,7 +139,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
           {/* AVIF format */}
           {imageFormat === 'avif' && (
             <source
-              srcSet={generateSrcSet(src)}
+              srcSet={generateSrcSet(src).replace(/\.(jpe?g|png)/gi, '.avif')}
               sizes={sizes}
               type="image/avif"
             />
@@ -132,7 +148,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
           {/* WebP format */}
           {(imageFormat === 'webp' || imageFormat === 'avif') && (
             <source
-              srcSet={generateSrcSet(src)}
+              srcSet={generateSrcSet(src).replace(/\.(jpe?g|png)/gi, '.webp')}
               sizes={sizes}
               type="image/webp"
             />
@@ -151,6 +167,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
             sizes={sizes}
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
+            fetchpriority={fetchpriority}
             onLoad={handleLoad}
             onError={handleError}
             style={{

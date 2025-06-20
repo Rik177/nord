@@ -1,174 +1,163 @@
-/**
- * Утилиты для оптимизации изображений
- */
-
-export interface ImageOptimizationOptions {
-  width?: number;
-  height?: number;
-  quality?: number;
-  format?: 'webp' | 'avif' | 'jpeg' | 'png';
-  fit?: 'cover' | 'contain' | 'fill' | 'inside' | 'outside';
-}
+// Image optimization utilities
 
 /**
- * Генерирует оптимизированный URL изображения
+ * Generates optimized image URL with parameters for responsive images
+ * @param src Original image URL
+ * @param width Optional width to request
+ * @param quality Optional quality (1-100)
+ * @returns Optimized image URL
  */
-export const generateOptimizedUrl = (
-  originalUrl: string,
-  width?: number,
-  height?: number,
-  quality: number = 85
-): string => {
-  // Для Pexels изображений используем их API параметры
-  if (originalUrl.includes('pexels.com')) {
-    const url = new URL(originalUrl);
+export const generateOptimizedUrl = (src: string, width?: number, quality: number = 80): string => {
+  // Only process URLs from supported domains
+  if (!src || !isExternalImage(src)) {
+    return src;
+  }
+
+  // For Pexels images, use their API parameters
+  if (src.includes('pexels.com')) {
+    const url = new URL(src);
     
-    // Добавляем параметры оптимизации
-    if (width) url.searchParams.set('w', width.toString());
-    if (height) url.searchParams.set('h', height.toString());
-    url.searchParams.set('auto', 'compress');
-    url.searchParams.set('cs', 'tinysrgb');
-    url.searchParams.set('dpr', '2'); // Для Retina дисплеев
+    // Add auto compression
+    if (!url.searchParams.has('auto')) {
+      url.searchParams.set('auto', 'compress');
+    }
+    
+    // Set quality
+    if (!url.searchParams.has('q') && quality) {
+      url.searchParams.set('q', quality.toString());
+    }
+    
+    // Set width if provided
+    if (width && !url.searchParams.has('w')) {
+      url.searchParams.set('w', width.toString());
+    }
     
     return url.toString();
   }
-  
-  // Для других изображений возвращаем оригинальный URL
-  return originalUrl;
+
+  // For other supported services, return original URL
+  return src;
 };
 
 /**
- * Генерирует srcSet для responsive изображений
+ * Generates srcSet attribute for responsive images
+ * @param src Original image URL
+ * @returns srcSet string with multiple resolutions
  */
-export const generateSrcSet = (originalUrl: string): string => {
-  const sizes = [480, 768, 1024, 1280, 1920];
+export const generateSrcSet = (src: string): string => {
+  if (!src || !isExternalImage(src)) {
+    return '';
+  }
+
+  // Define widths for responsive images
+  const widths = [320, 640, 768, 1024, 1280, 1536, 1920];
   
-  return sizes
-    .map(size => `${generateOptimizedUrl(originalUrl, size)} ${size}w`)
+  // Generate srcSet entries
+  return widths
+    .map(w => `${generateOptimizedUrl(src, w)} ${w}w`)
     .join(', ');
 };
 
 /**
- * Генерирует sizes атрибут для responsive изображений
+ * Checks if browser supports WebP format
+ * @returns Promise resolving to boolean
  */
-export const generateSizes = (breakpoints?: Record<string, string>): string => {
-  const defaultSizes = {
-    '(max-width: 640px)': '100vw',
-    '(max-width: 1024px)': '50vw',
-    '(max-width: 1280px)': '33vw',
-    'default': '25vw'
-  };
+export const supportsWebP = async (): Promise<boolean> => {
+  if (!self.createImageBitmap) return false;
   
-  const sizesToUse = breakpoints || defaultSizes;
+  const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=';
+  const blob = await fetch(webpData).then(r => r.blob());
   
-  return Object.entries(sizesToUse)
-    .map(([breakpoint, size]) => 
-      breakpoint === 'default' ? size : `${breakpoint} ${size}`
-    )
-    .join(', ');
+  return createImageBitmap(blob).then(() => true, () => false);
 };
 
 /**
- * Проверяет поддержку WebP браузером
+ * Checks if browser supports AVIF format
+ * @returns Promise resolving to boolean
  */
-export const supportsWebP = (): Promise<boolean> => {
-  return new Promise((resolve) => {
-    const webP = new Image();
-    webP.onload = webP.onerror = () => {
-      resolve(webP.height === 2);
-    };
-    webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
-  });
+export const supportsAVIF = async (): Promise<boolean> => {
+  if (!self.createImageBitmap) return false;
+  
+  const avifData = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=';
+  const blob = await fetch(avifData).then(r => r.blob());
+  
+  return createImageBitmap(blob).then(() => true, () => false);
 };
 
 /**
- * Проверяет поддержку AVIF браузером
+ * Checks if URL is from a supported external image provider
+ * @param url Image URL to check
+ * @returns Boolean indicating if URL is from supported provider
  */
-export const supportsAVIF = (): Promise<boolean> => {
-  return new Promise((resolve) => {
-    const avif = new Image();
-    avif.onload = avif.onerror = () => {
-      resolve(avif.height === 2);
-    };
-    avif.src = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg8f8D///8WfhwB8+ErK42A=';
-  });
+export const isExternalImage = (url: string): boolean => {
+  if (!url) return false;
+  
+  const supportedDomains = [
+    'pexels.com',
+    'images.pexels.com',
+    'unsplash.com',
+    'images.unsplash.com',
+    'picsum.photos',
+    'placekitten.com',
+    'placeimg.com',
+    'loremflickr.com',
+    'cloudinary.com'
+  ];
+  
+  try {
+    const urlObj = new URL(url);
+    return supportedDomains.some(domain => urlObj.hostname.includes(domain));
+  } catch (e) {
+    return false;
+  }
 };
 
 /**
- * Создает placeholder для изображения
+ * Converts image to WebP format if supported
+ * @param src Original image URL
+ * @returns URL with WebP format if supported
  */
-export const createImagePlaceholder = (
-  width: number,
-  height: number,
-  color: string = '#f3f4f6'
-): string => {
-  const svg = `
-    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100%" height="100%" fill="${color}"/>
-      <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="Arial, sans-serif" font-size="14">
-        Загрузка...
-      </text>
-    </svg>
-  `;
+export const getWebPUrl = (src: string): string => {
+  if (!src || !isExternalImage(src)) {
+    return src;
+  }
   
-  return `data:image/svg+xml;base64,${btoa(svg)}`;
+  // For Pexels images
+  if (src.includes('pexels.com')) {
+    const url = new URL(src);
+    url.searchParams.set('auto', 'webp');
+    return url.toString();
+  }
+  
+  return src;
 };
 
 /**
- * Создает blur placeholder для изображения
+ * Generates a low-quality image placeholder URL
+ * @param src Original image URL
+ * @returns Low quality placeholder URL
  */
-export const createBlurPlaceholder = (
-  width: number = 40,
-  height: number = 40
-): string => {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
+export const generatePlaceholderUrl = (src: string): string => {
+  if (!src || !isExternalImage(src)) {
+    return '';
+  }
   
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return '';
+  // For Pexels images
+  if (src.includes('pexels.com')) {
+    const url = new URL(src);
+    url.searchParams.set('auto', 'compress');
+    url.searchParams.set('q', '10');
+    url.searchParams.set('w', '50');
+    url.searchParams.set('blur', '10');
+    return url.toString();
+  }
   
-  // Создаем градиент
-  const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, '#f3f4f6');
-  gradient.addColorStop(1, '#e5e7eb');
-  
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, width, height);
-  
-  return canvas.toDataURL('image/jpeg', 0.1);
+  return '';
 };
 
 /**
- * Оптимизирует изображение для различных устройств
- */
-export const getResponsiveImageProps = (
-  src: string,
-  alt: string,
-  options: ImageOptimizationOptions = {}
-) => {
-  const {
-    width,
-    height,
-    quality = 85,
-    format = 'webp'
-  } = options;
-  
-  return {
-    src: generateOptimizedUrl(src, width, height, quality),
-    srcSet: generateSrcSet(src),
-    sizes: generateSizes(),
-    alt,
-    loading: 'lazy' as const,
-    decoding: 'async' as const,
-    style: {
-      aspectRatio: width && height ? `${width}/${height}` : undefined
-    }
-  };
-};
-
-/**
- * Предзагружает критические изображения
+ * Preloads critical images
+ * @param urls Array of image URLs to preload
  */
 export const preloadCriticalImages = (urls: string[]): void => {
   urls.forEach(url => {
@@ -176,75 +165,7 @@ export const preloadCriticalImages = (urls: string[]): void => {
     link.rel = 'preload';
     link.as = 'image';
     link.href = url;
+    link.type = 'image/webp';
     document.head.appendChild(link);
   });
-};
-
-/**
- * Lazy loading для изображений с Intersection Observer
- */
-export const setupLazyLoading = (): void => {
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target as HTMLImageElement;
-          const src = img.dataset.src;
-          
-          if (src) {
-            img.src = src;
-            img.classList.remove('lazy');
-            observer.unobserve(img);
-          }
-        }
-      });
-    });
-
-    document.querySelectorAll('img[data-src]').forEach(img => {
-      imageObserver.observe(img);
-    });
-  }
-};
-
-/**
- * Получает оптимальный формат изображения для браузера
- */
-export const getOptimalImageFormat = async (): Promise<'avif' | 'webp' | 'jpeg'> => {
-  if (await supportsAVIF()) return 'avif';
-  if (await supportsWebP()) return 'webp';
-  return 'jpeg';
-};
-
-/**
- * Создает адаптивное изображение с множественными форматами
- */
-export const createPictureElement = (
-  src: string,
-  alt: string,
-  options: ImageOptimizationOptions = {}
-): HTMLPictureElement => {
-  const picture = document.createElement('picture');
-  const { width, height, quality = 85 } = options;
-  
-  // AVIF source
-  const avifSource = document.createElement('source');
-  avifSource.srcset = generateSrcSet(src);
-  avifSource.type = 'image/avif';
-  picture.appendChild(avifSource);
-  
-  // WebP source
-  const webpSource = document.createElement('source');
-  webpSource.srcset = generateSrcSet(src);
-  webpSource.type = 'image/webp';
-  picture.appendChild(webpSource);
-  
-  // Fallback img
-  const img = document.createElement('img');
-  img.src = generateOptimizedUrl(src, width, height, quality);
-  img.alt = alt;
-  img.loading = 'lazy';
-  img.decoding = 'async';
-  picture.appendChild(img);
-  
-  return picture;
 };
