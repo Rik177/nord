@@ -90,7 +90,6 @@
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
-    cursor: none;
   }
   
   body {
@@ -129,7 +128,6 @@
     text-decoration: underline;
     text-decoration-color: transparent;
     transition: text-decoration-color 0.2s ease;
-    cursor: none;
   }
 
   a:hover {
@@ -162,10 +160,6 @@
     @apply bg-gray-800 text-white border-gray-700;
   }
 
-  button {
-    cursor: none;
-  }
-
   /* Mobile-first improvements */
   @media (max-width: 768px) {
     body {
@@ -192,11 +186,6 @@
     a:not(.btn) {
       min-height: 48px;
       padding: 8px 0;
-    }
-    
-    /* Reset cursor for touch devices */
-    html, a, button {
-      cursor: auto;
     }
   }
 
@@ -554,12 +543,14 @@
 
 /* Hide default cursor on non-touch devices */
 @media (pointer: fine) {
-  * {
+  html.custom-cursor-enabled * {
     cursor: none !important;
   }
   
   /* Exceptions for specific elements */
-  input, textarea, select {
+  html.custom-cursor-enabled input, 
+  html.custom-cursor-enabled textarea, 
+  html.custom-cursor-enabled select {
     cursor: text !important;
   }
 }
