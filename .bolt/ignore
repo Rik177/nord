@@ -14,7 +14,7 @@ src/pages/TermsOfService.tsx
 src/pages/WarrantyTerms.tsx
 src/pages/Reviews.tsx
 src/components/services/ServicesSidebar.tsx
-# src/pages/catalog/*
+src/pages/catalog/*
 # src/pages/Home.tsx
 # src/main.tsx
 # src/components/home/AboutCompany.tsx
