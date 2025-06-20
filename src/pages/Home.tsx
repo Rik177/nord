@@ -74,13 +74,10 @@ function Home() {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet {...seoPages.home} structuredData={combinedStructuredData} />
       <Header />
-      <main id="main-content" className="pt-[169px]">
+      <main id="main-content" className="pt-[56px] md:pt-[169px]">
         <HeroSlider />
         <div className="content-visibility-auto">
-          <AdvancedFeatures />
-        </div>
-        <div className="content-visibility-auto">
-          <CompanyMap />
+          <Features />
         </div>
         <div className="content-visibility-auto">
           <Categories />
@@ -89,10 +86,10 @@ function Home() {
           <PopularProducts />
         </div>
         <div className="content-visibility-auto">
-          <FrequentlyOrdered />
+          <Services />
         </div>
         <div className="content-visibility-auto">
-          <Services />
+          <AdvancedFeatures />
         </div>
         <div className="content-visibility-auto">
           <AboutCompany />
@@ -101,13 +98,13 @@ function Home() {
           <LatestProjects />
         </div>
         <div className="content-visibility-auto">
-          <RecommendationLetters />
-        </div>
-        <div className="content-visibility-auto">
           <TestimonialsSection />
         </div>
         <div className="content-visibility-auto">
           <Partners />
+        </div>
+        <div className="content-visibility-auto">
+          <CompanyMap />
         </div>
         <div className="content-visibility-auto">
           <ContactForm />

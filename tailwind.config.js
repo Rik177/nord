@@ -45,7 +45,6 @@ export default {
           900: '#331900'
         },
         lightBg: '#F2F2F2',
-        // Улучшенные цвета для высокого контраста
         gray: {
           50: '#F9FAFB',
           100: '#F3F4F6',
@@ -64,12 +63,13 @@ export default {
         body: ['Open Sans', 'sans-serif'],
       },
       fontSize: {
+        // Mobile-first typography
         'h1-desktop': ['2.5rem', { lineHeight: '1.2', letterSpacing: '-0.025em' }],
-        'h1-mobile': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.025em' }],
+        'h1-mobile': ['2rem', { lineHeight: '1.2', letterSpacing: '-0.025em' }],
         'h2-desktop': ['2rem', { lineHeight: '1.3', letterSpacing: '-0.025em' }],
-        'h2-mobile': ['1.75rem', { lineHeight: '1.3', letterSpacing: '-0.025em' }],
+        'h2-mobile': ['1.5rem', { lineHeight: '1.3', letterSpacing: '-0.025em' }],
         'h3-desktop': ['1.5rem', { lineHeight: '1.4', letterSpacing: '-0.025em' }],
-        'h3-mobile': ['1.375rem', { lineHeight: '1.4', letterSpacing: '-0.025em' }],
+        'h3-mobile': ['1.25rem', { lineHeight: '1.4', letterSpacing: '-0.025em' }],
         'h4-desktop': ['1.25rem', { lineHeight: '1.5' }],
         'h4-mobile': ['1.125rem', { lineHeight: '1.5' }],
         'body-desktop': ['1rem', { lineHeight: '1.6' }],
@@ -125,7 +125,7 @@ export default {
         '18': '4.5rem',
         '88': '22rem',
       },
-      // Улучшенные размеры для касания
+      // Mobile-first touch targets
       minHeight: {
         'touch': '44px',
         'touch-large': '48px',
@@ -134,10 +134,19 @@ export default {
         'touch': '44px',
         'touch-large': '48px',
       },
+      // Mobile-first breakpoints
+      screens: {
+        'xs': '375px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
     },
   },
   plugins: [
-    // Плагин для улучшения доступности
+    // Plugin for accessibility and mobile improvements
     function({ addUtilities, theme }) {
       const newUtilities = {
         '.focus-ring': {
@@ -170,6 +179,25 @@ export default {
             animation: 'none !important',
             transition: 'none !important',
           },
+        },
+        // Mobile-first utilities
+        '.mobile-container': {
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          '@media (min-width: 640px)': {
+            paddingLeft: '1.5rem',
+            paddingRight: '1.5rem',
+          },
+        },
+        '.mobile-touch-target': {
+          minHeight: '48px',
+          minWidth: '48px',
+        },
+        '.mobile-safe-area': {
+          paddingLeft: 'env(safe-area-inset-left)',
+          paddingRight: 'env(safe-area-inset-right)',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingTop: 'env(safe-area-inset-top)',
         },
       };
       addUtilities(newUtilities);

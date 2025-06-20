@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Search, Phone, Heart, ChevronDown, Sun, Moon, MapPin, Building2, Box, Wrench, FolderOpen, Award, PanelTop} from 'lucide-react';
+import { Menu, Search, Phone, Heart, ChevronDown, Sun, Moon, MapPin, Building2, Box, Wrench, FolderOpen, Award, PanelTop, X, User, MessageCircle } from 'lucide-react';
 import GlobalSearch from '../shared/GlobalSearch';
 import ConsultationForm, { ConsultationFormData } from '../catalog/ConsultationForm';
 import SkipLink from '../shared/SkipLink';
@@ -73,6 +73,7 @@ const Header: React.FC = () => {
   const [currentCity, setCurrentCity] = useState('Москва');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showConsultationForm, setShowConsultationForm] = useState(false);
+  const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null);
   const [formData, setFormData] = useState<ConsultationFormData>({
     name: '',
     phone: '',
@@ -82,24 +83,21 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
+      setIsScrolled(window.scrollY > 10);
     };
 
-    // Initialize theme
     const initializeTheme = () => {
       const storedTheme = localStorage.getItem('theme');
       if (storedTheme) {
         setIsDarkMode(storedTheme === 'dark');
         updateTheme(storedTheme === 'dark');
       } else {
-        // Check if browser supports matchMedia
         if (window.matchMedia) {
           const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
           const prefersDark = darkModeQuery.matches;
           setIsDarkMode(prefersDark);
           updateTheme(prefersDark);
           
-          // Add listener for theme changes
           try {
             darkModeQuery.addEventListener('change', (e) => {
               if (!localStorage.getItem('theme')) {
@@ -108,7 +106,6 @@ const Header: React.FC = () => {
               }
             });
           } catch (e) {
-            // Fallback for older browsers
             darkModeQuery.addListener((e) => {
               if (!localStorage.getItem('theme')) {
                 setIsDarkMode(e.matches);
@@ -129,11 +126,8 @@ const Header: React.FC = () => {
   }, []);
 
   const updateTheme = (isDark: boolean) => {
-    // Update both html and body elements for better compatibility
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    
-    // Force repaint in some browsers
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
   };
 
@@ -146,14 +140,11 @@ const Header: React.FC = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const openGlobalSearch = () => {
-    setIsGlobalSearchOpen(true);
-  };
-
-  const closeGlobalSearch = () => {
-    setIsGlobalSearchOpen(false);
+    if (!isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -164,16 +155,24 @@ const Header: React.FC = () => {
     alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
   };
 
+  const toggleSubmenu = (label: string) => {
+    setExpandedSubmenu(expandedSubmenu === label ? null : label);
+  };
+
   // Закрытие мобильного меню при нажатии Escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isMobileMenuOpen) {
         setIsMobileMenuOpen(false);
+        document.body.style.overflow = '';
       }
     };
 
     document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
   }, [isMobileMenuOpen]);
 
   return (
@@ -181,16 +180,18 @@ const Header: React.FC = () => {
       <SkipLink />
       <header 
         className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-white dark:bg-gray-900 shadow-md' : 'bg-transparent'
+          isScrolled 
+            ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg' 
+            : 'bg-white dark:bg-gray-900'
         }`}
         role="banner"
       >
-        {/* Top bar */}
-        <div className="bg-primary dark:bg-gray-900 text-white py-2">
-          <div className="container mx-auto px-4 flex justify-between items-center">
+        {/* Top bar - скрыт на мобильных */}
+        <div className="hidden md:block bg-primary dark:bg-gray-800 text-white py-2">
+          <div className="container mx-auto px-4 flex justify-between items-center text-sm">
             <div className="flex items-center space-x-4">
               <button 
-                className="flex items-center text-sm hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary"
+                className="flex items-center hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary"
                 aria-label={`Текущий город: ${currentCity}. Нажмите для изменения`}
               >
                 <MapPin className="h-4 w-4 mr-1" aria-hidden="true" />
@@ -198,122 +199,116 @@ const Header: React.FC = () => {
               </button>
               <a 
                 href="tel:+71234567890" 
-                className="hidden md:flex items-center text-sm hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary"
+                className="flex items-center hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary"
                 aria-label="Позвонить по номеру +7 (123) 456-78-90"
               >
                 <Phone className="h-4 w-4 mr-1" aria-hidden="true" />
                 <span>+7 (123) 456-78-90</span>
               </a>
-              <a 
-                href="https://wa.me/71234567890" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hidden md:flex items-center text-sm hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary"
-                aria-label="Написать в WhatsApp (откроется в новом окне)"
-              >
-                <span>WhatsApp</span>
-              </a>
             </div>
-            <nav className="hidden md:flex space-x-4 text-sm" role="navigation" aria-label="Дополнительная навигация">
+            <nav className="flex space-x-4" role="navigation" aria-label="Дополнительная навигация">
               <a href="/about" className="hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary">О компании</a>
               <a href="/delivery" className="hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary">Доставка</a>
-              <a href="/warranty-terms" className="hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary">Оплата</a>
               <a href="/contacts" className="hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary">Контакты</a>
             </nav>
           </div>
         </div>
 
         {/* Main header */}
-        <div className={`transition-colors duration-300 ${
-          isScrolled ? 'bg-white dark:bg-gray-900' : 'bg-white/95 dark:bg-gray-900/95'
-        }`}>
-          <div className="container mx-auto px-4 py-4">
+        <div className="bg-white dark:bg-gray-900">
+          <div className="container mx-auto px-4 py-3 md:py-4">
             <div className="flex items-center justify-between">
               {/* Logo */}
               <Link 
                 to="/" 
-                className="flex items-center space-x-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="flex items-center space-x-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 flex-shrink-0"
                 aria-label="НОРДИНЖИНИРИНГ - перейти на главную страницу"
               >
-                <span className="font-heading font-bold text-2xl text-primary dark:text-white">НОРД</span>
-                <span className="font-heading font-bold text-2xl text-secondary">ИНЖИНИРИНГ</span>
+                <span className="font-heading font-bold text-xl md:text-2xl text-primary dark:text-white">НОРД</span>
+                <span className="font-heading font-bold text-xl md:text-2xl text-secondary">ИНЖИНИРИНГ</span>
               </Link>
 
-              {/* Search - desktop */}
+              {/* Mobile actions */}
+              <div className="flex items-center space-x-2 md:hidden">
+                <button
+                  onClick={() => setIsGlobalSearchOpen(true)}
+                  className="p-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  aria-label="Открыть поиск"
+                >
+                  <Search className="h-6 w-6" />
+                </button>
+                <a
+                  href="tel:+71234567890"
+                  className="p-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  aria-label="Позвонить"
+                >
+                  <Phone className="h-6 w-6" />
+                </a>
+                <button
+                  onClick={toggleMobileMenu}
+                  className="p-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+                  aria-expanded={isMobileMenuOpen}
+                >
+                  {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </button>
+              </div>
+
+              {/* Desktop search */}
               <div className="hidden md:flex flex-1 max-w-xl mx-8">
                 <GlobalSearch className="w-full" />
               </div>
 
-              {/* Actions - desktop */}
-              <div className="hidden md:flex items-center space-x-6">
+              {/* Desktop actions */}
+              <div className="hidden md:flex items-center space-x-4">
                 <button 
-                  className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 p-2"
                   aria-label="Избранные товары"
                 >
-                  <Heart className="h-6 w-6" aria-hidden="true" />
+                  <Heart className="h-5 w-5" aria-hidden="true" />
                   <span className="text-xs mt-1">Избранное</span>
                 </button>
                 <button 
                   onClick={toggleDarkMode} 
-                  className="flex flex-col h-11 w-11 items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 p-2"
                   aria-label={isDarkMode ? 'Включить светлую тему' : 'Включить темную тему'}
                 >
                   {isDarkMode ? (
                     <>
-                      <Sun className="h-6 w-6" aria-hidden="true" />
+                      <Sun className="h-5 w-5" aria-hidden="true" />
                       <span className="text-xs mt-1">Светлая</span>
                     </>
                   ) : (
                     <>
-                      <Moon className="h-6 w-6" aria-hidden="true" />
+                      <Moon className="h-5 w-5" aria-hidden="true" />
                       <span className="text-xs mt-1">Темная</span>
                     </>
                   )}
                 </button>
-                <a
-                  href="tel:+71234567890"
-                  className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                  aria-label="Позвонить по номеру +7 (123) 456-78-90"
-                >
-                  <Phone className="h-6 w-6" aria-hidden="true" />
-                  <span className="text-xs mt-1">Звонок</span>
-                </a>
                 <button 
                   className="bg-accent hover:bg-opacity-90 text-white font-semibold px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
                   onClick={() => setShowConsultationForm(true)}
                 >
-                  Заказать консультацию
+                  Консультация
                 </button>
               </div>
-
-              {/* Mobile menu button */}
-              <button
-                onClick={toggleMobileMenu}
-                className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
-                aria-expanded={isMobileMenuOpen}
-                aria-controls="mobile-menu"
-              >
-                <Menu className="h-6 w-6" aria-hidden="true" />
-              </button>
             </div>
           </div>
 
-          {/* Main navigation */}
+          {/* Desktop navigation */}
           <nav 
             className="hidden md:block border-t border-gray-200 dark:border-gray-700"
             role="navigation"
             aria-label="Основная навигация"
           >
             <div className="container mx-auto px-4">
-              <ul className="flex items-center space-x-6 py-4">
+              <ul className="flex items-center space-x-6 py-3">
                 {menuItems.map((item, index) => (
                   <li key={index} className="relative group">
                     <Link
                       to={item.path}
-                      className="flex items-center text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                      className="flex items-center text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 py-2"
                       aria-haspopup={item.submenu ? "true" : "false"}
-                      aria-expanded={item.submenu ? "false" : undefined}
                     >
                       {item.icon && <span className="mr-2" aria-hidden="true">{item.icon}</span>}
                       <span>{item.label}</span>
@@ -321,7 +316,7 @@ const Header: React.FC = () => {
                     </Link>
                     {item.submenu && (
                       <div 
-                        className="absolute left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200 z-50"
+                        className="absolute left-0 mt-1 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200 z-50"
                         role="menu"
                         aria-label={`Подменю ${item.label}`}
                       >
@@ -342,7 +337,7 @@ const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/sales" 
-                    className="text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                    className="text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 py-2"
                   >
                     Акции
                   </Link>
@@ -350,7 +345,7 @@ const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/contacts" 
-                    className="text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                    className="text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 py-2"
                   >
                     Контакты
                   </Link>
@@ -358,7 +353,7 @@ const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/tools" 
-                    className="text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                    className="text-gray-600 dark:text-gray-300 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 py-2"
                   >
                     Инструменты
                   </Link>
@@ -379,7 +374,6 @@ const Header: React.FC = () => {
         
         {/* Mobile menu */}
         <div
-          id="mobile-menu"
           className={`fixed top-0 right-0 w-full max-w-sm h-full bg-white dark:bg-gray-900 z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
             isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
@@ -388,43 +382,81 @@ const Header: React.FC = () => {
           aria-labelledby="mobile-menu-title"
         >
           <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
-              <h2 id="mobile-menu-title" className="font-heading font-bold text-xl text-primary dark:text-white">
+            {/* Mobile menu header */}
+            <div className="flex items-center justify-between p-4 border-b dark:border-gray-700 bg-primary dark:bg-gray-800">
+              <h2 id="mobile-menu-title" className="font-heading font-bold text-lg text-white">
                 Меню
               </h2>
               <button
                 onClick={toggleMobileMenu}
-                className="p-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
                 aria-label="Закрыть меню"
               >
-                <Menu className="h-6 w-6" aria-hidden="true" />
+                <X className="h-6 w-6" />
               </button>
             </div>
 
+            {/* Mobile menu content */}
             <div className="flex-1 overflow-y-auto">
-              <div className="p-4">
-                <div className="mb-4">
-                  <GlobalSearch className="w-full" />
+              {/* Quick actions */}
+              <div className="p-4 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href="tel:+71234567890"
+                    className="flex items-center justify-center p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                    onClick={toggleMobileMenu}
+                  >
+                    <Phone className="h-5 w-5 mr-2" />
+                    <span className="font-semibold">Звонок</span>
+                  </a>
+                  <button
+                    onClick={() => {
+                      setShowConsultationForm(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="flex items-center justify-center p-3 bg-accent text-white rounded-lg hover:bg-opacity-90 transition-colors"
+                  >
+                    <MessageCircle className="h-5 w-5 mr-2" />
+                    <span className="font-semibold">Консультация</span>
+                  </button>
                 </div>
+              </div>
 
-                <nav className="space-y-4" role="navigation" aria-label="Мобильная навигация">
+              {/* Navigation */}
+              <nav className="p-4" role="navigation" aria-label="Мобильная навигация">
+                <div className="space-y-2">
                   {menuItems.map((item, index) => (
                     <div key={index}>
-                      <Link
-                        to={item.path}
-                        className="flex items-center py-3 text-primary dark:text-white font-semibold min-h-[44px] text-base focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                        onClick={toggleMobileMenu}
-                      >
-                        {item.icon && <span className="mr-2" aria-hidden="true">{item.icon}</span>}
-                        <span>{item.label}</span>
-                      </Link>
-                      {item.submenu && (
-                        <div className="ml-6 space-y-2 mt-2">
+                      <div className="flex items-center justify-between">
+                        <Link
+                          to={item.path}
+                          className="flex items-center py-3 text-primary dark:text-white font-semibold text-base flex-1"
+                          onClick={!item.submenu ? toggleMobileMenu : undefined}
+                        >
+                          {item.icon && <span className="mr-3" aria-hidden="true">{item.icon}</span>}
+                          <span>{item.label}</span>
+                        </Link>
+                        {item.submenu && (
+                          <button
+                            onClick={() => toggleSubmenu(item.label)}
+                            className="p-2 text-gray-400 hover:text-primary dark:hover:text-white"
+                            aria-label={`${expandedSubmenu === item.label ? 'Скрыть' : 'Показать'} подменю ${item.label}`}
+                          >
+                            <ChevronDown 
+                              className={`h-5 w-5 transition-transform ${
+                                expandedSubmenu === item.label ? 'rotate-180' : ''
+                              }`} 
+                            />
+                          </button>
+                        )}
+                      </div>
+                      {item.submenu && expandedSubmenu === item.label && (
+                        <div className="ml-8 space-y-1 pb-2">
                           {item.submenu.map((subItem, subIndex) => (
                             <Link
                               key={subIndex}
                               to={subItem.path}
-                              className="block py-2 text-gray-600 dark:text-gray-300 hover:text-secondary min-h-[44px] flex items-center text-base focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                              className="block py-2 text-gray-600 dark:text-gray-300 hover:text-secondary text-base"
                               onClick={toggleMobileMenu}
                             >
                               {subItem.label}
@@ -434,86 +466,62 @@ const Header: React.FC = () => {
                       )}
                     </div>
                   ))}
+                  
+                  {/* Additional links */}
                   <Link 
                     to="/sales" 
-                    className="block py-3 text-gray-600 dark:text-gray-300 min-h-[44px] flex items-center text-base focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                    className="flex items-center py-3 text-gray-600 dark:text-gray-300 text-base"
                     onClick={toggleMobileMenu}
                   >
                     Акции
                   </Link>
                   <Link 
                     to="/contacts" 
-                    className="block py-3 text-gray-600 dark:text-gray-300 min-h-[44px] flex items-center text-base focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                    className="flex items-center py-3 text-gray-600 dark:text-gray-300 text-base"
                     onClick={toggleMobileMenu}
                   >
                     Контакты
                   </Link>
                   <Link 
                     to="/tools" 
-                    className="block py-3 text-gray-600 dark:text-gray-300 min-h-[44px] flex items-center text-base focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                    className="flex items-center py-3 text-gray-600 dark:text-gray-300 text-base"
                     onClick={toggleMobileMenu}
                   >
                     Инструменты
                   </Link>
-                </nav>
+                </div>
+              </nav>
 
-                <div className="mt-6 pt-6 border-t dark:border-gray-700">
-                  <a 
-                    href="tel:+71234567890" 
-                    className="flex items-center text-primary dark:text-white mb-4 min-h-[44px] text-base focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                  >
-                    <Phone className="h-5 w-5 mr-2" aria-hidden="true" />
-                    <span>+7 (123) 456-78-90</span>
-                  </a>
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Мессенджеры:</p>
-                    <div className="flex space-x-3">
-                      <a
-                        href="https://wa.me/71234567890"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-12 h-12 bg-green-500 hover:bg-green-600 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                        aria-label="Написать в WhatsApp (откроется в новом окне)"
-                      >
-                        <span className="text-white text-xs font-bold" aria-hidden="true">WA</span>
-                      </a>
-                      <a
-                        href="https://t.me/nordengineering"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                        aria-label="Написать в Telegram (откроется в новом окне)"
-                      >
-                        <span className="text-white text-xs font-bold" aria-hidden="true">TG</span>
-                      </a>
-                    </div>
-                  </div>
+              {/* Mobile footer */}
+              <div className="mt-auto p-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Тема оформления:</span>
                   <button 
-                    className="btn btn-accent w-full mb-4 min-h-[48px] text-base focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-                    onClick={() => {
-                      setShowConsultationForm(true);
-                      setIsMobileMenuOpen(false);
-                    }}
+                    onClick={toggleDarkMode}
+                    className="flex items-center p-2 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
                   >
-                    Заказать консультацию
+                    {isDarkMode ? (
+                      <>
+                        <Sun className="h-4 w-4 mr-2" />
+                        <span className="text-sm">Светлая</span>
+                      </>
+                    ) : (
+                      <>
+                        <Moon className="h-4 w-4 mr-2" />
+                        <span className="text-sm">Темная</span>
+                      </>
+                    )}
                   </button>
-                  <div className="flex justify-between">
-                    <button 
-                      className="btn btn-outline flex-1 mr-2 min-h-[48px] text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                      aria-label="Избранные товары"
-                    >
-                      <Heart className="h-5 w-5 mr-2" aria-hidden="true" />
-                      Избранное
-                    </button>
-                    <button 
-                      onClick={toggleDarkMode}
-                      className="btn btn-outline flex-1 ml-2 min-h-[48px] text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                      aria-label={isDarkMode ? 'Включить светлую тему' : 'Включить темную тему'}
-                    >
-                      {isDarkMode ? <Sun className="h-5 w-5 mr-2" aria-hidden="true" /> : <Moon className="h-5 w-5 mr-2" aria-hidden="true" />}
-                      {isDarkMode ? 'Светлая' : 'Темная'}
-                    </button>
+                </div>
+                
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-2">
+                    <MapPin className="h-4 w-4 mr-1 text-gray-500" />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{currentCity}</span>
                   </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Пн-Пт: 9:00-18:00, Сб: 10:00-16:00
+                  </p>
                 </div>
               </div>
             </div>
@@ -523,7 +531,7 @@ const Header: React.FC = () => {
       
       <GlobalSearch 
         isOpen={isGlobalSearchOpen} 
-        onClose={closeGlobalSearch} 
+        onClose={() => setIsGlobalSearchOpen(false)} 
       />
       
       {showConsultationForm && (

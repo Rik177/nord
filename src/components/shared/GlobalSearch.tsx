@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, X, Clock, TrendingUp } from 'lucide-react';
+import { Search, X, Clock, TrendingUp, ArrowRight } from 'lucide-react';
 
 interface SearchResult {
   id: string;
@@ -143,11 +143,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     }
   };
 
-  // If this is the modal version
+  // Modal version for mobile
   if (isOpen && onClose) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center pt-20">
-        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl mx-4">
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center pt-16 sm:pt-20 px-4">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-xl">
           {/* Search Input */}
           <div className="p-4 border-b dark:border-gray-700">
             <div className="relative">
@@ -159,7 +159,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full pl-10 pr-10 py-3 bg-gray-50 dark:bg-gray-800 border-0 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-lg"
+                className="w-full pl-10 pr-10 py-3 bg-gray-50 dark:bg-gray-800 border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-base"
               />
               <button
                 onClick={onClose}
@@ -171,7 +171,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
           </div>
 
           {/* Search Results */}
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-[70vh] overflow-y-auto">
             {isLoading && (
               <div className="p-4 text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
@@ -216,6 +216,18 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                     </div>
                   </Link>
                 ))}
+                
+                {/* View all results */}
+                <div className="p-3 border-t dark:border-gray-700 mt-2">
+                  <Link
+                    to={`/catalog?search=${encodeURIComponent(query)}`}
+                    onClick={onClose}
+                    className="flex items-center justify-center text-primary hover:text-secondary"
+                  >
+                    <span>Все результаты</span>
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </div>
               </div>
             )}
 
@@ -224,6 +236,14 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 <p className="text-gray-500 dark:text-gray-400">
                   По запросу "{query}" ничего не найдено
                 </p>
+                <div className="mt-4">
+                  <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">Попробуйте:</h4>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                    <li>• Проверить правильность написания</li>
+                    <li>• Использовать другие ключевые слова</li>
+                    <li>• Использовать более общие термины</li>
+                  </ul>
+                </div>
               </div>
             )}
 
@@ -287,7 +307,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
           onChange={(e) => setQuery(e.target.value)}
           onFocus={handleInputFocus}
           onKeyDown={handleKeyDown}
-          className="w-full pl-10 pr-10 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-gray-900 dark:text-white"
+          className="w-full pl-10 pr-10 py-2 sm:py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-gray-900 dark:text-white text-sm sm:text-base"
         />
         {query && (
           <button
@@ -346,6 +366,18 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   </div>
                 </Link>
               ))}
+              
+              {/* View all results */}
+              <div className="p-2 border-t dark:border-gray-700 mt-1">
+                <Link
+                  to={`/catalog?search=${encodeURIComponent(query)}`}
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="flex items-center justify-center text-primary hover:text-secondary text-sm"
+                >
+                  <span>Все результаты</span>
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
             </div>
           )}
 

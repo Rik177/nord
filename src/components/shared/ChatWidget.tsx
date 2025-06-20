@@ -21,6 +21,8 @@ const ChatWidget: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isFirstOpen, setIsFirstOpen] = useState(true);
+  const [showNotification, setShowNotification] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -29,6 +31,17 @@ const ChatWidget: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Show notification after 15 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isOpen) {
+        setShowNotification(true);
+      }
+    }, 15000);
+
+    return () => clearTimeout(timer);
+  }, [isOpen]);
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
@@ -71,34 +84,63 @@ const ChatWidget: React.FC = () => {
     });
   };
 
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
+    setShowNotification(false);
+    
+    if (isFirstOpen && !isOpen) {
+      setIsFirstOpen(false);
+      // Add welcome message after a delay
+      setTimeout(() => {
+        const welcomeMessage: Message = {
+          id: (Date.now() + 2).toString(),
+          text: 'Чем я могу вам помочь сегодня? Интересует подбор оборудования, монтаж или сервисное обслуживание?',
+          sender: 'operator',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, welcomeMessage]);
+      }, 1000);
+    }
+  };
+
   return (
     <>
       {/* Chat Button */}
       <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 bg-accent hover:bg-opacity-90 text-white rounded-full p-4 shadow-lg transition-all duration-300 ${
+        onClick={toggleChat}
+        className={`fixed bottom-20 sm:bottom-24 right-4 sm:right-6 z-40 bg-primary hover:bg-primary/90 text-white rounded-full p-3 sm:p-4 shadow-lg transition-all duration-300 ${
           isOpen ? 'scale-0' : 'scale-100'
         }`}
         aria-label="Открыть чат"
       >
         <MessageCircle className="h-6 w-6" />
-        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+        {showNotification && (
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+        )}
+        
+        {/* Notification bubble */}
+        {showNotification && (
+          <div className="absolute -top-12 -right-2 bg-white text-primary text-xs font-semibold px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+            Нужна помощь?
+            <div className="absolute bottom-0 right-4 transform translate-y-1/2 rotate-45 w-2 h-2 bg-white"></div>
+          </div>
+        )}
       </button>
 
       {/* Chat Window */}
       <div
-        className={`fixed bottom-6 right-6 z-50 w-80 h-96 bg-white dark:bg-gray-900 rounded-lg shadow-xl transition-all duration-300 ${
+        className={`fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 w-[calc(100%-2rem)] sm:w-80 md:w-96 h-[500px] max-h-[80vh] bg-white dark:bg-gray-900 rounded-xl shadow-xl transition-all duration-300 overflow-hidden ${
           isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
         }`}
       >
         {/* Header */}
-        <div className="bg-primary text-white p-4 rounded-t-lg flex items-center justify-between">
+        <div className="bg-primary text-white p-4 rounded-t-xl flex items-center justify-between">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center mr-3">
-              <User className="h-4 w-4" />
+            <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center mr-3">
+              <User className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-semibold">Онлайн консультант</h3>
+              <h3 className="font-semibold text-base sm:text-lg">Онлайн консультант</h3>
               <div className="flex items-center text-xs text-green-300">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
                 В сети
@@ -106,31 +148,34 @@ const ChatWidget: React.FC = () => {
             </div>
           </div>
           <button
-            onClick={() => setIsOpen(false)}
-            className="text-white hover:text-gray-300"
+            onClick={toggleChat}
+            className="text-white hover:text-gray-300 p-1"
+            aria-label="Закрыть чат"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="h-64 overflow-y-auto p-4 space-y-3">
+        <div className="h-[calc(100%-128px)] overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-800">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-xs px-3 py-2 rounded-lg ${
+                className={`max-w-[85%] px-3 py-2 rounded-lg ${
                   message.sender === 'user'
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                    ? 'bg-primary text-white rounded-tr-none'
+                    : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-tl-none shadow-sm'
                 }`}
               >
                 <p className="text-sm">{message.text}</p>
-                <div className="flex items-center justify-end mt-1">
-                  <Clock className="h-3 w-3 mr-1 opacity-60" />
-                  <span className="text-xs opacity-60">{formatTime(message.timestamp)}</span>
+                <div className={`flex items-center justify-end mt-1 ${
+                  message.sender === 'user' ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'
+                }`}>
+                  <Clock className="h-3 w-3 mr-1" />
+                  <span className="text-xs">{formatTime(message.timestamp)}</span>
                 </div>
               </div>
             </div>
@@ -138,7 +183,7 @@ const ChatWidget: React.FC = () => {
           
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-lg">
+              <div className="bg-white dark:bg-gray-700 px-3 py-2 rounded-lg rounded-tl-none shadow-sm">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -151,7 +196,7 @@ const ChatWidget: React.FC = () => {
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t dark:border-gray-700">
+        <div className="p-4 border-t dark:border-gray-700 bg-white dark:bg-gray-900">
           <div className="flex space-x-2">
             <input
               type="text"
@@ -159,13 +204,14 @@ const ChatWidget: React.FC = () => {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Введите сообщение..."
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white text-sm"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white text-sm"
             />
             <button
               onClick={handleSendMessage}
-              className="bg-primary hover:bg-opacity-90 text-white p-2 rounded-md transition-colors"
+              className="bg-primary hover:bg-opacity-90 text-white p-2 rounded-lg transition-colors"
+              disabled={!inputValue.trim()}
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-5 w-5" />
             </button>
           </div>
           <div className="mt-2 flex items-center justify-center">
