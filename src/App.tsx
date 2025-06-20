@@ -14,6 +14,8 @@ import Brands from './pages/Brands';
 import Catalog from './pages/catalog/Catalog';
 import CategoryPage from './pages/catalog/CategoryPage';
 import ProductPage from './pages/catalog/ProductPage';
+import EnhancedCategoryPage from './pages/catalog/EnhancedCategoryPage';
+import EnhancedProductPage from './pages/catalog/EnhancedProductPage';
 
 // Страницы услуг
 import Services from './pages/Services';
@@ -59,8 +61,8 @@ function App() {
             
             {/* Каталог */}
             <Route path="/catalog" element={<Catalog />} />
-            <Route path="/catalog/:category" element={<CategoryPage />} />
-            <Route path="/catalog/:category/:productId" element={<ProductPage />} />
+            <Route path="/catalog/:category" element={<EnhancedCategoryPage />} />
+            <Route path="/catalog/:category/:productId" element={<EnhancedProductPage />} />
             
             {/* Услуги */}
             <Route path="/services" element={<Services />} />
