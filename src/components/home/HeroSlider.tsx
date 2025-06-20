@@ -55,7 +55,7 @@ const slides: Slide[] = [
 
 const HeroSlider: React.FC = () => {
   return (
-    <section className="relative h-[70vh] sm:h-[80vh] lg:h-[90vh] min-h-[500px] overflow-hidden bg-primary">
+    <section className="relative h-[400px] sm:h-[450px] lg:h-[500px] overflow-hidden bg-primary">
       <Swiper
         modules={[Navigation, Pagination, Autoplay, EffectFade, A11y]}
         slidesPerView={1}
@@ -112,10 +112,10 @@ const HeroSlider: React.FC = () => {
               {/* Content */}
               <div className="relative h-full container mx-auto px-4 flex items-center z-10">
                 <div className="max-w-full sm:max-w-2xl text-white">
-                  <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+                  <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 leading-tight">
                     {slide.title}
                   </h1>
-                  <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 leading-relaxed opacity-90 max-w-lg">
+                  <p className="text-base sm:text-lg mb-4 sm:mb-6 leading-relaxed opacity-90 max-w-lg">
                     {slide.description}
                   </p>
                   
@@ -123,7 +123,7 @@ const HeroSlider: React.FC = () => {
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <a
                       href={slide.buttonLink}
-                      className="inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-300 hover:shadow-lg text-center min-h-[48px] text-base sm:text-lg"
+                      className="inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow-lg text-center min-h-[48px] text-base"
                     >
                       <span>{slide.buttonText}</span>
                       <ArrowRight className="ml-2 h-5 w-5" />
@@ -132,7 +132,7 @@ const HeroSlider: React.FC = () => {
                     {slide.secondaryButtonText && (
                       <a
                         href={slide.secondaryButtonLink}
-                        className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-300 border border-white/20 hover:border-white/30 text-center min-h-[48px] text-base sm:text-lg"
+                        className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 border border-white/20 hover:border-white/30 text-center min-h-[48px] text-base"
                       >
                         {slide.secondaryButtonText === 'Консультация' && <Phone className="mr-2 h-5 w-5" />}
                         {slide.secondaryButtonText === 'Калькулятор' && <Calculator className="mr-2 h-5 w-5" />}
@@ -148,30 +148,20 @@ const HeroSlider: React.FC = () => {
         ))}
         
         {/* Custom Navigation - скрыта на мобильных */}
-        <div className="hero-swiper-button-prev hidden sm:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 lg:w-14 lg:h-14 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full items-center justify-center cursor-pointer transition-all duration-300 border border-white/20">
-          <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="hero-swiper-button-prev hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full items-center justify-center cursor-pointer transition-all duration-300 border border-white/20">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </div>
-        <div className="hero-swiper-button-next hidden sm:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 lg:w-14 lg:h-14 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full items-center justify-center cursor-pointer transition-all duration-300 border border-white/20">
-          <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="hero-swiper-button-next hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full items-center justify-center cursor-pointer transition-all duration-300 border border-white/20">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </div>
         
         {/* Custom Pagination */}
-        <div className="hero-swiper-pagination absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 z-10"></div>
+        <div className="hero-swiper-pagination absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10"></div>
       </Swiper>
-      
-      {/* Mobile scroll indicator */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:hidden">
-        <div className="flex flex-col items-center text-white/80">
-          <span className="text-xs mb-2">Листайте вниз</span>
-          <div className="w-1 h-8 bg-white/30 rounded-full overflow-hidden">
-            <div className="w-full h-2 bg-white/60 rounded-full animate-bounce"></div>
-          </div>
-        </div>
-      </div>
     </section>
   );
 };
