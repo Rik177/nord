@@ -7,7 +7,7 @@ import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import ProductFilters from '../../components/catalog/ProductFilters';
 import EnhancedProductCard from '../../components/catalog/EnhancedProductCard';
 import ProductQuickView from '../../components/catalog/ProductQuickView';
-import { Search, Filter, Grid, List, SlidersHorizontal, TrendingUp, Award, Zap } from 'lucide-react';
+import { Search, Filter, Grid, List, SlidersHorizontal, TrendingUp, Award, Zap, Shield } from 'lucide-react';
 import { enhancedProductDatabase, getProductsByCategory, EnhancedProduct } from '../../data/enhancedProductData';
 
 const categoryInfo = {
