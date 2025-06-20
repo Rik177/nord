@@ -24,7 +24,7 @@ import {
   localBusinessSchema,
 } from "../utils/schema";
 import { initPerformanceOptimizations, registerServiceWorker } from "../utils/performanceOptimizations";
-import { initCursorEffects, initHoverEffects, initScrollAnimations } from "../utils/cursorEffects";
+import { initHoverEffects, initScrollAnimations } from "../utils/cursorEffects";
 
 function Home() {
   useEffect(() => {
@@ -35,7 +35,6 @@ function Home() {
     registerServiceWorker();
     
     // Инициализация интерактивных эффектов
-    initCursorEffects();
     initHoverEffects();
     
     // Инициализация анимаций при скролле

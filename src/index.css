@@ -15,13 +15,6 @@
   --light-bg: #F2F2F2;
   --white: #FFFFFF;
   color-scheme: light;
-  
-  /* Custom cursor variables */
-  --cursor-size: 30px;
-  --cursor-inner-size: 8px;
-  --cursor-color: rgba(26, 60, 110, 0.5);
-  --cursor-hover-color: rgba(255, 125, 0, 0.5);
-  --cursor-click-scale: 0.8;
 }
 
 /* System dark mode preference */
@@ -34,7 +27,6 @@
     --primary-color: #4D9DE0;
     --light-bg: #121212;
     --white: #1E1E1E;
-    --cursor-color: rgba(77, 157, 224, 0.5);
   }
 }
 
@@ -44,7 +36,6 @@
   --primary-color: #4D9DE0;
   --light-bg: #121212;
   --white: #1E1E1E;
-  --cursor-color: rgba(77, 157, 224, 0.5);
 }
 
 /* Force light mode */
@@ -53,7 +44,6 @@
   --primary-color: #1A3C6E;
   --light-bg: #F2F2F2;
   --white: #FFFFFF;
-  --cursor-color: rgba(26, 60, 110, 0.5);
 }
 
 /* Critical CSS - инлайн для первого рендера */
@@ -151,7 +141,6 @@
     @apply bg-white text-gray-900 border-gray-300;
     font-size: 1rem;
     min-height: 44px;
-    cursor: text;
   }
 
   [data-theme="dark"] input,
@@ -495,70 +484,6 @@
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
-}
-
-/* Custom cursor styles */
-.cursor-outer {
-  position: fixed;
-  width: var(--cursor-size);
-  height: var(--cursor-size);
-  border: 1px solid var(--cursor-color);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
-  mix-blend-mode: difference;
-}
-
-.cursor-inner {
-  position: fixed;
-  width: var(--cursor-inner-size);
-  height: var(--cursor-inner-size);
-  background-color: var(--cursor-color);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  transition: width 0.1s, height 0.1s, background-color 0.1s;
-}
-
-.cursor-hover {
-  width: calc(var(--cursor-size) * 1.5);
-  height: calc(var(--cursor-size) * 1.5);
-  background-color: transparent;
-  border-color: var(--cursor-hover-color);
-}
-
-.cursor-inner.cursor-hover {
-  width: calc(var(--cursor-inner-size) * 1.5);
-  height: calc(var(--cursor-inner-size) * 1.5);
-  background-color: var(--cursor-hover-color);
-}
-
-.cursor-click {
-  transform: translate(-50%, -50%) scale(var(--cursor-click-scale));
-}
-
-/* Hide default cursor on non-touch devices */
-@media (pointer: fine) {
-  html.custom-cursor-enabled * {
-    cursor: none !important;
-  }
-  
-  /* Exceptions for specific elements */
-  html.custom-cursor-enabled input, 
-  html.custom-cursor-enabled textarea, 
-  html.custom-cursor-enabled select {
-    cursor: text !important;
-  }
-}
-
-/* Disable custom cursor on touch devices */
-@media (pointer: coarse) {
-  .cursor-outer, .cursor-inner {
-    display: none !important;
   }
 }
 
@@ -1079,12 +1004,11 @@
 
 /* Disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .cursor-outer, .cursor-inner {
-    display: none !important;
-  }
-  
   * {
-    cursor: auto !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
   
   .fade-in-element, .scale-in-element, .slide-in-element,
