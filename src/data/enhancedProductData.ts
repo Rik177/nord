@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Building, Factory, Store, Hotel, Hospital, School, ShoppingCart, Zap, Shield, Snowflake, Wind, Thermometer, Volume2, Wifi, Timer, Filter, Droplets, Sun, Moon } from 'lucide-react';
+import { Home, Building, Factory, Store, Hotel, Guitar as Hospital, School, ShoppingCart, Zap, Shield, Snowflake, Wind, Thermometer, Volume2, Wifi, Timer, Filter, Droplets, Sun, Moon } from 'lucide-react';
 
 export interface ProductSpecification {
   category: string;
