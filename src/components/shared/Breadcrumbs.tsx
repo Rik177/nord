@@ -8,6 +8,8 @@ interface BreadcrumbConfig {
   dynamic?: boolean;
 }
 
+
+
 const routes: BreadcrumbConfig[] = [
   { path: 'services', label: 'Услуги' },
   { path: 'blog', label: 'Блог' },
