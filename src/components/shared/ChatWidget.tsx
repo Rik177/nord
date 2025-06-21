@@ -108,9 +108,12 @@ const ChatWidget: React.FC = () => {
       {/* Chat Button */}
       <button
         onClick={toggleChat}
-        className={`fixed bottom-20 sm:bottom-24 right-4 sm:right-6 z-40 bg-primary hover:bg-primary/90 text-white rounded-full p-3 sm:p-4 shadow-lg transition-all duration-300 ${
+        className={`fixed bottom-52 right-6 z-40 bg-primary hover:bg-primary/90 text-white rounded-full p-3 sm:p-4 shadow-lg transition-all duration-300 ${
           isOpen ? 'scale-0' : 'scale-100'
         }`}
+        style={{
+          transformOrigin: 'bottom right'
+        }}
         aria-label="Открыть чат"
       >
         <MessageCircle className="h-6 w-6" />
@@ -207,7 +210,7 @@ const ChatWidget: React.FC = () => {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Введите сообщение..."
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white text-sm"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg dark:bg-gray-800 dark:text-white text-sm"
             />
             <button
               onClick={handleSendMessage}

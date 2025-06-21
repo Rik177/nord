@@ -70,6 +70,24 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Focus management - hide outline for mouse users, show for keyboard users */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+.focus-visible:focus {
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
+}
+
+/* Fallback for browsers without :focus-visible support */
+@supports not selector(:focus-visible) {
+  :focus {
+    outline: 2px solid #4D9DE0;
+    outline-offset: 2px;
+  }
+}
+
 @layer base {
   html {
     font-family: 'Open Sans', sans-serif;
@@ -124,7 +142,14 @@
     text-decoration-color: currentColor;
   }
 
-  a:focus {
+  /* Remove default focus outline for mouse users */
+  a:focus:not(.focus-visible) {
+    outline: none;
+  }
+
+  /* Show focus outline only for keyboard users */
+  a:focus-visible,
+  a.focus-visible {
     outline: 2px solid #4D9DE0;
     outline-offset: 2px;
     text-decoration-color: currentColor;
@@ -147,6 +172,27 @@
   [data-theme="dark"] textarea,
   [data-theme="dark"] select {
     @apply bg-gray-800 text-white border-gray-700;
+  }
+
+  /* Remove default focus outline for mouse users on form elements */
+  input:focus:not(.focus-visible),
+  textarea:focus:not(.focus-visible),
+  select:focus:not(.focus-visible),
+  button:focus:not(.focus-visible) {
+    outline: none;
+  }
+
+  /* Show focus outline only for keyboard users on form elements */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible,
+  input.focus-visible,
+  textarea.focus-visible,
+  select.focus-visible,
+  button.focus-visible {
+    outline: 2px solid #4D9DE0;
+    outline-offset: 2px;
   }
 
   /* Mobile-first improvements */
@@ -195,14 +241,15 @@
     top: 6px;
   }
 
-  /* Улучшенная видимость фокуса */
-  *:focus {
+  /* Улучшенная видимость фокуса только для клавиатуры */
+  *:focus-visible,
+  *.focus-visible {
     outline: 2px solid #4D9DE0;
     outline-offset: 2px;
   }
 
-  /* Скрытие outline для мыши, но сохранение для клавиатуры */
-  .js-focus-visible *:focus:not(.focus-visible) {
+  /* Скрытие outline для мыши */
+  *:focus:not(.focus-visible) {
     outline: none;
   }
 
@@ -235,7 +282,14 @@
     overflow: hidden;
   }
 
-  .btn:focus {
+  /* Remove default focus outline for mouse users on buttons */
+  .btn:focus:not(.focus-visible) {
+    outline: none;
+  }
+
+  /* Show focus outline only for keyboard users on buttons */
+  .btn:focus-visible,
+  .btn.focus-visible {
     outline: 2px solid #4D9DE0;
     outline-offset: 2px;
   }
@@ -279,7 +333,8 @@
     border-color: #1A3C6E;
   }
 
-  .btn-primary:focus {
+  .btn-primary:focus-visible,
+  .btn-primary.focus-visible {
     border-color: #fff;
     box-shadow: 0 0 0 2px #1A3C6E;
   }
@@ -289,7 +344,8 @@
     border-color: #4D9DE0;
   }
 
-  .btn-secondary:focus {
+  .btn-secondary:focus-visible,
+  .btn-secondary.focus-visible {
     border-color: #fff;
     box-shadow: 0 0 0 2px #4D9DE0;
   }
@@ -299,7 +355,8 @@
     border-color: #FF7D00;
   }
 
-  .btn-accent:focus {
+  .btn-accent:focus-visible,
+  .btn-accent.focus-visible {
     border-color: #fff;
     box-shadow: 0 0 0 2px #FF7D00;
   }
@@ -310,7 +367,8 @@
     background: transparent;
   }
 
-  .btn-outline:focus {
+  .btn-outline:focus-visible,
+  .btn-outline.focus-visible {
     box-shadow: 0 0 0 2px #4D9DE0;
   }
 
@@ -322,7 +380,8 @@
     color: #fff;
   }
 
-  .btn:disabled:focus {
+  .btn:disabled:focus-visible,
+  .btn:disabled.focus-visible {
     outline: 2px solid #9CA3AF;
   }
 
@@ -386,9 +445,14 @@
     font-size: 1rem;
   }
 
-  .input-field:focus {
+  .input-field:focus-visible,
+  .input-field.focus-visible {
     outline: 2px solid #4D9DE0;
     outline-offset: 2px;
+  }
+
+  .input-field:focus:not(.focus-visible) {
+    outline: none;
   }
 
   .input-field:invalid {
@@ -528,9 +592,14 @@
   transform: scale(1.1);
 }
 
-.hero-pagination-bullet:focus {
+.hero-pagination-bullet:focus-visible,
+.hero-pagination-bullet.focus-visible {
   outline: 2px solid #4D9DE0;
   outline-offset: 2px;
+}
+
+.hero-pagination-bullet:focus:not(.focus-visible) {
+  outline: none;
 }
 
 /* Mobile-specific adjustments */
@@ -563,6 +632,19 @@
   background: rgba(26, 60, 110, 0.8);
 }
 
+.swiper-button-next:focus-visible,
+.swiper-button-prev:focus-visible,
+.swiper-button-next.focus-visible,
+.swiper-button-prev.focus-visible {
+  outline: 2px solid #4D9DE0;
+  outline-offset: 2px;
+}
+
+.swiper-button-next:focus:not(.focus-visible),
+.swiper-button-prev:focus:not(.focus-visible) {
+  outline: none;
+}
+
 .swiper-button-next:after,
 .swiper-button-prev:after {
   font-size: 18px !important;
@@ -578,9 +660,14 @@
   @apply shadow-card-hover;
 }
 
-.category-card:focus {
+.category-card:focus-visible,
+.category-card.focus-visible {
   outline: 2px solid #4D9DE0;
   outline-offset: 2px;
+}
+
+.category-card:focus:not(.focus-visible) {
+  outline: none;
 }
 
 .service-card {
@@ -593,9 +680,14 @@
   @apply shadow-card-hover;
 }
 
-.service-card:focus {
+.service-card:focus-visible,
+.service-card.focus-visible {
   outline: 2px solid #4D9DE0;
   outline-offset: 2px;
+}
+
+.service-card:focus:not(.focus-visible) {
+  outline: none;
 }
 
 /* Accessibility improvements */
@@ -614,11 +706,6 @@
   .card, .category-card, .service-card {
     will-change: auto;
   }
-}
-
-.focus-visible:focus {
-  outline: 2px solid #4D9DE0;
-  outline-offset: 2px;
 }
 
 /* High contrast mode support */

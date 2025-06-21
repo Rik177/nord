@@ -26,7 +26,7 @@ const QuickCallButton: React.FC = () => {
   return (
     <>
       {/* Floating Action Buttons */}
-      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col space-y-3">
+      <div className="fixed bottom-20 right-6 z-50 flex flex-col space-y-3">
         {/* WhatsApp Button */}
         <a
           href="https://wa.me/71234567890"
@@ -94,7 +94,7 @@ const QuickCallButton: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent text-base"
+                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-base"
                       placeholder="Как к вам обращаться?"
                     />
                   </div>
@@ -107,7 +107,7 @@ const QuickCallButton: React.FC = () => {
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent text-base"
+                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-base"
                       placeholder="+7 (___) ___-__-__"
                     />
                   </div>
