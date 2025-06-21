@@ -177,7 +177,6 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <SkipLink />
       <header 
         className={`fixed w-full z-50 transition-all duration-300 ${
           isScrolled 

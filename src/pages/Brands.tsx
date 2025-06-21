@@ -211,7 +211,7 @@ const Brands: React.FC = () => {
               {filteredBrands.map((brand) => (
                 <div
                   key={brand.id}
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1"
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
                 >
                   {/* Brand Header */}
                   <div className="p-6 border-b border-gray-100 dark:border-gray-700">

@@ -47,17 +47,19 @@ const Features: React.FC = () => {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="bg-white dark:bg-gray-900 rounded-lg shadow-card p-6 text-center transition-transform duration-300 hover:-translate-y-2"
+              className="bg-white dark:bg-gray-900 rounded-lg shadow-card p-6 text-center transition-transform duration-300 hover:-translate-y-2 flex flex-col justify-between items-center"
             >
-              <div className="flex justify-center mb-4">
-                {feature.icon}
+              <div>
+                <div className="flex justify-center mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="font-heading font-semibold text-xl text-primary dark:text-white mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="font-heading font-semibold text-xl text-primary dark:text-white mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                {feature.description}
-              </p>
               <div className="mt-3 inline-block bg-primary/10 dark:bg-primary/20 px-3 py-1 rounded-full">
                 <span className="text-primary dark:text-secondary text-sm font-semibold">
                   {feature.highlight}
