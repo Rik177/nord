@@ -132,6 +132,9 @@ const ChatWidget: React.FC = () => {
         className={`fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 w-[calc(100%-2rem)] sm:w-80 md:w-96 h-[500px] max-h-[80vh] bg-white dark:bg-gray-900 rounded-xl shadow-xl transition-all duration-300 overflow-hidden ${
           isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
         }`}
+        style={{
+          transformOrigin: 'bottom right'
+        }}
       >
         {/* Header */}
         <div className="bg-primary text-white p-4 rounded-t-xl flex items-center justify-between">
