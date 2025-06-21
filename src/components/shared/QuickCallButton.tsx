@@ -27,23 +27,6 @@ const QuickCallButton: React.FC = () => {
     <>
       {/* Floating Action Buttons */}
       <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col space-y-3">
-        {/* WhatsApp Button */}
-        <a
-          href="https://wa.me/71234567890"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 group"
-          aria-label="Написать в WhatsApp"
-        >
-          <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7" />
-          
-          {/* Tooltip */}
-          <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            Написать в WhatsApp
-            <div className="absolute left-full top-1/2 -translate-y-1/2 border-4 border-transparent border-l-gray-900"></div>
-          </div>
-        </a>
-
         {/* Call Button */}
         <button
           onClick={() => setShowCallForm(true)}
