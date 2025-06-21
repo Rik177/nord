@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, User, Phone, Mail, MapPin, CheckCircle, X } from 'lucide-react';
+import { X, Plus, Minus, Check, AlertCircle } from 'lucide-react';
 
 interface TimeSlot {
   id: string;
@@ -163,7 +163,7 @@ const ConsultationBooking: React.FC<ConsultationBookingProps> = ({
                         : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                     }`}
                   >
-                    {step > stepNumber ? <CheckCircle className="h-5 w-5" /> : stepNumber}
+                    {step > stepNumber ? <Check className="h-5 w-5" /> : stepNumber}
                   </div>
                   {stepNumber < 3 && (
                     <div
@@ -197,12 +197,11 @@ const ConsultationBooking: React.FC<ConsultationBookingProps> = ({
                   Ваше имя*
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
                       errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     }`}
                     placeholder="Введите ваше имя"
@@ -216,12 +215,11 @@ const ConsultationBooking: React.FC<ConsultationBookingProps> = ({
                   Телефон*
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
                       errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     }`}
                     placeholder="+7 (___) ___-__-__"
@@ -235,12 +233,11 @@ const ConsultationBooking: React.FC<ConsultationBookingProps> = ({
                   Email*
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
                       errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     }`}
                     placeholder="your@email.com"
@@ -254,12 +251,11 @@ const ConsultationBooking: React.FC<ConsultationBookingProps> = ({
                   Адрес объекта
                 </label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
                     value={formData.address}
                     onChange={(e) => setFormData({...formData, address: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
                     placeholder="Адрес для выезда специалиста"
                   />
                 </div>
@@ -317,14 +313,13 @@ const ConsultationBooking: React.FC<ConsultationBookingProps> = ({
                   Предпочтительная дата*
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="date"
                     value={formData.preferredDate}
                     onChange={(e) => setFormData({...formData, preferredDate: e.target.value})}
                     min={getMinDate()}
                     max={getMaxDate()}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white ${
                       errors.preferredDate ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                     }`}
                   />
