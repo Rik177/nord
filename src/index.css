@@ -129,7 +129,7 @@
   }
 
   a {
-    @apply text-secondary hover:text-primary dark:hover:text-white transition-colors duration-200;
+    @apply text-secondary-700 hover:text-primary dark:text-primary-300 dark:hover:text-white transition-colors duration-200;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -340,8 +340,8 @@
   }
 
   .btn-secondary {
-    @apply bg-secondary text-white hover:bg-opacity-90 dark:bg-secondary dark:text-white dark:hover:bg-opacity-80;
-    border-color: #4D9DE0;
+    @apply bg-secondary-700 text-white hover:bg-opacity-90 dark:bg-secondary dark:text-white dark:hover:bg-opacity-80;
+    border-color: #2F5E86;
   }
 
   .btn-secondary:focus-visible,
@@ -440,7 +440,7 @@
   }
 
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-800 dark:text-white;
+    @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg dark:bg-gray-800 dark:text-white;
     min-height: 48px; /* Increased for mobile */
     font-size: 1rem;
   }

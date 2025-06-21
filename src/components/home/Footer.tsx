@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <span className="font-heading font-bold text-2xl text-white">НОРД</span>
-              <span className="font-heading font-bold text-2xl text-secondary">ИНЖИНИРИНГ</span>
+              <span className="font-heading font-bold text-2xl text-accent">ИНЖИНИРИНГ</span>
             </div>
             <p className="text-gray-300 mb-4 text-sm">
               Профессиональные решения в области вентиляции и климатического оборудования с 2005 года.
@@ -22,15 +22,15 @@ const Footer: React.FC = () => {
           <div className="bg-white/10 rounded-xl p-4 mb-6">
             <div className="space-y-3">
               <div className="flex items-center justify-center">
-                <Phone className="h-5 w-5 mr-2 text-secondary" />
-                <a href="tel:+71234567890" className="hover:text-secondary">+7 (123) 456-78-90</a>
+                <Phone className="h-5 w-5 mr-2 text-accent" />
+                <a href="tel:+71234567890" className="hover:text-accent">+7 (123) 456-78-90</a>
               </div>
               <div className="flex items-center justify-center">
-                <Mail className="h-5 w-5 mr-2 text-secondary" />
-                <a href="mailto:info@ventilation.su" className="hover:text-secondary">info@ventilation.su</a>
+                <Mail className="h-5 w-5 mr-2 text-accent" />
+                <a href="mailto:info@ventilation.su" className="hover:text-accent">info@ventilation.su</a>
               </div>
               <div className="flex items-center justify-center">
-                <MapPin className="h-5 w-5 mr-2 text-secondary" />
+                <MapPin className="h-5 w-5 mr-2 text-accent" />
                 <span>г. Москва, ул. Примерная, д. 123</span>
               </div>
             </div>
@@ -41,19 +41,19 @@ const Footer: React.FC = () => {
             <div>
               <h3 className="font-heading text-base font-bold mb-3 text-white">Каталог</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="/catalog/air-conditioning" className="hover:text-secondary">Кондиционеры</a></li>
-                <li><a href="/catalog/ventilation" className="hover:text-secondary">Вентиляция</a></li>
-                <li><a href="/catalog/heating" className="hover:text-secondary">Отопление</a></li>
-                <li><a href="/brands" className="hover:text-secondary">Бренды</a></li>
+                <li><a href="/catalog/air-conditioning" className="hover:text-accent">Кондиционеры</a></li>
+                <li><a href="/catalog/ventilation" className="hover:text-accent">Вентиляция</a></li>
+                <li><a href="/catalog/heating" className="hover:text-accent">Отопление</a></li>
+                <li><a href="/brands" className="hover:text-accent">Бренды</a></li>
               </ul>
             </div>
             <div>
               <h3 className="font-heading text-base font-bold mb-3 text-white">Компания</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="/about" className="hover:text-secondary">О нас</a></li>
-                <li><a href="/services" className="hover:text-secondary">Услуги</a></li>
-                <li><a href="/projects" className="hover:text-secondary">Проекты</a></li>
-                <li><a href="/contacts" className="hover:text-secondary">Контакты</a></li>
+                <li><a href="/about" className="hover:text-accent">О нас</a></li>
+                <li><a href="/services" className="hover:text-accent">Услуги</a></li>
+                <li><a href="/projects" className="hover:text-accent">Проекты</a></li>
+                <li><a href="/contacts" className="hover:text-accent">Контакты</a></li>
               </ul>
             </div>
           </div>
@@ -62,13 +62,13 @@ const Footer: React.FC = () => {
           <div className="mb-6">
             <h3 className="font-heading text-base font-bold mb-3 text-white text-center">Мы в соцсетях</h3>
             <div className="flex justify-center space-x-4">
-              <a href="#" className="text-gray-300 hover:text-secondary">
+              <a href="#" className="text-gray-300 hover:text-accent">
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-300 hover:text-secondary">
+              <a href="#" className="text-gray-300 hover:text-accent">
                 <Instagram className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-300 hover:text-secondary">
+              <a href="#" className="text-gray-300 hover:text-accent">
                 <Youtube className="h-6 w-6" />
               </a>
               <a 
@@ -86,8 +86,8 @@ const Footer: React.FC = () => {
           <div className="text-center text-sm text-gray-400">
             <p>© 2025 НОРДИНЖИНИРИНГ. Все права защищены.</p>
             <div className="flex flex-col space-y-2 mt-3">
-              <a href="/privacy-policy" className="hover:text-secondary">Политика конфиденциальности</a>
-              <a href="/terms-of-service" className="hover:text-secondary">Пользовательское соглашение</a>
+              <a href="/privacy-policy" className="hover:text-accent">Политика конфиденциальности</a>
+              <a href="/terms-of-service" className="hover:text-accent">Пользовательское соглашение</a>
             </div>
           </div>
         </div>
@@ -101,23 +101,23 @@ const Footer: React.FC = () => {
             <div className="lg:col-span-1">
               <div className="flex items-center mb-4">
                 <span className="font-heading font-bold text-2xl text-white">НОРД</span>
-                <span className="font-heading font-bold text-2xl text-secondary">ИНЖИНИРИНГ</span>
+                <span className="font-heading font-bold text-2xl text-accent">ИНЖИНИРИНГ</span>
               </div>
               <p className="text-gray-300 mb-4">
                 Профессиональные решения в области вентиляции и климатического оборудования с 2005 года.
               </p>
               <div className="space-y-2">
                 <div className="flex items-start">
-                  <MapPin className="h-5 w-5 mr-2 mt-1 text-secondary" />
+                  <MapPin className="h-5 w-5 mr-2 mt-1 text-accent" />
                   <span>123456, г. Москва, ул. Примерная, д. 123</span>
                 </div>
                 <div className="flex items-center">
-                  <Phone className="h-5 w-5 mr-2 text-secondary" />
-                  <a href="tel:+71234567890" className="hover:text-secondary">+7 (123) 456-78-90</a>
+                  <Phone className="h-5 w-5 mr-2 text-accent" />
+                  <a href="tel:+71234567890" className="hover:text-accent">+7 (123) 456-78-90</a>
                 </div>
                 <div className="flex items-center">
-                  <Mail className="h-5 w-5 mr-2 text-secondary" />
-                  <a href="mailto:info@ventilation.su" className="hover:text-secondary">info@ventilation.su</a>
+                  <Mail className="h-5 w-5 mr-2 text-accent" />
+                  <a href="mailto:info@ventilation.su" className="hover:text-accent">info@ventilation.su</a>
                 </div>
               </div>
               
@@ -157,12 +157,12 @@ const Footer: React.FC = () => {
             <div className="lg:col-span-1">
               <h3 className="font-heading text-lg font-bold mb-4 text-white">Каталог</h3>
               <ul className="space-y-2">
-                <li><a href="/catalog/ventilation" className="hover:text-secondary">Вентиляционное оборудование</a></li>
-                <li><a href="/catalog/air-conditioning" className="hover:text-secondary">Кондиционирование</a></li>
-                <li><a href="/catalog/heating" className="hover:text-secondary">Отопительное оборудование</a></li>
-                <li><a href="/catalog/accessories" className="hover:text-secondary">Аксессуары и комплектующие</a></li>
-                <li><a href="/brands" className="hover:text-secondary">Бренды</a></li>
-                <li><a href="/sales" className="hover:text-secondary">Акции и спецпредложения</a></li>
+                <li><a href="/catalog/ventilation" className="hover:text-accent">Вентиляционное оборудование</a></li>
+                <li><a href="/catalog/air-conditioning" className="hover:text-accent">Кондиционирование</a></li>
+                <li><a href="/catalog/heating" className="hover:text-accent">Отопительное оборудование</a></li>
+                <li><a href="/catalog/accessories" className="hover:text-accent">Аксессуары и комплектующие</a></li>
+                <li><a href="/brands" className="hover:text-accent">Бренды</a></li>
+                <li><a href="/sales" className="hover:text-accent">Акции и спецпредложения</a></li>
               </ul>
             </div>
             
@@ -170,12 +170,12 @@ const Footer: React.FC = () => {
             <div className="lg:col-span-1">
               <h3 className="font-heading text-lg font-bold mb-4 text-white">О компании</h3>
               <ul className="space-y-2">
-                <li><a href="/about" className="hover:text-secondary">О нас</a></li>
-                <li><a href="/services" className="hover:text-secondary">Наши услуги</a></li>
-                <li><a href="/projects" className="hover:text-secondary">Проекты</a></li>
-                <li><a href="/blog" className="hover:text-secondary">Блог</a></li>
-                <li><a href="/reviews" className="hover:text-secondary">Отзывы</a></li>
-                <li><a href="/contacts" className="hover:text-secondary">Контакты</a></li>
+                <li><a href="/about" className="hover:text-accent">О нас</a></li>
+                <li><a href="/services" className="hover:text-accent">Наши услуги</a></li>
+                <li><a href="/projects" className="hover:text-accent">Проекты</a></li>
+                <li><a href="/blog" className="hover:text-accent">Блог</a></li>
+                <li><a href="/reviews" className="hover:text-accent">Отзывы</a></li>
+                <li><a href="/contacts" className="hover:text-accent">Контакты</a></li>
               </ul>
             </div>
             
@@ -183,12 +183,12 @@ const Footer: React.FC = () => {
             <div className="lg:col-span-1">
               <h3 className="font-heading text-lg font-bold mb-4 text-white">Информация</h3>
               <ul className="space-y-2">
-                <li><a href="/faq" className="hover:text-secondary">Часто задаваемые вопросы (FAQ)</a></li>
-                <li><a href="/delivery" className="hover:text-secondary">Условия доставки</a></li>
-                <li><a href="/warranty-terms" className="hover:text-secondary">Гарантийные обязательства</a></li>
-                <li><a href="/about/requisites" className="hover:text-secondary">Реквизиты</a></li>
-                <li><a href="/privacy-policy" className="hover:text-secondary">Политика конфиденциальности</a></li>
-                <li><a href="/cookie-policy" className="hover:text-secondary">Политика cookies</a></li>
+                <li><a href="/faq" className="hover:text-accent">Часто задаваемые вопросы (FAQ)</a></li>
+                <li><a href="/delivery" className="hover:text-accent">Условия доставки</a></li>
+                <li><a href="/warranty-terms" className="hover:text-accent">Гарантийные обязательства</a></li>
+                <li><a href="/about/requisites" className="hover:text-accent">Реквизиты</a></li>
+                <li><a href="/privacy-policy" className="hover:text-accent">Политика конфиденциальности</a></li>
+                <li><a href="/cookie-policy" className="hover:text-accent">Политика cookies</a></li>
               </ul>
             </div>
           </div>
@@ -209,13 +209,13 @@ const Footer: React.FC = () => {
                 </button>
               </div>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-300 hover:text-secondary">
+                <a href="#" className="text-gray-300 hover:text-accent">
                   <Facebook className="h-6 w-6" />
                 </a>
-                <a href="#" className="text-gray-300 hover:text-secondary">
+                <a href="#" className="text-gray-300 hover:text-accent">
                   <Instagram className="h-6 w-6" />
                 </a>
-                <a href="#" className="text-gray-300 hover:text-secondary">
+                <a href="#" className="text-gray-300 hover:text-accent">
                   <Youtube className="h-6 w-6" />
                 </a>
                 <a 
@@ -245,9 +245,9 @@ const Footer: React.FC = () => {
               © 2025 НОРДИНЖИНИРИНГ. Все права защищены.
             </p>
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-4 md:mt-0 text-base text-gray-400">
-              <a href="/privacy-policy" className="hover:text-secondary min-h-[44px] flex items-center">Политика конфиденциальности</a>
-              <a href="/terms-of-service" className="hover:text-secondary min-h-[44px] flex items-center">Пользовательское соглашение</a>
-              <a href="/cookie-policy" className="hover:text-secondary min-h-[44px] flex items-center">Политика cookies</a>
+              <a href="/privacy-policy" className="hover:text-accent min-h-[44px] flex items-center">Политика конфиденциальности</a>
+              <a href="/terms-of-service" className="hover:text-accent min-h-[44px] flex items-center">Пользовательское соглашение</a>
+              <a href="/cookie-policy" className="hover:text-accent min-h-[44px] flex items-center">Политика cookies</a>
             </div>
           </div>
         </div>

@@ -117,7 +117,7 @@ const AccessibilityControls: React.FC = () => {
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 id="accessibility-title" className="font-heading font-bold text-h3-desktop text-primary dark:text-white">
+                <h2 id="accessibility-title" className="font-heading font-bold text-h3-desktop text-primary dark:text-primary-300">
                   Настройки доступности
                 </h2>
                 <button

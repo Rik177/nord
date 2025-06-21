@@ -223,7 +223,7 @@ const ChatWidget: React.FC = () => {
           <div className="mt-2 flex items-center justify-center">
             <a
               href="tel:+71234567890"
-              className="flex items-center text-xs text-secondary hover:text-primary"
+              className="flex items-center text-xs text-secondary-700 dark:text-primary-300 hover:text-primary dark:hover:text-white"
             >
               <Phone className="h-3 w-3 mr-1" />
               Позвонить: +7 (123) 456-78-90

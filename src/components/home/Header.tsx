@@ -190,7 +190,7 @@ const Header: React.FC = () => {
           <div className="container mx-auto px-4 flex justify-between items-center text-sm">
             <div className="flex items-center space-x-4">
               <button 
-                className="flex items-center hover:text-secondary"
+                className="flex items-center hover:text-accent"
                 aria-label={`Текущий город: ${currentCity}. Нажмите для изменения`}
               >
                 <MapPin className="h-4 w-4 mr-1" aria-hidden="true" />
@@ -198,7 +198,7 @@ const Header: React.FC = () => {
               </button>
               <a 
                 href="tel:+71234567890" 
-                className="flex items-center hover:text-secondary"
+                className="flex items-center hover:text-accent"
                 aria-label="Позвонить по номеру +7 (123) 456-78-90"
               >
                 <Phone className="h-4 w-4 mr-1" aria-hidden="true" />
@@ -206,9 +206,9 @@ const Header: React.FC = () => {
               </a>
             </div>
             <nav className="flex space-x-4" role="navigation" aria-label="Дополнительная навигация">
-              <a href="/about" className="hover:text-secondary">О компании</a>
-              <a href="/delivery" className="hover:text-secondary">Доставка</a>
-              <a href="/contacts" className="hover:text-secondary">Контакты</a>
+              <a href="/about" className="hover:text-accent">О компании</a>
+              <a href="/delivery" className="hover:text-accent">Доставка</a>
+              <a href="/contacts" className="hover:text-accent">Контакты</a>
             </nav>
           </div>
         </div>
@@ -223,8 +223,8 @@ const Header: React.FC = () => {
                 className="flex items-center space-x-1 flex-shrink-0"
                 aria-label="НОРДИНЖИНИРИНГ - перейти на главную страницу"
               >
-                <span className="font-heading font-bold text-xl md:text-2xl text-primary dark:text-white">НОРД</span>
-                <span className="font-heading font-bold text-xl md:text-2xl text-secondary">ИНЖИНИРИНГ</span>
+                <span className="font-heading font-bold text-xl md:text-2xl text-primary dark:text-primary-300">НОРД</span>
+                <span className="font-heading font-bold text-xl md:text-2xl text-secondary-700 dark:text-accent">ИНЖИНИРИНГ</span>
               </Link>
 
               {/* Mobile actions */}
@@ -306,7 +306,7 @@ const Header: React.FC = () => {
                   <li key={index} className="relative group">
                     <Link
                       to={item.path}
-                      className="flex items-center text-gray-600 dark:text-gray-300 hover:text-secondary py-2"
+                      className="flex items-center text-gray-600 dark:text-gray-300 hover:text-secondary-700 dark:hover:text-primary-300 py-2"
                       aria-haspopup={item.submenu ? "true" : "false"}
                     >
                       {item.icon && <span className="mr-2" aria-hidden="true">{item.icon}</span>}
@@ -336,7 +336,7 @@ const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/sales" 
-                    className="text-gray-600 dark:text-gray-300 hover:text-secondary py-2"
+                    className="text-gray-600 dark:text-gray-300 hover:text-secondary-700 dark:hover:text-primary-300 py-2"
                   >
                     Акции
                   </Link>
@@ -344,7 +344,7 @@ const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/contacts" 
-                    className="text-gray-600 dark:text-gray-300 hover:text-secondary py-2"
+                    className="text-gray-600 dark:text-gray-300 hover:text-secondary-700 dark:hover:text-primary-300 py-2"
                   >
                     Контакты
                   </Link>
@@ -352,7 +352,7 @@ const Header: React.FC = () => {
                 <li>
                   <Link 
                     to="/tools" 
-                    className="text-gray-600 dark:text-gray-300 hover:text-secondary py-2"
+                    className="text-gray-600 dark:text-gray-300 hover:text-secondary-700 dark:hover:text-primary-300 py-2"
                   >
                     Инструменты
                   </Link>
@@ -429,7 +429,7 @@ const Header: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <Link
                           to={item.path}
-                          className="flex items-center py-3 text-primary dark:text-white font-semibold text-base flex-1"
+                          className="flex items-center py-3 text-primary dark:text-primary-300 font-semibold text-base flex-1"
                           onClick={!item.submenu ? toggleMobileMenu : undefined}
                         >
                           {item.icon && <span className="mr-3" aria-hidden="true">{item.icon}</span>}
@@ -455,7 +455,7 @@ const Header: React.FC = () => {
                             <Link
                               key={subIndex}
                               to={subItem.path}
-                              className="block py-2 text-gray-600 dark:text-gray-300 hover:text-secondary text-base"
+                              className="block py-2 text-gray-600 dark:text-gray-300 hover:text-secondary-700 dark:hover:text-primary-300 text-base"
                               onClick={toggleMobileMenu}
                             >
                               {subItem.label}

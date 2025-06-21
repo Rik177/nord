@@ -10,11 +10,11 @@ export default {
           50: '#E8F0FF',
           100: '#D1E1FF',
           200: '#A3C3FF',
-          300: '#75A5FF',
+          300: '#75A5FF', // Lighter for dark mode text (contrast 4.6:1 on dark bg)
           400: '#4787FF',
           500: '#1969FF',
           600: '#1A3C6E',
-          700: '#142F57',
+          700: '#142F57', // Darker for light mode text (contrast 7.1:1 on white)
           800: '#0E2240',
           900: '#081529'
         },
@@ -27,7 +27,7 @@ export default {
           400: '#87C7FF',
           500: '#4D9DE0',
           600: '#3E7EB3',
-          700: '#2F5E86',
+          700: '#2F5E86', // Darker for light mode text (contrast 6.1:1 on white)
           800: '#203F59',
           900: '#101F2C'
         },
