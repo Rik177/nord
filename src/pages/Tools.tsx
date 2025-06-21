@@ -105,7 +105,7 @@ const Tools: React.FC = () => {
         structuredData={structuredData}
       />
       <Header />
-      <main className="pt-[213px] pb-12">
+      <main className="pt-[169px] pb-12">
         <Breadcrumbs />
         
         {/* Hero Section */}
