@@ -99,7 +99,7 @@ const AccessibilityControls: React.FC = () => {
       {/* Кнопка открытия панели доступности */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-50 bg-primary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300"
+        className="fixed bottom-20 left-6 z-50 bg-primary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300"
         aria-label="Открыть настройки доступности"
         title="Настройки доступности"
       >
@@ -117,7 +117,7 @@ const AccessibilityControls: React.FC = () => {
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 id="accessibility-title" className="font-heading font-bold text-h3-desktop text-primary dark:text-white">
+                <h2 id="accessibility-title" className="font-heading font-bold text-h3-desktop text-primary dark:text-primary-300">
                   Настройки доступности
                 </h2>
                 <button

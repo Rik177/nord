@@ -119,6 +119,16 @@
       .logo-secondary {
         color: var(--accent-color);
       }
+      
+      /* Скрываем outline при клике мышкой, но оставляем для клавиатуры */
+      :focus:not(:focus-visible) {
+        outline: none;
+      }
+      
+      :focus-visible {
+        outline: 2px solid var(--secondary-color);
+        outline-offset: 2px;
+      }
     </style>
   </head>
   <body>
@@ -185,6 +195,17 @@
           console.error('Performance Observer error:', e);
         }
       }
+      
+      // Скрипт для определения фокуса с клавиатуры
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+          document.body.classList.add('keyboard-user');
+        }
+      });
+      
+      document.addEventListener('mousedown', function() {
+        document.body.classList.remove('keyboard-user');
+      });
     </script>
 
     <script type="module" src="/src/main.tsx"></script>

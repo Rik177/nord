@@ -15,7 +15,7 @@ const ComparisonButton: React.FC<ComparisonButtonProps> = ({ className = '' }) =
   return (
     <button
       onClick={openComparison}
-      className={`fixed bottom-6 right-24 z-40 bg-secondary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300 group ${className}`}
+      className={`fixed bottom-36 right-6 z-40 bg-secondary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300 group ${className}`}
       aria-label="Открыть сравнение товаров"
     >
       <BarChart2 className="h-6 w-6" />
@@ -24,7 +24,7 @@ const ComparisonButton: React.FC<ComparisonButtonProps> = ({ className = '' }) =
           {count}
         </div>
       )}
-      <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-1 rounded text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
         Сравнить товары ({count})
       </div>
     </button>

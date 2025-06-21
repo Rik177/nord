@@ -50,7 +50,7 @@ const QuickCallButton: React.FC = () => {
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h3 className="font-heading font-bold text-xl sm:text-2xl text-primary dark:text-white">
+                  <h3 className="font-heading font-bold text-xl sm:text-2xl text-primary dark:text-primary-300">
                     Обратный звонок
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm sm:text-base">
@@ -77,7 +77,7 @@ const QuickCallButton: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent text-base"
+                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-base"
                       placeholder="Как к вам обращаться?"
                     />
                   </div>
@@ -90,7 +90,7 @@ const QuickCallButton: React.FC = () => {
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent text-base"
+                      className="w-full p-3 sm:p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-base"
                       placeholder="+7 (___) ___-__-__"
                     />
                   </div>
@@ -114,7 +114,7 @@ const QuickCallButton: React.FC = () => {
                   
                   <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                     Нажимая кнопку, вы соглашаетесь с{' '}
-                    <a href="/privacy-policy" className="text-primary hover:underline">
+                    <a href="/privacy-policy" className="text-primary-700 dark:text-primary-300 hover:underline">
                       политикой конфиденциальности
                     </a>
                   </p>
@@ -124,7 +124,7 @@ const QuickCallButton: React.FC = () => {
                   <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Phone className="h-8 w-8 text-green-600" />
                   </div>
-                  <h4 className="font-heading font-bold text-lg sm:text-xl text-primary dark:text-white mb-2">
+                  <h4 className="font-heading font-bold text-lg sm:text-xl text-primary dark:text-primary-300 mb-2">
                     Заявка принята!
                   </h4>
                   <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm sm:text-base">
