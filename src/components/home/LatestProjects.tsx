@@ -118,7 +118,7 @@ const LatestProjects: React.FC = () => {
         >
           {projects.map((project) => (
             <SwiperSlide key={project.id}>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center dark:bg-gray-900">
                 {/* Project Info */}
                 <div>
                   <div className="mb-4">
