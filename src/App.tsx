@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
+
 // Основные страницы
 import Home from './pages/Home';
 import Blog from './pages/Blog';
@@ -47,6 +48,9 @@ import CookiePolicy from './pages/CookiePolicy';
 import AccessibilityControls from './components/shared/AccessibilityControls';
 import OfflineIndicator from './components/shared/OfflineIndicator';
 import PWAInstallPrompt from './components/shared/PWAInstallPrompt';
+
+import ChatWidget from "./components/shared/ChatWidget";
+import QuickCallButton from "./components/shared/QuickCallButton";
 
 // PWA utilities
 import { handleShareTarget } from './utils/pwaUtils';
@@ -135,6 +139,9 @@ function App() {
             {/* Страница 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+
+          <ChatWidget />
+          <QuickCallButton />
           
           <AccessibilityControls />
           

@@ -14,8 +14,6 @@ import LatestProjects from "../components/home/LatestProjects";
 import { TestimonialsSection } from "../components/home/Testimonials";
 import Partners from "../components/home/Partners";
 import ContactForm from "../components/home/ContactForm";
-import ChatWidget from "../components/shared/ChatWidget";
-import QuickCallButton from "../components/shared/QuickCallButton";
 import ComparisonButton from "../components/shared/ComparisonButton";
 import { seoPages } from "../utils/seo";
 import {
@@ -120,8 +118,8 @@ function Home() {
       <Footer />
       
       {/* Floating accessibility and interaction elements */}
-      <ChatWidget />
-      <QuickCallButton />
+      {/* <ChatWidget />
+      <QuickCallButton /> */}
       <ComparisonButton />
     </div>
   );

@@ -146,7 +146,7 @@ const ChatWidget: React.FC = () => {
               <User className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-semibold text-base sm:text-lg">Онлайн консультант</h3>
+              <h3 className="font-semibold text-base sm:text-lg text-gray-200">Онлайн консультант</h3>
               <div className="flex items-center text-xs text-green-300">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
                 В сети
@@ -155,7 +155,7 @@ const ChatWidget: React.FC = () => {
           </div>
           <button
             onClick={toggleChat}
-            className="text-white hover:text-gray-300 p-1"
+            className="text-white hover:text-gray-300 p-1 absolute right-4"
             aria-label="Закрыть чат"
           >
             <X className="h-5 w-5" />
