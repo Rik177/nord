@@ -81,7 +81,7 @@ function Home() {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet {...seoPages.home} structuredData={combinedStructuredData} />
       <Header />
-      <main id="main-content">
+      <main id="main-content" className="pt-[56px] md:pt-[169px]">
         <HeroSlider />
         <div className="content-visibility-auto">
           <Features />

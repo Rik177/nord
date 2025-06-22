@@ -15,7 +15,7 @@ const ComparisonButton: React.FC<ComparisonButtonProps> = ({ className = '' }) =
   return (
     <button
       onClick={openComparison}
-      className={`fixed bottom-44 right-6 z-40 bg-secondary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300 group ${className}`}
+      className={`fixed bottom-[80px] right-6 z-[85] bg-secondary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300 group ${className}`}
       aria-label="Открыть сравнение товаров"
     >
       <BarChart2 className="h-6 w-6" />
