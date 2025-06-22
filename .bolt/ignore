@@ -15,11 +15,11 @@ src/pages/WarrantyTerms.tsx
 src/pages/Reviews.tsx
 src/components/services/ServicesSidebar.tsx
 src/pages/catalog/*
-src/components/home/Footer.tsx
 src/pages/Tools.tsx
 src/pages/Brands.tsx
 src/pages/Blog.tsx
 src/pages/BlogPost.tsx
+# src/components/home/Footer.tsx
 
 # src/pages/Home.tsx
 # src/main.tsx
