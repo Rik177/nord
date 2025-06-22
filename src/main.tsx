@@ -36,7 +36,6 @@ const addFocusVisiblePolyfill = () => {
     (e.target as HTMLElement).classList.remove('focus-visible');
   }, true);
 
-  // Add a class to the HTML element for CSS targeting
   document.documentElement.classList.add('js-focus-visible');
 };
 
