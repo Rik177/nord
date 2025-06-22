@@ -99,7 +99,7 @@ const AccessibilityControls: React.FC = () => {
       {/* Кнопка открытия панели доступности */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 left-6 z-50 bg-primary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300"
+        className="fixed bottom-5 left-6 z-50 bg-primary hover:bg-opacity-90 text-white rounded-full p-3 shadow-lg transition-all duration-300"
         aria-label="Открыть настройки доступности"
         title="Настройки доступности"
       >
