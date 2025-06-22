@@ -59,6 +59,14 @@
         --primary-color: #1A3C6E;
         --secondary-color: #4D9DE0;
         --accent-color: #FF7D00;
+        --text-primary: #0F2A52; /* Контраст 8.2:1 на белом */
+      }
+      
+      [data-theme="dark"] {
+        --primary-color: #4D9DE0;
+        --secondary-color: #87C7FF;
+        --accent-color: #FFA733;
+        --text-primary: #E5E7EB; /* Контраст 15.8:1 на темном */
       }
       
       body {
@@ -67,10 +75,12 @@
         font-family: 'Open Sans', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        color: var(--text-primary);
       }
       
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Montserrat', sans-serif;
+        color: var(--text-primary);
       }
       
       #loading-screen {
