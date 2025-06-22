@@ -269,7 +269,7 @@ const Header: React.FC = () => {
                 </button>
                 <button 
                   onClick={toggleDarkMode} 
-                  className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white p-2"
+                  className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white p-2 w-[46.6px]"
                   aria-label={isDarkMode ? 'Включить светлую тему' : 'Включить темную тему'}
                 >
                   {isDarkMode ? (
