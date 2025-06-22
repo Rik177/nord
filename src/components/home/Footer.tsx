@@ -147,8 +147,8 @@ const Footer: React.FC = () => {
                   </a>
                 </div>
                 <div className="mt-2 text-xs text-gray-400">
-                  <p>WhatsApp: +7 (123) 456-78-90</p>
-                  <p>Telegram: @nordengineering</p>
+                  <p className='text-gray-300'>WhatsApp: +7 (123) 456-78-90</p>
+                  <p className='text-gray-300'>Telegram: @nordengineering</p>
                 </div>
               </div>
             </div>
@@ -196,7 +196,7 @@ const Footer: React.FC = () => {
           {/* Newsletter Section */}
           <div className="mt-8 pt-8 border-t border-gray-700">
             <div>
-              <h3 className="font-heading text-lg font-bold mb-4">Подпишитесь на новости</h3>
+              <h3 className="font-heading text-lg font-bold mb-4 text-gray-200">Подпишитесь на новости</h3>
               <p className="text-gray-300 mb-4">Будьте в курсе новинок, акций и специальных предложений</p>
               <div className="flex max-w-md mb-4">
                 <input 

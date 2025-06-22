@@ -23,7 +23,7 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <section className="py-12 bg-primary text-white dark:bg-gray-900">
+    <section className="py-12 bg-lightBg text-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <EnhancedContactForm
