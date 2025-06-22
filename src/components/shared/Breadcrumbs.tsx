@@ -55,6 +55,22 @@ const routeLabels: Record<string, string> = {
   'project': 'Проект'
 };
 
+// Специальные названия для конкретных товаров
+const productNames: Record<string, string> = {
+  'daikin-ftxb25c': 'Кондиционер Daikin FTXB25C',
+  'mitsubishi-msz-ln25vg': 'Кондиционер Mitsubishi MSZ-LN25VG',
+  'rk-125': 'Канальный вентилятор RK 125',
+  'pvu-350': 'Приточная установка ПВУ-350',
+  'kev-6p': 'Тепловая завеса КЭВ-6П'
+};
+
+// Названия статей блога (можно расширить)
+const blogPostTitles: Record<string, string> = {
+  '1': 'Как выбрать кондиционер для дома',
+  '2': 'Преимущества инверторных кондиционеров',
+  '3': 'Обслуживание вентиляционных систем'
+};
+
 const getBreadcrumbLabel = (path: string, fullPath: string): string => {
   // Проверяем точное совпадение
   if (routeLabels[path]) {
@@ -66,11 +82,19 @@ const getBreadcrumbLabel = (path: string, fullPath: string): string => {
   
   // Для товаров в каталоге
   if (pathSegments.length === 3 && pathSegments[0] === 'catalog') {
+    const productId = pathSegments[2];
+    if (productNames[productId]) {
+      return productNames[productId];
+    }
     return 'Товар';
   }
   
   // Для статей блога
   if (pathSegments.length === 2 && pathSegments[0] === 'blog') {
+    const postId = pathSegments[1];
+    if (blogPostTitles[postId]) {
+      return blogPostTitles[postId];
+    }
     return 'Статья';
   }
   
