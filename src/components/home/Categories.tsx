@@ -94,12 +94,12 @@ const Categories: React.FC = () => {
               {/* Контент поверх изображения */}
               <div className="relative h-full flex flex-col justify-end p-6 text-white z-10">
                 <div>
-                  <h3 className="font-heading font-bold text-xl lg:text-2xl mb-2 group-hover:text-accent transition-colors duration-300">
+                  <h3 className="font-heading font-bold text-xl lg:text-2xl mb-2 group-hover:text-accent transition-colors duration-300 text-[#608cce]">
                     {category.title}
                   </h3>
                   
                   {category.description && (
-                    <p className="text-white/90 text-sm sm:text-base mb-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-100">
+                    <p className="text-white/90 text-sm sm:text-base mb-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-100 hidden group-hover:block">
                       {category.description}
                     </p>
                   )}

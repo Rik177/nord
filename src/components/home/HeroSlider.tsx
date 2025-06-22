@@ -115,7 +115,7 @@ const HeroSlider: React.FC = () => {
                   <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 leading-tight">
                     {slide.title}
                   </h1>
-                  <p className="text-base sm:text-lg mb-4 sm:mb-6 leading-relaxed opacity-90 max-w-lg">
+                  <p className="text-base sm:text-lg mb-4 sm:mb-6 leading-relaxed opacity-90 max-w-lg text-left">
                     {slide.description}
                   </p>
                   
