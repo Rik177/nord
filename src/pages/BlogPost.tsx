@@ -77,7 +77,7 @@ const BlogPost: React.FC = () => {
         />
       )}
       <Header />
-      <main className="pt-[169px] pb-12">
+      <main className="pb-12">
         <Breadcrumbs />
         
         {/* Article Header */}

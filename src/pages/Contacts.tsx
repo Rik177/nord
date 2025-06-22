@@ -12,7 +12,7 @@ const Contacts: React.FC = () => {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <SEOHelmet {...seoPages.contacts} structuredData={localBusinessSchema} />
       <Header />
-      <main className="pt-[213px] pb-12">
+      <main className="pb-12">
         <Breadcrumbs />
         {/* Hero Section */}
         <section className="bg-primary py-12">

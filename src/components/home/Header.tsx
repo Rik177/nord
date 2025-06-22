@@ -531,7 +531,7 @@ const Header: React.FC = () => {
       <GlobalSearch 
         isOpen={isGlobalSearchOpen} 
         onClose={() => setIsGlobalSearchOpen(false)} 
-        className='md:hidden'
+        className='hidden'
       />
       
       {showConsultationForm && (

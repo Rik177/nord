@@ -15,7 +15,7 @@ const partnerLogos = [
 
 const Partners: React.FC = () => {
   return (
-    <section className="py-10 bg-white">
+    <section className="py-10 bg-white dark:bg-gray-300">
       <div className="container mx-auto px-4">
         <h2 className="font-heading font-bold text-h3-mobile md:text-h3-desktop text-primary text-center mb-8">
           Наши партнеры

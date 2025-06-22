@@ -136,7 +136,7 @@ const Maintenance: React.FC = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <Header />
-      <main className="pt-[169px] pb-12">
+      <main className="pb-12">
         <Breadcrumbs />
         
         {/* Hero Section */}

@@ -217,7 +217,7 @@ const Reviews: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800">
       <SEOHelmet 
         title="Отзывы клиентов - НОРДИНЖИНИРИНГ"
         description="Читайте отзывы наших клиентов о качестве услуг по монтажу и обслуживанию систем вентиляции и кондиционирования"
@@ -225,8 +225,8 @@ const Reviews: React.FC = () => {
       />
       <Header />
       
-      <main className="pt-20">
-        <div className="container mx-auto px-4 py-8">
+      <main>
+        <div className="container mx-auto px-4 py-8 pt-0">
           <Breadcrumbs 
             items={[
               { label: 'Главная', href: '/' },
@@ -236,15 +236,15 @@ const Reviews: React.FC = () => {
           
           {/* Header Section */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4 dark:text-primary-300">
               Отзывы наших клиентов
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600 mb-8 dark:text-gray-400">
               Узнайте, что говорят о нас наши клиенты
             </p>
             
             {/* Rating Summary */}
-            <div className="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
+            <div className="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto dark:bg-gray-800">
               <div className="grid md:grid-cols-3 gap-8 items-center">
                 <div className="text-center">
                   <div className="text-5xl font-bold text-accent mb-2">
@@ -253,28 +253,28 @@ const Reviews: React.FC = () => {
                   <div className="flex justify-center mb-2">
                     {renderStars(Math.round(averageRating), 'lg')}
                   </div>
-                  <p className="text-gray-600">Средняя оценка</p>
+                  <p className="text-gray-600 dark:text-gray-400">Средняя оценка</p>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">
+                  <div className="text-3xl font-bold text-gray-900 mb-2 dark:text-primary-300">
                     {reviews.length}
                   </div>
-                  <p className="text-gray-600">Всего отзывов</p>
+                  <p className="text-gray-600 dark:text-gray-400">Всего отзывов</p>
                 </div>
                 
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-600 mb-2">
                     {Math.round((reviews.filter(r => r.rating >= 4).length / reviews.length) * 100)}%
                   </div>
-                  <p className="text-gray-600">Довольных клиентов</p>
+                  <p className="text-gray-600 dark:text-gray-400">Довольных клиентов</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Filters and Search */}
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-8 dark:bg-primary">
             <div className="grid lg:grid-cols-4 gap-4">
               {/* Search */}
               <div className="relative">
@@ -330,7 +330,7 @@ const Reviews: React.FC = () => {
           {/* Reviews List */}
           <div className="space-y-6">
             {sortedReviews.map(review => (
-              <div key={review.id} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+              <div key={review.id} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow dark:bg-primary">
                 <div className="flex items-start gap-4">
                   <img
                     src={review.avatar}
@@ -342,13 +342,13 @@ const Reviews: React.FC = () => {
                     <div className="flex items-center justify-between mb-2">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-gray-900">{review.name}</h3>
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-200">{review.name}</h3>
                           {review.verified && (
                             <CheckCircle className="h-5 w-5 text-green-500" />
                           )}
                         </div>
                         {review.company && (
-                          <p className="text-sm text-gray-600">{review.company}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">{review.company}</p>
                         )}
                       </div>
                       
@@ -356,7 +356,7 @@ const Reviews: React.FC = () => {
                         <div className="flex items-center gap-1 mb-1">
                           {renderStars(review.rating, 'sm')}
                         </div>
-                        <p className="text-sm text-gray-500">{review.date}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-300">{review.date}</p>
                       </div>
                     </div>
 
@@ -366,25 +366,25 @@ const Reviews: React.FC = () => {
                       </span>
                     </div>
 
-                    <h4 className="font-semibold text-lg text-gray-900 mb-2">
+                    <h4 className="font-semibold text-lg text-gray-900 mb-2 dark:text-gray-200">
                       {review.title}
                     </h4>
                     
-                    <p className="text-gray-700 mb-3 leading-relaxed">
+                    <p className="text-gray-700 mb-3 leading-relaxed dark:text-gray-300">
                       {review.text}
                     </p>
 
                     <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
                         <strong>Проект:</strong> {review.project}
                       </div>
                       
                       <div className="flex items-center gap-4">
-                        <button className="flex items-center gap-1 text-gray-500 hover:text-accent transition-colors">
+                        <button className="flex items-center gap-1 text-gray-500 hover:text-accent transition-colors dark:text-gray-200">
                           <ThumbsUp className="h-4 w-4" />
                           <span className="text-sm">{review.helpful}</span>
                         </button>
-                        <button className="flex items-center gap-1 text-gray-500 hover:text-accent transition-colors">
+                        <button className="flex items-center gap-1 text-gray-500 hover:text-accent transition-colors  dark:text-gray-200">
                           <MessageCircle className="h-4 w-4" />
                           <span className="text-sm">Ответить</span>
                         </button>

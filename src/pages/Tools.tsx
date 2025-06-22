@@ -105,7 +105,7 @@ const Tools: React.FC = () => {
         structuredData={structuredData}
       />
       <Header />
-      <main className="pt-[169px] pb-12">
+      <main className="pb-12">
         <Breadcrumbs />
         
         {/* Hero Section */}
@@ -115,15 +115,15 @@ const Tools: React.FC = () => {
               Инструменты и калькуляторы
             </h1>
             <p className="text-white/90 text-center max-w-2xl mx-auto">
-              Профессиональные инструменты для расчета, планирования и управления климатическими системами
+              Инструменты для расчета, планирования и управления климатическими системами
             </p>
           </div>
         </section>
 
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Tools Sidebar */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-2">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 sticky top-8">
                 <h2 className="font-heading font-bold text-h3-desktop text-primary dark:text-white mb-6">
                   Доступные инструменты

@@ -126,7 +126,7 @@ const NotFound: React.FC = () => {
       />
       <Header />
       
-      <main className="pt-[169px] pb-12">
+      <main className="pb-12">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary to-secondary py-16">
           <div className="container mx-auto px-4 text-center">

@@ -275,7 +275,7 @@ const CategoryPage: React.FC = () => {
         structuredData={structuredData}
       />
       <Header />
-      <main className="pt-[169px] pb-12">
+      <main className="pb-12">
         <Breadcrumbs />
         
         {/* Hero Section */}

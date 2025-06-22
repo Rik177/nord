@@ -93,8 +93,8 @@ export const TestimonialsSection: React.FC = () => {
           }}
         >
           {testimonials.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <div className="bg-white rounded-lg shadow-card p-6 transition-all duration-300 hover:shadow-card-hover h-full w-[533px] h-[250px]">
+            <SwiperSlide key={testimonial.id} className='bg-lightBg dark:bg-gray-800'>
+              <div className="bg-white rounded-lg shadow-card p-6 transition-all duration-300 hover:shadow-card-hover h-full h-[240px] dark:bg-gray-300">
                 <div className="flex items-center mb-4">
                   <img 
                     src={testimonial.image} 
