@@ -178,7 +178,7 @@ const Header: React.FC = () => {
   return (
     <>
       <header 
-        className={`fixed w-full z-50 transition-all duration-300 ${
+        className={`sticky top-0 w-full z-50 transition-all duration-300 ${
           isScrolled 
             ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg' 
             : 'bg-white dark:bg-gray-900'
@@ -531,6 +531,7 @@ const Header: React.FC = () => {
       <GlobalSearch 
         isOpen={isGlobalSearchOpen} 
         onClose={() => setIsGlobalSearchOpen(false)} 
+        className='md:hidden'
       />
       
       {showConsultationForm && (
