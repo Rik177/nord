@@ -123,7 +123,7 @@ const Footer: React.FC = () => {
               
               {/* Messengers */}
               <div className="mt-4">
-                <h4 className="font-heading text-sm font-bold mb-3 text-white">Мессенджеры</h4>
+                <h3 className="font-heading text-sm font-bold mb-3 text-white">Мессенджеры</h3>
                 <div className="flex space-x-3">
                   <a
                     href="https://wa.me/71234567890"
@@ -209,13 +209,13 @@ const Footer: React.FC = () => {
                 </button>
               </div>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-300 hover:text-accent">
-                  <Facebook className="h-6 w-6" />
+                <a href="#" className="text-gray-300 hover:text-accent" aria-label="Ссылка на Фейсбук">
+                  <Facebook className="h-6 w-6"/>
                 </a>
-                <a href="#" className="text-gray-300 hover:text-accent">
+                <a href="#" className="text-gray-300 hover:text-accent" aria-label="Ссылка на Инстаграм">
                   <Instagram className="h-6 w-6" />
                 </a>
-                <a href="#" className="text-gray-300 hover:text-accent">
+                <a href="#" className="text-gray-300 hover:text-accent" aria-label="Ссылка на Ютуб">
                   <Youtube className="h-6 w-6" />
                 </a>
                 <a 
@@ -223,6 +223,7 @@ const Footer: React.FC = () => {
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-green-400"
+                  aria-label="Ссылка на Ватсапп"
                 >
                   <MessageCircle className="h-6 w-6" />
                 </a>
@@ -231,6 +232,7 @@ const Footer: React.FC = () => {
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-blue-400"
+                  aria-label="Ссылка на Телеграм"
                 >
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16l-1.61 7.59c-.12.54-.44.67-.89.42l-2.46-1.81-1.19 1.14c-.13.13-.24.24-.49.24l.17-2.43 4.47-4.03c.19-.17-.04-.27-.3-.1L9.39 13.17l-2.44-.76c-.53-.17-.54-.53.11-.78l9.52-3.67c.44-.17.83.11.68.78z"/>

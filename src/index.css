@@ -29,7 +29,7 @@
   :root:not([data-theme="light"]) {
     --primary-color: #4D9DE0;
     --secondary-color: #87C7FF;
-    --accent-color: #FFA733;
+    --accent-color: #e28e20;
     --light-bg: #111827;
     --white: #1F2937;
     --text-primary: #E5E7EB; /* Контраст 15.8:1 на темном */
