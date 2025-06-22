@@ -26,7 +26,7 @@ const QuickCallButton: React.FC = () => {
   return (
     <>
       {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6 z-[80]">
+      <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setShowCallForm(true)}
           className="flex items-center justify-center w-14 h-14 bg-accent hover:bg-accent/90 text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 animate-pulse group"
@@ -44,7 +44,7 @@ const QuickCallButton: React.FC = () => {
 
       {/* Callback Form Modal */}
       {showCallForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-md mx-4">
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
