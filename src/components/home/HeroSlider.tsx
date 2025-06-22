@@ -55,7 +55,7 @@ const slides: Slide[] = [
 
 const HeroSlider: React.FC = () => {
   return (
-    <section className="relative h-[400px] sm:h-[450px] lg:h-[500px] overflow-hidden bg-primary">
+    <section className="relative h-[400px] sm:h-[450px] lg:h-[500px] overflow-hidden bg-primary mt-[56px] md:mt-[169px]">
       <Swiper
         modules={[Navigation, Pagination, Autoplay, EffectFade, A11y]}
         slidesPerView={1}

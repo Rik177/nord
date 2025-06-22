@@ -108,7 +108,7 @@ const ChatWidget: React.FC = () => {
       {/* Chat Button */}
       <button
         onClick={toggleChat}
-        className={`fixed bottom-52 right-6 z-40 bg-primary hover:bg-primary/90 text-white rounded-full p-3 sm:p-4 shadow-lg transition-all duration-300 ${
+        className={`fixed bottom-24 right-6 z-40 bg-primary hover:bg-primary/90 text-white rounded-full p-4 shadow-lg transition-all duration-300 ${
           isOpen ? 'scale-0' : 'scale-100'
         }`}
         style={{

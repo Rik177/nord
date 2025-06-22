@@ -25,16 +25,14 @@ const QuickCallButton: React.FC = () => {
 
   return (
     <>
-      {/* Floating Action Buttons */}
-      <div className="fixed bottom-20 right-6 z-50 flex flex-col space-y-3">
-
-        {/* Call Button */}
+      {/* Floating Action Button */}
+      <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setShowCallForm(true)}
-          className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-accent hover:bg-accent/90 text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 animate-pulse group"
+          className="flex items-center justify-center w-14 h-14 bg-accent hover:bg-accent/90 text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 animate-pulse group"
           aria-label="Заказать обратный звонок"
         >
-          <Phone className="h-6 w-6 sm:h-7 sm:w-7" />
+          <Phone className="h-7 w-7" />
           
           {/* Tooltip */}
           <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
